@@ -64,6 +64,7 @@ class BookingIntegrationTest {
     @Autowired AuthService auth;
     @Autowired ObjectMapper json;
     @Autowired EntityManagerFactory entityManagerFactory;
+    @Autowired BookingChangeService changes;
     @Autowired AccountService accounts;
     @Autowired SupportService support;
     @Autowired SavedTravelerRepository travelerRepo;
@@ -96,6 +97,38 @@ class BookingIntegrationTest {
     }
     private BookingView create(String seat) {
         return bookings.create(input(flightId, seat, ""), null);
+    }
+
+    @Test
+    void paidChangesAreAtomicKeepSeatsAndRejectStaleQuotes() {
+        BookingView b=create("8B");String token=b.accessToken().toString();
+        payments.pay(new DemoPayment(b.id(),UUID.randomUUID(),"SUCCESS"),token);
+        var service=extrasRepo.findAll().stream().filter(e->e.getCode().equals("BAG20")).findFirst().orElseThrow();
+        var target=new CreateBooking(List.of(new SegmentInput(flightId,"ECO",List.of(new SeatInput(0,"8B")),List.of(new ExtraInput(service.getId(),0)))),input(flightId,null,"").passengers(),"changed@example.com","0901234567","");
+        var quote=changes.create(b.id(),token,target);var stale=changes.create(b.id(),token,target);
+        assertThat(quote.amount()).isEqualByComparingTo("200000");
+        changes.pay(b.id(),quote.id(),token,new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(),"FAILED"));
+        assertThat(bookings.get(b.code(),token).extras()).isEmpty();
+        UUID key=UUID.randomUUID();changes.pay(b.id(),quote.id(),token,new com.flightbooking.dto.request.ChangeRequests.Pay(key,"SUCCESS"));
+        changes.pay(b.id(),quote.id(),token,new com.flightbooking.dto.request.ChangeRequests.Pay(key,"SUCCESS"));
+        var updated=bookings.get(b.code(),token);
+        assertThat(updated.extras()).hasSize(1);assertThat(updated.contactEmail()).isEqualTo("changed@example.com");
+        assertThat(updated.segments().getFirst().seats()).extracting(SeatView::seatNumber).containsExactly("8B");
+        assertThatThrownBy(()->changes.pay(b.id(),stale.id(),token,new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(),"SUCCESS"))).isInstanceOf(BusinessException.class);
+        bookings.cancel(b.id(),token);
+    }
+
+    @Test
+    void refundsBlockChangesAndCompleteOnlyAfterApproval() {
+        BookingView b=create("8C");String token=b.accessToken().toString();payments.pay(new DemoPayment(b.id(),UUID.randomUUID(),"SUCCESS"),token);
+        var r=changes.requestRefund(b.id(),token,new com.flightbooking.dto.request.ChangeRequests.Refund("Không thể đi"));
+        assertThatThrownBy(()->changes.create(b.id(),token,input(flightId,"8C",""))).isInstanceOf(BusinessException.class);
+        assertThatThrownBy(()->changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("COMPLETE","Hoàn tiền"))).isInstanceOf(BusinessException.class);
+        changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("APPROVE","Chấp nhận"));
+        var done=changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("COMPLETE","Hoàn demo"));
+        assertThat(done.status()).isEqualTo("COMPLETED");
+        assertThat(changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("COMPLETE","Lặp")).completedAt()).isEqualTo(done.completedAt());
+        assertThat(bookings.get(b.code(),token).status()).isEqualTo("CANCELLED");
     }
 
     @Test

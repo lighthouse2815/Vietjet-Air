@@ -31,6 +31,8 @@ public class Booking {
     @Column(nullable = false, precision = 14, scale = 2) private BigDecimal discountAmount;
     @Column(nullable = false, precision = 14, scale = 2) private BigDecimal totalAmount;
     private String promotionCode;
+    @Column(nullable=false) private int revision;
+    @Column(nullable=false,precision=14,scale=2) private BigDecimal adjustmentAmount = BigDecimal.ZERO;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "user_id") private UserAccount user;
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("segmentIndex ASC")

@@ -29,6 +29,7 @@ public class CheckInService {
     @Transactional
     public BookingView complete(CheckInInput input, String token) {
         Booking b = bookings.locked(input.bookingId(), token);
+        bookings.noPendingRefund(b);
         if (b.getStatus() != BookingStatus.CONFIRMED)
             throw BusinessException.conflict("Chỉ booking đã thanh toán thành công được check-in");
         bookings.validatePassengerIndex(b, input.passengerIndex());

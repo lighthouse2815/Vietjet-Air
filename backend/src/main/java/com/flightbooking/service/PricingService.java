@@ -39,7 +39,7 @@ public class PricingService {
             booking.getPassengers().stream().filter(p -> p.getType() != PassengerType.INFANT).count();
         BigDecimal tax = BigDecimal.valueOf(120000L * seated * booking.getSegments().size());
         BigDecimal extras =
-            booking.getAncillaries().stream().map(a -> a.getPrice()).reduce(seatAmount, BigDecimal::add);
+            booking.getAncillaries().stream().map(a -> a.getPrice()).reduce(seatAmount, BigDecimal::add).add(booking.getAdjustmentAmount());
         BigDecimal discount = BigDecimal.ZERO;
         if (code != null && !code.isBlank()) {
             var promotion =

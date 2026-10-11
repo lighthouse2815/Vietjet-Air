@@ -7,6 +7,7 @@ export default function SeatMap({
   onSelect,
   otherSelections = [],
   allowSpecial = true,
+  ownedSeats = [],
 }) {
   const { data, loading, error, retry } = useApi(`/flights/${flightId}/seats`);
   if (loading) return <LoadingState label="Đang tải sơ đồ ghế..." />;
@@ -48,7 +49,7 @@ export default function SeatMap({
                 const mine = selected === number,
                   disabled =
                     !seat ||
-                    (!mine && seat.status !== "AVAILABLE") ||
+                    (!mine && !ownedSeats.includes(number) && seat.status !== "AVAILABLE") ||
                     otherSelections.includes(number) ||
                     (!allowSpecial && seat.extraLegroom);
                 return (

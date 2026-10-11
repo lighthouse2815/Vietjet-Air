@@ -27,6 +27,7 @@ public class BookingService {
     private final UserAccountRepository users;
     private final CheckInRepository checkIns;
     private final PaymentRepository payments;
+    private final RefundRequestRepository refunds;
     private final FlightService flightService;
     private final PricingService pricing;
     @Value("${app.hold-minutes}") private int holdMinutes;
@@ -62,11 +63,15 @@ public class BookingService {
     private record Prepared(Booking booking, List<SelectedSeat> seats) {}
 
     private Prepared prepare(CreateBooking input) {
+        return prepare(input, null);
+    }
+    private Prepared prepare(CreateBooking input, Booking existing) {
         validatePassengers(input);
         if (input.segments().stream().map(SegmentInput::flightId).distinct().count()
             != input.segments().size())
             throw BusinessException.badRequest("Không thể chọn trùng chuyến bay trong hành trình");
         Booking booking = new Booking();
+        if (existing != null) booking.setAdjustmentAmount(existing.getAdjustmentAmount());
         booking.setContactEmail(input.contactEmail().trim());
         booking.setContactPhone(input.contactPhone().trim());
         for (int i = 0; i < input.passengers().size(); i++) {
@@ -91,7 +96,9 @@ public class BookingService {
             Flight flight = flightService.entity(segment.flightId());
             if (!flight.getDepartureTime().isAfter(Instant.now().plusSeconds(3600)))
                 throw BusinessException.conflict("Chuyến bay đã khởi hành hoặc sắp đóng đặt chỗ");
-            if (flightService.remaining(flight) < seated)
+            int occupied = existing == null ? 0 : existing.getSegments().stream()
+                .filter(s -> s.getFlight().getId().equals(flight.getId())).mapToInt(BookingSegment::getSeatedPassengers).sum();
+            if (flightService.remaining(flight) + occupied < seated)
                 throw BusinessException.conflict("Không còn đủ ghế cho toàn bộ hành khách");
             FlightFare fare = fares.findByFlightIdAndFareClassCode(flight.getId(), segment.fareCode())
                                   .orElseThrow(() -> BusinessException.badRequest("Hạng vé không hợp lệ"));
@@ -100,6 +107,8 @@ public class BookingService {
             s.setFlight(flight);
             s.setFareClass(fare.getFareClass());
             s.setUnitPrice(fare.getPrice());
+            if (existing != null) existing.getSegments().stream().filter(old -> old.getFlight().getId().equals(flight.getId())
+                && old.getFareClass().getCode().equals(segment.fareCode())).findFirst().ifPresent(old -> s.setUnitPrice(old.getUnitPrice()));
             s.setSeatedPassengers(seated);
             s.setSegmentIndex(i);
             booking.getSegments().add(s);
@@ -110,7 +119,11 @@ public class BookingService {
                 if (!assignedPassengers.add(seatInput.passengerIndex())
                     || !assignedSeats.add(seatInput.seatNumber()))
                     throw BusinessException.badRequest("Một hành khách chỉ chọn một ghế trên mỗi chặng");
-                FlightSeat seat = availableSeat(flight.getId(), seatInput.seatNumber());
+                FlightSeat seat = seats.findByFlightIdAndSeatNumber(flight.getId(),seatInput.seatNumber())
+                    .orElseThrow(() -> BusinessException.badRequest("Ghế không tồn tại"));
+                if (existing == null || seat.getBooking() == null || !seat.getBooking().getId().equals(existing.getId()))
+                    seat = availableSeat(flight.getId(), seatInput.seatNumber());
+                if (seat.isBlocked()) throw BusinessException.conflict("Ghế không khả dụng");
                 seatAmount = seatAmount.add(pricing.seatPrice(fare.getFareClass(), seat));
                 selected.add(new SelectedSeat(seat, seatInput.passengerIndex()));
             }
@@ -129,6 +142,9 @@ public class BookingService {
                 ancillary.setService(service);
                 ancillary.setPassengerIndex(extra.passengerIndex());
                 ancillary.setPrice(service.getPrice());
+                if (existing != null) existing.getAncillaries().stream().filter(a -> a.getFlight().getId().equals(flight.getId())
+                    && a.getService().getId().equals(service.getId()) && a.getPassengerIndex()==extra.passengerIndex())
+                    .findFirst().ifPresent(a -> ancillary.setPrice(a.getPrice()));
                 booking.getAncillaries().add(ancillary);
             }
         }
@@ -240,6 +256,44 @@ public class BookingService {
             seat.setBooking(null);
             seat.setPassengerIndex(null);
         }
+    }
+    public void noPendingRefund(Booking b) {
+        refunds.findByBookingId(b.getId()).filter(r -> List.of("REQUESTED","APPROVED").contains(r.getStatus()))
+            .ifPresent(r -> { throw BusinessException.conflict("Booking đang xử lý hoàn vé"); });
+    }
+    public void mutable(Booking b) {
+        if (b.getStatus()!=BookingStatus.CONFIRMED) throw BusinessException.conflict("Chỉ sửa booking đã xác nhận");
+        noPendingRefund(b);
+        if (!checkIns.findByBookingId(b.getId()).isEmpty()) throw BusinessException.conflict("Booking đã check-in không thể sửa");
+        if (b.getSegments().stream().anyMatch(s -> !s.getFlight().getDepartureTime().isAfter(Instant.now().plusSeconds(3600))))
+            throw BusinessException.conflict("Chuyến bay đã khởi hành hoặc sắp đóng thay đổi");
+    }
+    public PriceView quoteChange(Booking b, CreateBooking input) {
+        mutable(b);
+        if(input.passengers().size()!=b.getPassengers().size() || input.segments().size()!=b.getSegments().size())
+            throw BusinessException.badRequest("Thay đổi giữ nguyên số hành khách và số chặng");
+        for(int i=0;i<input.passengers().size();i++) if(input.passengers().get(i).type()!=b.getPassengers().get(i).getType())
+            throw BusinessException.badRequest("Không đổi loại hành khách trên booking đã xác nhận");
+        return PricingService.view(prepare(input,b).booking());
+    }
+    public void applyChange(Booking b, CreateBooking input, BigDecimal fee) {
+        Prepared prepared=prepare(input,b); Booking target=prepared.booking();
+        BigDecimal total=target.getTotalAmount().max(b.getTotalAmount()).add(fee);
+        BigDecimal retained=total.subtract(target.getTotalAmount()).subtract(fee);
+        releaseSeats(b); seats.flush();
+        b.getAncillaries().clear();b.getSegments().clear();bookings.flush();
+        for(BookingSegment s:target.getSegments()) {s.setBooking(b);b.getSegments().add(s);}
+        for(BookingAncillary a:target.getAncillaries()) {a.setBooking(b);b.getAncillaries().add(a);}
+        for(int i=0;i<b.getPassengers().size();i++) {
+            Passenger p=b.getPassengers().get(i), n=target.getPassengers().get(i);
+            p.setTitle(n.getTitle());p.setLastName(n.getLastName());p.setFirstName(n.getFirstName());p.setDateOfBirth(n.getDateOfBirth());p.setNationality(n.getNationality());
+        }
+        b.setContactEmail(target.getContactEmail());b.setContactPhone(target.getContactPhone());
+        b.setBaseAmount(target.getBaseAmount());b.setTaxAmount(target.getTaxAmount());b.setDiscountAmount(target.getDiscountAmount());
+        b.setPromotionCode(target.getPromotionCode());b.setAdjustmentAmount(target.getAdjustmentAmount().add(fee).add(retained));
+        b.setExtrasAmount(target.getExtrasAmount().add(fee).add(retained));b.setTotalAmount(total);b.setRevision(b.getRevision()+1);
+        for(SelectedSeat s:prepared.seats()) {s.seat().setBooking(b);s.seat().setPassengerIndex(s.passengerIndex());}
+        bookings.saveAndFlush(b);
     }
     public BookingView view(Booking b) {
         List<FlightSeat> assigned = seats.findByBookingId(b.getId());

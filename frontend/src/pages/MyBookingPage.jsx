@@ -47,6 +47,7 @@ export default function MyBookingPage() {
         <>
           <BookingDetails booking={booking} />
           <div className="actions">
+            {["CONFIRMED","CANCELLED"].includes(booking.status) && <Link className="button primary" to={`/my-booking/${booking.code}/manage`}>Mua thêm, đổi hoặc hoàn vé</Link>}
             <Link className="button primary" to="/check-in">
               Check-in demo
             </Link>

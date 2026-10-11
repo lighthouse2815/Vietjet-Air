@@ -16,6 +16,7 @@ const MyBookingPage = lazy(() => import("./pages/MyBookingPage"));
 const CheckInPage = lazy(() => import("./pages/CheckInPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const AccountPage = lazy(() => import("./pages/AccountPage"));
+const BookingManagePage = lazy(() => import("./pages/BookingManagePage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
 export default function App() {
   const { pathname, key, hash } = useLocation();
@@ -42,6 +43,7 @@ export default function App() {
               element={<BookingSuccessPage />}
             />
             <Route path="/my-booking" element={<MyBookingPage />} />
+            <Route path="/my-booking/:code/manage" element={<BookingManagePage />} />
             <Route path="/check-in" element={<CheckInPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/account" element={<AccountPage />} />
