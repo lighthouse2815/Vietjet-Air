@@ -10,4 +10,5 @@ public class SupportTicket {
     @Column(nullable = false) private String category;
     @Column(nullable = false) private String status;
     @Column(nullable = false) private Instant createdAt;
+    @Column(length = 36) private String requestKey;
 }

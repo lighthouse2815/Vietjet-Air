@@ -15,6 +15,7 @@ public class SupportService {
     private final SupportTicketRepository tickets;
     private final SupportMessageRepository messages;
     private final AccountService accounts;
+    private final UserAccountRepository users;
     public record MessageView(Long id,String body,boolean staff,Instant createdAt) {}
     public record TicketView(Long id,String subject,String category,String status,Instant createdAt,List<MessageView> messages) {}
     @Transactional(readOnly=true)
@@ -23,7 +24,19 @@ public class SupportService {
     }
     @Transactional
     public TicketView create(Long userId,Ticket input) {
-        SupportTicket t=new SupportTicket(); t.setUser(accounts.user(userId)); t.setSubject(input.subject().trim());
+        UserAccount owner=users.findLocked(userId).orElseThrow(()->BusinessException.notFound("Không tìm thấy tài khoản"));
+        String key=input.requestKey()==null?null:input.requestKey().toString();
+        if(key!=null) {
+            var previous=tickets.findByUserIdAndRequestKey(userId,key);
+            if(previous.isPresent()) {
+                TicketView existing=view(previous.get());
+                if(!existing.subject().equals(input.subject().trim()) || !existing.category().equals(input.category())
+                    || !existing.messages().getFirst().body().equals(input.body().trim()))
+                    throw BusinessException.conflict("Khóa yêu cầu đã được dùng với nội dung khác. Vui lòng theo dõi yêu cầu đã gửi.");
+                return existing;
+            }
+        }
+        SupportTicket t=new SupportTicket(); t.setUser(owner); t.setSubject(input.subject().trim());t.setRequestKey(key);
         t.setCategory(input.category());t.setStatus("OPEN");t.setCreatedAt(Instant.now()); tickets.save(t);
         message(t,input.body(),false);return view(t);
     }

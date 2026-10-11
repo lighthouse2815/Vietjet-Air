@@ -291,6 +291,36 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void supportRetriesReuseOneTicketPerAccount() throws Exception {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("retry-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var b=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("retry-other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());
+        String payload="""
+            {"subject":"Tư vấn eSIM","category":"OTHER","body":"Nhật Bản, 7 ngày","requestKey":"%s"}
+            """.formatted(UUID.randomUUID());
+        for(int attempt=0;attempt<2;attempt++) http.perform(post("/api/support/tickets").header("Authorization","Bearer "+a.token())
+            .contentType("application/json").content(payload)).andExpect(status().isOk());
+        assertThat(support.list(a.id())).hasSize(1);
+        assertThat(support.list(a.id()).getFirst().messages()).hasSize(1);
+        http.perform(post("/api/support/tickets").header("Authorization","Bearer "+b.token()).contentType("application/json").content(payload)).andExpect(status().isOk());
+        assertThat(support.list(b.id())).hasSize(1);
+        assertThat(support.list(b.id()).getFirst().id()).isNotEqualTo(support.list(a.id()).getFirst().id());
+        http.perform(post("/api/support/tickets").header("Authorization","Bearer "+a.token()).contentType("application/json")
+            .content(payload.replace("7 ngày","10 ngày"))).andExpect(status().isConflict());
+    }
+
+    @Test
+    void concurrentSupportRetriesCreateOneTicket() throws Exception {
+        var user=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("parallel-ticket-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var input=new com.flightbooking.dto.request.AccountRequests.Ticket("Tư vấn","OTHER","Nội dung mẫu",UUID.randomUUID());
+        try(var pool=Executors.newFixedThreadPool(2)) {
+            var results=pool.invokeAll(List.<Callable<SupportService.TicketView>>of(()->support.create(user.id(),input),()->support.create(user.id(),input)));
+            assertThat(results.getFirst().get().id()).isEqualTo(results.get(1).get().id());
+        }
+        assertThat(support.list(user.id())).hasSize(1);
+        assertThat(support.list(user.id()).getFirst().messages()).hasSize(1);
+    }
+
+    @Test
     void supportThreadsArePrivateAndClosedThreadsRejectReplies() {
         var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("ticket-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
         var b=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("ticket-other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());

@@ -13,6 +13,8 @@ public final class AccountRequests {
         @NotBlank @Size(max=100) String nationality) {}
     public record Ticket(@NotBlank @Size(max=200) String subject,
         @NotBlank @Pattern(regexp="BOOKING|PAYMENT|BAGGAGE|OTHER") String category,
-        @NotBlank @Size(max=4000) String body) {}
+        @NotBlank @Size(max=4000) String body, java.util.UUID requestKey) {
+        public Ticket(String subject,String category,String body) { this(subject,category,body,null); }
+    }
     public record Reply(@NotBlank @Size(max=4000) String body) {}
 }
