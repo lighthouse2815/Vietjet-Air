@@ -19,3 +19,23 @@ Quy tắc demo: mở 720 giờ (30 ngày) và đóng 1 giờ trước khởi hà
 ## Tài khoản và nội dung
 
 Đăng ký/đăng nhập tài khoản riêng của demo bằng BCrypt/JWT. Không dùng tài khoản hãng, không hỏi số thẻ hoặc giấy tờ cá nhân thật. Menu dịch vụ có trang mô tả nội bộ và ghi rõ phần chưa tích hợp. Các link tìm vé/điểm đến dẫn đến tìm kiếm có dữ liệu API.
+
+## Nghiệp vụ nội bộ bổ sung
+
+| Luồng | Các bước và kết quả |
+|---|---|
+| Hồ sơ / hành khách thường dùng | Đăng nhập → `/account` → cập nhật tên/điện thoại hoặc thêm/sửa/xóa hành khách → chọn hành khách đã lưu tại checkout |
+| Đổi mật khẩu | Nhập mật khẩu hiện tại/mới → thu hồi mọi JWT cũ → đăng nhập lại |
+| Quên mật khẩu | `/auth` → Quên mật khẩu → nhập email → ADMIN đọc Hộp thư demo → mở đường dẫn một lần → lưu mật khẩu mới |
+| Hỗ trợ | `/services/support` → tạo yêu cầu → khách/ADMIN trả lời → xem lịch sử → đóng; sau đóng không nhận trả lời |
+| Mua thêm / đổi vé | Tra cứu `/my-booking` → mở quản lý → chọn dịch vụ/ghế/chuyến/hạng hoặc sửa liên hệ → báo giá → thanh toán SUCCESS mới áp dụng; FAILED cho thử lại |
+| Hoàn vé | Booking đã trả tiền, chưa check-in → gửi lý do → ADMIN duyệt/từ chối → duyệt giải phóng ghế → hoàn tiền demo → trả voucher và đảo điểm một lần |
+| Voucher | Đăng nhập → mua/tặng theo email → thanh toán phát hành → người nhận chọn voucher tại payment booking → trừ số dư, phần còn lại thanh toán demo |
+| Cửa hàng | Chọn lượng → tạo đơn giữ hàng → trả tiền / thử lại → nhận tại quầy hoặc theo booking → ADMIN xác nhận giao; hủy/hết hạn trả kho |
+| Điểm thưởng | Thanh toán vé/thay đổi/cửa hàng → tích điểm trên chi tiêu hợp lệ → xem số dư/hạng/lịch sử → đổi bội số 100 điểm lấy voucher |
+| Nhiều chặng | `/services/multi-city` → 2–6 chặng nối tiếp → chọn vé mỗi chặng → checkout chung |
+| Nhóm | `/services/groups` → tối đa 30 người, có người lớn đi cùng em bé → một chiều/khứ hồi → checkout chung và kiểm tra capacity máy chủ |
+| Ngôn ngữ | Chọn Tiếng Việt/English ở header, kể cả mobile → giao diện đổi ngay → localStorage giữ lựa chọn qua reload |
+| Quản trị | ADMIN `/admin` → booking/hoàn/hỗ trợ/đơn/chuyến/danh mục/nội dung/hộp thư → thao tác theo trạng thái và quyền backend |
+
+Chỉ dữ liệu và giao dịch demo được thực hiện trong project. Dịch vụ bên ngoài và điều kiện tích hợp ở [PROVIDER_BACKLOG.md](PROVIDER_BACKLOG.md).

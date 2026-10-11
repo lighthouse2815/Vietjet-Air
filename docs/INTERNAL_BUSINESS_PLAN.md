@@ -10,7 +10,9 @@ Phạm vi được người dùng xác nhận ngày 11/10/2026: triển khai ngh
 - [x] Hội viên nội bộ: số dư, tích điểm khi giao dịch thành công, lịch sử, đổi điểm lấy voucher; chống cộng/trừ lặp.
 - [x] Quản trị: phân quyền ADMIN; booking, hoàn vé, hỗ trợ, chuyến/giá, dịch vụ, sản phẩm/tồn kho, khuyến mại và nội dung.
 - [x] Đặt vé nhiều chặng và đặt nhóm trong giới hạn sức chứa; tải boarding pass demo.
-- [ ] Chuyển tiếng Việt/Anh, liên kết header/footer tới đúng nghiệp vụ.
-- [ ] Kiểm thử PostgreSQL và trình duyệt, build, cập nhật API/README; commit/push từng phần đã kiểm chứng.
+- [x] Chuyển tiếng Việt/Anh, liên kết header/footer tới đúng nghiệp vụ.
+- [x] Kiểm thử PostgreSQL và trình duyệt, build, cập nhật API/README; commit/push từng phần đã kiểm chứng.
 
 Tích hợp bên ngoài được theo dõi tại [PROVIDER_BACKLOG.md](PROVIDER_BACKLOG.md). Checklist chỉ đánh dấu sau khi triển khai và kiểm chứng.
+
+Kết quả kiểm chứng ngày 11/10/2026: [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md).

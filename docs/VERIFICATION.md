@@ -1,5 +1,7 @@
 # Báo cáo kiểm chứng
 
+Báo cáo bổ sung cho nghiệp vụ nội bộ: [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md). Các con số dưới đây ghi nhận đợt kiểm chứng luồng lõi ban đầu.
+
 Mốc 11/10/2026, Asia/Ho_Chi_Minh. Chạy trực tiếp trong workspace, PostgreSQL 17 Docker, Java 21.0.12.1, Node 26.9.0/npm 12, Chromium Playwright 1.64.0. Backend Spring Boot 3.5.16 và frontend Vite production build; website local http://localhost:5173, API 8085.
 
 ## Kết quả đã chạy
@@ -41,7 +43,7 @@ Booking và hai test trang chủ chạy ở 1920×1080, 1440×900, 768×1024, 39
 
 Đối chiếu header/hero/widget/container/section/footer với snapshot reference đã thu thập, đã sửa kích thước tab, menu và breakpoint. Hero đã có ba ảnh riêng, chiến dịch 12h dùng bố cục người/món ăn bên trái và tiêu đề ở giữa; tablet xếp form dưới banner theo screenshot tham chiếu. Ảnh tạo mới, logo chữ, font tiêu đề thay thế, số slide, section khuyến mại/achievement minh họa và nội dung demo vẫn khác reference. Chưa có metric chứng minh pixel-perfect; không công bố độ giống 100%.
 
-Một số trang/interaction reference chưa xác minh do lazy loading và popup; không vượt hạn chế truy cập. Các dịch vụ đối tác, nhiều chặng, đổi/mua thêm sau booking, email và vé/boarding pass thật nằm ngoài bản demo, được ghi rõ trong README và trang nội dung. Chỉ kiểm thử môi trường local; chưa triển khai hay kiểm chứng production hosting, load test, refund thật hoặc accessibility audit đầy đủ.
+Một số trang/interaction reference chưa xác minh do lazy loading và popup; không vượt hạn chế truy cập. Nghiệp vụ nội bộ nhiều chặng/nhóm, đổi/mua thêm/hoàn vé, quản trị và thương mại đã được bổ sung; kết quả mới ở [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md). Dịch vụ đối tác, email và vé/boarding pass thật còn trong backlog nhà cung cấp. Chỉ kiểm thử môi trường local; chưa triển khai hay kiểm chứng production hosting, load test, refund thật hoặc accessibility audit đầy đủ.
 
 Build có cảnh báo comment annotation từ Zod/Rollup và cảnh báo agent của Mockito trên Java 21; các check nêu trên vẫn đạt. Không có cấu hình ESLint/type-check riêng; JavaScript được kiểm tra qua build và browser, không báo đã chạy lint khi chưa có.
 

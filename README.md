@@ -60,6 +60,7 @@ Vite chuyển `/api` tới backend. Dừng frontend bằng Ctrl+C. Dừng backen
 | `CHECK_IN_OPEN_HOURS` | `720`, mở check-in demo trước 30 ngày |
 | `CHECK_IN_CLOSE_HOURS` | `1`, đóng trước một giờ |
 | `SEED_DAYS` | `90`, số ngày seed cuốn chiếu |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Tùy chọn; tạo tài khoản ADMIN riêng khi khởi động |
 
 Nếu backend dùng cổng khác, khởi động Vite với `API_PROXY_TARGET=http://localhost:<port> npm --prefix frontend run dev`. Có thể đặt `VITE_API_URL` trong môi trường Vite để gọi URL API khác; cấu hình CORS phải tương ứng. Không đưa secret vào biến có tiền tố `VITE_`.
 
@@ -87,13 +88,49 @@ Khứ hồi mẫu: SGN → Đà Nẵng (DAD), đi ngày mai, về ngày kế ti�
 - Giá backend bằng BigDecimal, snapshot khi tạo booking, giữ chỗ có hạn, khóa transaction chống ghế trùng và overbooking, giải phóng chỗ khi hủy/hết hạn, thanh toán thành công idempotent.
 - Tra cứu có xác minh tên, token truy cập UUID, giới hạn 15 lần/phút/IP; check-in có điều kiện thời gian và boarding pass demo; BCrypt/JWT cho tài khoản USER.
 - Validation, lỗi JSON, loading/empty/error, các trang nội dung nội bộ, lazy loading các trang checkout.
+- Hồ sơ, đổi/khôi phục mật khẩu có thu hồi phiên, hành khách thường dùng, yêu cầu hỗ trợ và trao đổi với quản trị viên.
+- Mua thêm dịch vụ/đổi ghế sau xác nhận; đổi chuyến/ngày/hạng vé/liên hệ; báo giá 15 phút, thanh toán chênh lệch và lịch sử. Giữ số tiền ưu đãi cũ khi đổi vé.
+- Hoàn vé đã trả tiền: yêu cầu, tính phí, duyệt/từ chối/hoàn tiền demo; trả số dư voucher và đảo điểm; chống xử lý lặp.
+- Mua/tặng voucher, dùng số dư khi trả booking; cửa hàng có giữ tồn kho, đơn/nhận theo chuyến, thanh toán thử lại, hủy và xác nhận giao hàng.
+- Điểm/hạng hội viên, sổ giao dịch, đổi điểm lấy voucher; không cộng điểm từ tiền voucher.
+- ADMIN quản lý booking, hoàn vé, hỗ trợ, đơn hàng, lịch/giá chuyến, dịch vụ, sản phẩm/tồn kho, khuyến mại, nội dung và hộp thư demo.
+- Đặt nhiều chặng/nhóm dùng chung checkout, tải boarding pass demo; Việt/Anh bằng i18next, lưu ngôn ngữ qua reload.
+
+## Sử dụng nghiệp vụ nội bộ
+
+| Chức năng | Đường dẫn |
+|---|---|
+| Hồ sơ, mật khẩu, hành khách thường dùng | `/account` |
+| Yêu cầu và lịch sử hỗ trợ | `/services/support` |
+| Mua thêm, đổi/hoàn vé | `/my-booking` → tra cứu → **Mua thêm, đổi hoặc hoàn vé** |
+| Mua/tặng voucher | `/services/voucher` |
+| Cửa hàng nội bộ | `/services/skyshop` |
+| Điểm, hạng và đổi thưởng | `/services/skyjoy` |
+| Nhiều chặng / đặt nhóm | `/services/multi-city` / `/services/groups` |
+| Quản trị | `/admin` |
+
+Tạo quản trị viên local trước khi khởi động backend:
+
+```bash
+npm run setup:admin
+./scripts/start-backend.sh
+```
+
+Script lưu email và mật khẩu ngẫu nhiên riêng trong `.env` đã bị Git bỏ qua; đọc file này trên máy của bạn để đăng nhập tại `/auth`. Không có mật khẩu ADMIN dùng chung. Nếu email đã thuộc tài khoản USER, bootstrap từ chối tự nâng quyền: cấu hình email ADMIN mới. Nếu backend đang chạy, cần khởi động lại để áp dụng cấu hình.
+
+Quên mật khẩu tạo đường dẫn dùng một lần, hết hạn sau 30 phút trong **Hộp thư demo** của ADMIN. Bản demo chưa gửi email thật. Tài khoản USER chỉ đọc dữ liệu của mình; mọi API quản trị kiểm tra ADMIN ở backend.
+
+Sau khi thanh toán booking, tra cứu và mở quản lý để báo giá thay đổi. Thanh toán thất bại giữ booking cũ; thành công mới chuyển ghế/chuyến và cộng phần tiền tăng. Phí đổi Eco 100.000đ, Deluxe 50.000đ, SkyBoss/Business 0đ mỗi người có ghế/chặng thay đổi. Giá giảm không tự hoàn chênh lệch. Yêu cầu hoàn chặn thay đổi/check-in; ADMIN duyệt, rồi xác nhận hoàn tiền demo. Phí hoàn Eco 20%, Deluxe 10%, SkyBoss/Business 0% giá vé; phí thay đổi trước đó không hoàn.
+
+Cửa hàng giữ hàng 15 phút; đơn hủy/hết hạn trả tồn kho. Nhận hàng theo chuyến cần booking đã xác nhận. Voucher mua từ 100.000đ–2.000.000đ, hiệu lực một năm sau phát hành, chỉ người nhận dùng được. 10.000đ chi tiêu hợp lệ nhận một điểm; 100 điểm đổi voucher 100.000đ. Hủy/hoàn đảo điểm đã cộng; nếu điểm đã đổi thưởng, số dư có thể âm và không đổi tiếp được cho đến khi tích đủ.
 
 ## Giới hạn và khác biệt với reference
 
 - Banner/card được tạo mới; KoHo có giấy phép OFL, font tiêu đề và logo chữ thay thế. Không có quyền sử dụng asset độc quyền của hãng nên không sao chép chúng. Demo có ba ảnh banner riêng cho chiến dịch 12h, kết nối bầu trời và du lịch gia đình; reference tại mốc khảo sát có chín slide. Không tuyên bố giống 100%.
 - Nội dung khuyến mại, giá, quyền lợi, sơ đồ 72 ghế (71 ghế bán), số liệu/giải thưởng minh họa và thời gian check-in là dữ liệu demo; không phải quy định hãng thật.
-- Chỉ một chiều/khứ hồi, VND và tiếng Việt. Nhiều chặng, dịch vụ đối tác (khách sạn, eSIM, eVisa, ngoại tệ, SkyJoy, Skyshop...) có trang giải thích phạm vi; chưa tích hợp đối tác.
-- Dịch vụ bổ sung được mua trong luồng tạo booking. Chưa có chỉnh sửa/mua thêm sau xác nhận, đổi vé, hoàn tiền thật, gửi email, xuất vé thật, quản trị CMS hay triển khai production.
+- Hỗ trợ một chiều, khứ hồi, nhiều chặng (2–6), đặt nhóm (tối đa 30 hành khách), VND và chuyển Việt/Anh. Nội dung do quản trị viên nhập được giữ nguyên nếu chưa có bản dịch tương ứng.
+- Khách sạn, eSIM, eVisa, ngoại tệ, xuất vé/thu tiền/hoàn tiền thật, email/SMS và đồng bộ SkyJoy/Skyshop thật còn chờ nhà cung cấp; xem [backlog tích hợp](docs/PROVIDER_BACKLOG.md). Voucher, cửa hàng và hội viên hiện có nghiệp vụ nội bộ với dữ liệu riêng.
+- Thanh toán, hoàn tiền, voucher, điểm thưởng, giao hàng và boarding pass là demo; chưa triển khai hosting production.
 - Boarding pass em bé đi kèm và quy trình tại sân bay nằm ngoài demo. Check-in chỉ cho hành khách có ghế riêng.
 - Một số tương tác và trang sau đặt vé của reference chưa xác minh được do popup/lazy load; chi tiết trong [REFERENCE_AUDIT](docs/REFERENCE_AUDIT.md).
 
@@ -112,10 +149,12 @@ End-to-end cần backend/database/frontend đang chạy:
 ```bash
 npm ci
 npx playwright install chromium
+npm run setup:admin # nếu chưa có ADMIN, sau đó khởi động lại backend
+npm run check:i18n
 npm run test:e2e
 ```
 
-Linux thiếu thư viện Chromium có thể cần `npx playwright install --with-deps chromium`. Suite chạy booking một chiều và khứ hồi tại 1920×1080, 1440×900, 768×1024, 390×844; kiểm tra quản lý/tài khoản/empty state tại laptop. Test tạo booking và tài khoản **mẫu** trong database đang chạy. Có thể đặt `CAPTURE_E2E=1 npm run test:e2e` để cập nhật ảnh trong `docs/verification/checkout`.
+Linux thiếu thư viện Chromium có thể cần `npx playwright install --with-deps chromium`. Suite chạy booking một chiều và khứ hồi tại 1920×1080, 1440×900, 768×1024, 390×844; kiểm tra quản lý/tài khoản/empty state và nghiệp vụ nội bộ tại laptop; kiểm tra ngôn ngữ tại cả bốn chiều rộng. ADMIN cần được tạo bằng cấu hình trên; các bài kiểm thử quản trị không lưu trace/screenshot phiên đăng nhập. Test tạo booking và tài khoản **mẫu** trong database đang chạy. Có thể đặt `CAPTURE_E2E=1 npm run test:e2e` để cập nhật ảnh trong `docs/verification/checkout`.
 
 Xem bản production build local: dừng Vite dev rồi chạy `npm --prefix frontend run preview`; vẫn dùng port 5173 và proxy `/api`. Backend đóng gói ở `backend/target/flight-booking-1.0.0.jar`; khi chạy `java -jar`, phải export các biến `.env` trước.
 
@@ -136,5 +175,6 @@ Named volume bị xóa; Flyway và seed tạo dữ liệu mới. Giữ `.env`, h
 ## Tài liệu
 
 - [Khảo sát reference](docs/REFERENCE_AUDIT.md), [component](docs/UI_COMPONENTS.md), [luồng người dùng](docs/USER_FLOWS.md), [nguồn asset](docs/ASSETS.md).
+- [Phạm vi nghiệp vụ nội bộ](docs/INTERNAL_BUSINESS_PLAN.md), [backlog nhà cung cấp](docs/PROVIDER_BACKLOG.md).
 - [Database và ERD](docs/DATABASE.md), [REST API](docs/API.md), [báo cáo kiểm chứng](docs/VERIFICATION.md).
 - Ảnh reference trong `docs/reference/`; ảnh local và đối chiếu trong `docs/verification/`.
