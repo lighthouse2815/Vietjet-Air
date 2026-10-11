@@ -26,8 +26,6 @@ export default function AirportPicker({
   );
   useEffect(() => {
     if (open) {
-      setQuery("");
-      setActive(0);
       input.current?.focus();
     }
   }, [open]);
@@ -56,7 +54,13 @@ export default function AirportPicker({
         className="airport-trigger"
         aria-label={label}
         aria-expanded={open}
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          if (!open) {
+            setQuery("");
+            setActive(0);
+          }
+          setOpen(!open);
+        }}
       >
         <Plane size={21} className={label === "Điểm đến" ? "landing" : ""} />
         <span>

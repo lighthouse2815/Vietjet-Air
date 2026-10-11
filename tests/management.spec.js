@@ -32,6 +32,20 @@ function tomorrow() {
     day: "2-digit",
   }).format(d);
 }
+test("airport search preserves text typed immediately after opening", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const origin = page
+    .getByRole("button", { name: "Điểm khởi hành", exact: true })
+    .first();
+  for (const code of ["HAN", "SGN", "PQC", "DAD", "HAN", "CXR"]) {
+    await origin.click();
+    await page.getByRole("combobox").fill(code);
+    await page.getByRole("combobox").press("Enter");
+    await expect(origin).toContainText(code);
+  }
+});
 test("pending booking can resume demo payment after lookup", async ({
   page,
   request,
