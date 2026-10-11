@@ -42,3 +42,7 @@ eVoucher nội bộ mua/tặng theo email, thanh toán demo để phát hành, d
 Form tư vấn dùng `POST /api/support/tickets` với nhóm `OTHER` và khóa yêu cầu chống trùng tùy chọn; phản hồi, bổ sung và đóng yêu cầu dùng nghiệp vụ hỗ trợ hiện có. Ticket là yêu cầu tư vấn nội bộ, chưa tạo đơn hoặc xác nhận giao dịch ở nhà cung cấp. Các bản nháp nằm trong `sessionStorage`, riêng theo từng dịch vụ; yêu cầu đã gửi được lưu trên PostgreSQL theo tài khoản.
 
 Nguồn và ảnh đối chiếu: [audit sáu dịch vụ](reference/services/audit.json), [manifest ảnh](../frontend/public/assets/services/sources.json). Không nhúng iframe/provider tracker vào bản demo; các liên kết ngoài được mở rõ ràng trên kênh nhà cung cấp.
+
+## Nguồn dữ liệu FE/BE
+
+Nội dung và cấu hình FE đã chuyển vào CMS backend, bao gồm các dịch vụ đối tác chưa tích hợp. Trạng thái này là nội dung quản lý trong PostgreSQL; không phải phản hồi giả từ nhà cung cấp. Số liệu vận hành lấy từ truy vấn database; giá, tồn kho, giao dịch và điểm lấy API nghiệp vụ. Chi tiết tại [BACKEND_DATA](verification/BACKEND_DATA.md).

@@ -2,11 +2,11 @@ import { chromium } from "playwright";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 
-const output = "docs/verification/services";
+const output = process.env.VERIFICATION_OUTPUT || "docs/verification/services";
 const slugs = ["hotels", "esim", "visa", "currency", "insurance", "skyjoy"];
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
-const report = { verifiedAt: new Date().toISOString(), baseURL: "http://localhost:5173", pages: [] };
+const report = { verifiedAt: new Date().toISOString(), baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:5173", pages: [] };
 try {
   for (const [name, width, height] of [["desktop", 1920, 1080], ["laptop", 1440, 900], ["tablet", 768, 1024], ["mobile", 390, 844]]) {
     const page = await browser.newPage({ viewport: { width, height }, reducedMotion: "reduce" });
