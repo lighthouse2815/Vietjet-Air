@@ -15,6 +15,8 @@ const BookingSuccessPage = lazy(() => import("./pages/BookingSuccessPage"));
 const MyBookingPage = lazy(() => import("./pages/MyBookingPage"));
 const CheckInPage = lazy(() => import("./pages/CheckInPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
+const AccountPage = lazy(() => import("./pages/AccountPage"));
+const SupportPage = lazy(() => import("./pages/SupportPage"));
 export default function App() {
   const { pathname, key, hash } = useLocation();
   useEffect(() => {
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/my-booking" element={<MyBookingPage />} />
             <Route path="/check-in" element={<CheckInPage />} />
             <Route path="/auth" element={<AuthPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/services/support" element={<SupportPage />} />
             <Route path="/services/:slug" element={<ContentPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

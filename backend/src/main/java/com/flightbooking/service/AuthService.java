@@ -66,6 +66,7 @@ public class AuthService {
                                   .issuedAt(now)
                                   .expiresAt(now.plusSeconds(7200))
                                   .claim("role", u.getRole())
+                                  .claim("version", u.getTokenVersion())
                                   .build();
         String token =
             jwtEncoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims))

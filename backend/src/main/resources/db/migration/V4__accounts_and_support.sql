@@ -1,0 +1,10 @@
+ALTER TABLE users ADD COLUMN token_version INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE users ADD COLUMN phone VARCHAR(255);
+ALTER TABLE users ADD COLUMN reset_hash VARCHAR(64);
+ALTER TABLE users ADD COLUMN reset_expires_at TIMESTAMPTZ;
+CREATE TABLE saved_travelers (id BIGSERIAL PRIMARY KEY, user_id BIGINT NOT NULL REFERENCES users, type VARCHAR(255) NOT NULL CHECK(type IN ('ADULT','CHILD','INFANT')), title VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, date_of_birth DATE NOT NULL, nationality VARCHAR(255) NOT NULL);
+CREATE INDEX idx_saved_travelers_user ON saved_travelers(user_id);
+CREATE TABLE support_tickets (id BIGSERIAL PRIMARY KEY, user_id BIGINT NOT NULL REFERENCES users, subject VARCHAR(255) NOT NULL, category VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL CHECK(status IN ('OPEN','ANSWERED','CLOSED')), created_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX idx_support_user ON support_tickets(user_id,id);
+CREATE TABLE support_messages (id BIGSERIAL PRIMARY KEY, ticket_id BIGINT NOT NULL REFERENCES support_tickets, body VARCHAR(4000) NOT NULL, staff BOOLEAN NOT NULL, created_at TIMESTAMPTZ NOT NULL);
+CREATE TABLE mail_messages (id BIGSERIAL PRIMARY KEY, recipient VARCHAR(255) NOT NULL, subject VARCHAR(255) NOT NULL, body VARCHAR(4000) NOT NULL, created_at TIMESTAMPTZ NOT NULL);

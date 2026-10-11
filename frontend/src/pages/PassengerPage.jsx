@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
 import { localDate } from "../api/client";
+import { useApi } from "../hooks/useApi";
 import BookingSteps from "../components/booking/BookingSteps";
 const schema = z.object({
   passengers: z.array(
@@ -47,6 +48,7 @@ function initialPassengers(search) {
 export default function PassengerPage() {
   const { draft, update } = useBooking();
   const navigate = useNavigate();
+  const travelers = useApi(sessionStorage.getItem("demo-auth") ? "/account/travelers" : null);
   const defaults = {
     passengers: draft.passengers.length
       ? draft.passengers
@@ -61,6 +63,7 @@ export default function PassengerPage() {
     control,
     handleSubmit,
     setError,
+    setValue,
     watch,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema), defaultValues: defaults });
@@ -124,6 +127,10 @@ export default function PassengerPage() {
             <h2>
               {typeLabels[field.type]} {i + 1}
             </h2>
+            {!!travelers.data?.length && <label>Chọn hành khách đã lưu<select defaultValue="" onChange={e=>{
+              const saved = travelers.data.find(t=>t.id===Number(e.target.value));
+              if (saved) for (const key of ["title","lastName","firstName","dateOfBirth","nationality"]) setValue(`passengers.${i}.${key}`,saved[key],{shouldDirty:true});
+            }}><option value="">Nhập thông tin mới</option>{travelers.data.filter(t=>t.type===field.type).map(t=><option key={t.id} value={t.id}>{t.lastName} {t.firstName}</option>)}</select></label>}
             <div className="form-grid">
               <label>
                 Danh xưng

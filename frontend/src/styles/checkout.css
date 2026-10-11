@@ -879,3 +879,6 @@
     font-size: 18px;
   }
 }
+.panel + .panel { margin-top: 20px; }
+textarea { width: 100%; min-height: 100px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font: inherit; resize: vertical; }
+.panel form, .panel > label { display: block; margin-bottom: 16px; }

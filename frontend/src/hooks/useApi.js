@@ -4,6 +4,7 @@ export function useApi(path) {
   const [state, setState] = useState({ data: null, loading: true, error: "" });
   const [retryKey, setRetryKey] = useState(0);
   useEffect(() => {
+    if (!path) { setState({ data: [], loading: false, error: "" }); return; }
     const controller = new AbortController();
     setState({ data: null, loading: true, error: "" });
     api

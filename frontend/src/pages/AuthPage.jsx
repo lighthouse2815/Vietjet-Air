@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api, errorMessage } from "../api/client";
 import { storeBooking } from "../utils/booking";
 export default function AuthPage() {
+  const [params] = useSearchParams();
+  const [resetMessage, setResetMessage] = useState("");
+  const [resetToken, setResetToken] = useState(params.get("reset") || "");
   const [mode, setMode] = useState("login");
   const [user, setUser] = useState(() => {
     try {
@@ -66,6 +69,14 @@ export default function AuthPage() {
     setHasMore(false);
     reset();
   }
+  async function recover(event) {
+    event.preventDefault(); setBusy(true); setError("");
+    try {
+      const values = Object.fromEntries(new FormData(event.currentTarget));
+      const {data} = await api.post(resetToken ? "/auth/password-reset/complete" : "/auth/password-reset", resetToken ? {...values,token:resetToken} : values);
+      setResetMessage(data.message); if (resetToken) { setResetToken(""); setMode("login"); }
+    } catch(e) { setError(errorMessage(e)); } finally { setBusy(false); }
+  }
   return (
     <main className="container page">
       <div className="page-heading">
@@ -84,6 +95,7 @@ export default function AuthPage() {
           <>
             <h2>Xin chào, {user.name}</h2>
             <p>{user.email}</p>
+            <p><Link to="/account">Hồ sơ và hành khách thường dùng</Link> · <Link to="/services/support">Yêu cầu hỗ trợ</Link></p>
             <button
               className="button primary"
               onClick={() => load()}
@@ -121,6 +133,12 @@ export default function AuthPage() {
               </button>
             )}
           </>
+        ) : mode === "forgot" || resetToken ? (
+          <form onSubmit={recover}><h2>Khôi phục mật khẩu</h2>
+            <label>{resetToken ? "Mật khẩu mới" : "Email"}<input name={resetToken ? "password" : "email"} type={resetToken ? "password" : "email"} required minLength={resetToken ? 8 : undefined} maxLength={resetToken ? 72 : 255} autoComplete={resetToken ? "new-password" : "email"}/></label>
+            <button className="button primary" disabled={busy}>{resetToken ? "Lưu mật khẩu mới" : "Gửi hướng dẫn khôi phục"}</button>
+            <button type="button" className="button secondary" onClick={()=>{setMode("login");setResetToken("");}}>Về đăng nhập</button>
+          </form>
         ) : (
           <form onSubmit={handleSubmit(submit)} noValidate>
             <div className="form-grid one">
@@ -181,6 +199,7 @@ export default function AuthPage() {
                   ? "Đăng nhập"
                   : "Tạo tài khoản demo"}
             </button>
+            <button type="button" className="auth-toggle" onClick={()=>setMode("forgot")}>Quên mật khẩu?</button>
             <button
               type="button"
               className="auth-toggle"
@@ -201,6 +220,7 @@ export default function AuthPage() {
             {error}
           </p>
         )}
+        {resetMessage && <p role="status" className="notice-panel">{resetMessage}</p>}
       </section>
     </main>
   );

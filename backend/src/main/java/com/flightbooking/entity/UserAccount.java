@@ -1,6 +1,7 @@
 package com.flightbooking.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,4 +17,8 @@ public class UserAccount {
     @Column(nullable = false) private String passwordHash;
     @Column(nullable = false) private String name;
     @Column(nullable = false) private String role;
+    @Column(nullable = false) private int tokenVersion;
+    private String phone;
+    private String resetHash;
+    private Instant resetExpiresAt;
 }

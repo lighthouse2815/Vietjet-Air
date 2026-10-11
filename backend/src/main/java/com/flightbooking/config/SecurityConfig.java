@@ -2,6 +2,7 @@ package com.flightbooking.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightbooking.exception.GlobalExceptionHandler.ApiError;
+import com.flightbooking.repository.UserAccountRepository;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.core.*;
+import org.springframework.security.oauth2.server.resource.authentication.*;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -33,12 +36,23 @@ public class SecurityConfig {
         return new NimbusJwtEncoder(new ImmutableSecret<>(secret.getBytes(StandardCharsets.UTF_8)));
     }
     @Bean
-    JwtDecoder jwtDecoder(@Value("${app.jwt-secret}") String secret) {
+    JwtDecoder jwtDecoder(@Value("${app.jwt-secret}") String secret, UserAccountRepository users) {
         requireSecret(secret);
-        return NimbusJwtDecoder
+        NimbusJwtDecoder decoder = NimbusJwtDecoder
             .withSecretKey(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"))
             .macAlgorithm(MacAlgorithm.HS256)
             .build();
+        decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefaultWithIssuer("flight-demo"), jwt -> {
+            try {
+                var user = users.findById(Long.valueOf(jwt.getSubject()));
+                Number version = jwt.getClaim("version");
+                if (user.isPresent() && user.get().getTokenVersion() == (version == null ? 0 : version.intValue())
+                    && user.get().getRole().equals(jwt.getClaimAsString("role")))
+                    return OAuth2TokenValidatorResult.success();
+            } catch (RuntimeException ignored) { }
+            return OAuth2TokenValidatorResult.failure(new OAuth2Error("invalid_token", "Phiên đăng nhập không còn hợp lệ", null));
+        }));
+        return decoder;
     }
     private void requireSecret(String secret) {
         if (secret.getBytes(StandardCharsets.UTF_8).length < 32)
@@ -60,13 +74,17 @@ public class SecurityConfig {
             json.writeValue(response.getOutputStream(),
                 new ApiError("FORBIDDEN", "Không có quyền truy cập chức năng này", Instant.now()));
         };
+        JwtGrantedAuthoritiesConverter authorities = new JwtGrantedAuthoritiesConverter();
+        authorities.setAuthoritiesClaimName("role"); authorities.setAuthorityPrefix("ROLE_");
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter(); converter.setJwtGrantedAuthoritiesConverter(authorities);
         return http.cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(a
                 -> a.requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
-                    .requestMatchers("/api/auth/me", "/api/auth/bookings")
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/auth/me", "/api/auth/bookings", "/api/account/**", "/api/support/**", "/api/commerce/account/**")
                     .authenticated()
                     .requestMatchers("/api/**")
                     .permitAll()
@@ -74,7 +92,7 @@ public class SecurityConfig {
                     .denyAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(unauthorized).accessDeniedHandler(denied))
             .oauth2ResourceServer(
-                o -> o.jwt(j -> {}).authenticationEntryPoint(unauthorized).accessDeniedHandler(denied))
+                o -> o.jwt(j -> j.jwtAuthenticationConverter(converter)).authenticationEntryPoint(unauthorized).accessDeniedHandler(denied))
             .build();
     }
     @Bean

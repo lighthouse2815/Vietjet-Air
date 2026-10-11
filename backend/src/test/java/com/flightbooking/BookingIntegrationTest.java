@@ -64,6 +64,10 @@ class BookingIntegrationTest {
     @Autowired AuthService auth;
     @Autowired ObjectMapper json;
     @Autowired EntityManagerFactory entityManagerFactory;
+    @Autowired AccountService accounts;
+    @Autowired SupportService support;
+    @Autowired SavedTravelerRepository travelerRepo;
+    @Autowired MailMessageRepository mailRepo;
     private Long flightId;
     @BeforeEach
     void chooseFlight() {
@@ -92,6 +96,35 @@ class BookingIntegrationTest {
     }
     private BookingView create(String seat) {
         return bookings.create(input(flightId, seat, ""), null);
+    }
+
+    @Test
+    void accountOwnershipPasswordRevocationAndResetAreEnforced() throws Exception {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("account-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var b=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());
+        var traveler=new com.flightbooking.dto.request.AccountRequests.Traveler("ADULT","MR","NGUYEN","DEMO",LocalDate.of(1990,1,1),"Việt Nam");
+        var saved=accounts.saveTraveler(a.id(),null,traveler);
+        assertThatThrownBy(()->accounts.deleteTraveler(b.id(),saved.id())).isInstanceOf(BusinessException.class);
+        assertThat(accounts.travelers(a.id())).hasSize(1);
+        accounts.password(a.id(),new com.flightbooking.dto.request.AccountRequests.Password("Original123","Changed123"));
+        http.perform(get("/api/auth/me").header("Authorization","Bearer "+a.token())).andExpect(status().isUnauthorized());
+        accounts.startReset(new com.flightbooking.dto.request.AccountRequests.ResetStart(a.email()),UUID.randomUUID().toString());
+        String token=mailRepo.findAll().stream().filter(m->m.getRecipient().equals(a.email())).findFirst().orElseThrow().getBody().split("reset=")[1];
+        accounts.finishReset(new com.flightbooking.dto.request.AccountRequests.ResetFinish(token,"Recovered123"),UUID.randomUUID().toString());
+        assertThatThrownBy(()->accounts.finishReset(new com.flightbooking.dto.request.AccountRequests.ResetFinish(token,"Again1234"),UUID.randomUUID().toString())).isInstanceOf(BusinessException.class);
+        assertThat(auth.login(new com.flightbooking.dto.request.AuthRequests.Login(a.email(),"Recovered123"),UUID.randomUUID().toString()).id()).isEqualTo(a.id());
+        http.perform(get("/api/account/profile")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void supportThreadsArePrivateAndClosedThreadsRejectReplies() {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("ticket-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var b=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("ticket-other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());
+        var ticket=support.create(a.id(),new com.flightbooking.dto.request.AccountRequests.Ticket("Cần hỗ trợ","BOOKING","Nội dung mẫu"));
+        assertThatThrownBy(()->support.reply(b.id(),ticket.id(),new com.flightbooking.dto.request.AccountRequests.Reply("Không được phép"),false)).isInstanceOf(BusinessException.class);
+        assertThat(support.reply(a.id(),ticket.id(),new com.flightbooking.dto.request.AccountRequests.Reply("Bổ sung thông tin"),false).messages()).hasSize(2);
+        support.close(a.id(),ticket.id(),false);
+        assertThatThrownBy(()->support.reply(a.id(),ticket.id(),new com.flightbooking.dto.request.AccountRequests.Reply("Đã đóng"),false)).isInstanceOf(BusinessException.class);
     }
 
     @Test
