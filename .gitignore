@@ -1,0 +1,13 @@
+node_modules/
+target/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+test-results/
+playwright-report/
+.DS_Store
+.idea/
+*.iml
+docs/reference/reference-dom.html
