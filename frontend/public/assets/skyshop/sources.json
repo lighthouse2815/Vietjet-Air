@@ -1,0 +1,66 @@
+[
+  {
+    "file": "hero.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2110x1300banner-ho-1754534369533.jpg"
+  },
+  {
+    "file": "hero-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/homepage750x650-1754534357804.jpg"
+  },
+  {
+    "file": "cloud-header.svg",
+    "url": "https://skyshop.vietjetair.com/_next/static/media/sky-cloud-header-desktop.f90e03fa.svg"
+  },
+  {
+    "file": "background.webp",
+    "url": "https://skyshop.vietjetair.com/static/assets/images/sky-bg-cloud-desktop.webp"
+  },
+  {
+    "file": "featured-background.jpg",
+    "url": "https://skyshop.vietjetair.com/static/assets/images/bg-product-best-seller-v3.jpg"
+  },
+  {
+    "file": "ribbon-corner.svg",
+    "url": "https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg"
+  },
+  {
+    "file": "category-insurance.png",
+    "url": "https://skyshop-image.vietjetair.com/upload/frame-313-1-1759392344143.png"
+  },
+  {
+    "file": "category-meal.png",
+    "url": "https://skyshop-image.vietjetair.com/upload/frame-311-1759392553910.png"
+  },
+  {
+    "file": "category-baggage.png",
+    "url": "https://cms-happyreturns.dev.vietjetict.com/upload/frame-313-1751428328745.png"
+  },
+  {
+    "file": "category-esim.jpg",
+    "url": "https://cms-happyreturns.dev.vietjetict.com/upload/esim-1746762258586.jpg"
+  },
+  {
+    "file": "category-taxi.jpg",
+    "url": "https://cms-happyreturns.dev.vietjetict.com/upload/tx-1746760390896.jpg"
+  },
+  {
+    "file": "insurance.jpg",
+    "url": "https://skyshop-image.vietjetair.com/upload/hinhanhbaohiemmobile214x214-1-1759889278606.jpg"
+  },
+  {
+    "file": "baggage-20.jpg",
+    "url": "https://skyshop-image.vietjetair.com/upload/20kg-1759825763339.jpg"
+  },
+  {
+    "file": "baggage-30.jpg",
+    "url": "https://skyshop-image.vietjetair.com/upload/30kg-1759825922418.jpg"
+  },
+  {
+    "file": "meal.jpg",
+    "url": "https://skyshop-image.vietjetair.com/upload/7-1760431152356.%20Hotmeal_700x700px_com%20bo"
+  },
+  {
+    "file": "meal-vegetarian.jpg",
+    "url": "https://skyshop-image.vietjetair.com/upload/7-1760431184030.%20Hotmeal_India_700x700px_com%20chien%20duong%20chau"
+  }
+]
