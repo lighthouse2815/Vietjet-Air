@@ -27,3 +27,5 @@ app:
   check-in-open-hours: ${CHECK_IN_OPEN_HOURS:720}
   check-in-close-hours: ${CHECK_IN_CLOSE_HOURS:1}
   seed-days: ${SEED_DAYS:90}
+  admin-email: ${ADMIN_EMAIL:}
+  admin-password: ${ADMIN_PASSWORD:}

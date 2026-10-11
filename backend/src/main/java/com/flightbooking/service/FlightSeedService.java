@@ -74,20 +74,23 @@ public class FlightSeedService implements ApplicationRunner {
                     fare.setPrice(BigDecimal.valueOf(base + supplements[i]));
                     fares.save(fare);
                 }
-                List<FlightSeat> seatRows = new ArrayList<>();
-                for (int row = 1; row <= 12; row++)
-                    for (char column = 'A'; column <= 'F'; column++) {
-                        FlightSeat s = new FlightSeat();
-                        s.setFlight(f);
-                        s.setSeatNumber(row + "" + column);
-                        s.setExtraLegroom(row <= 2 || row == 8);
-                        s.setPrice(BigDecimal.valueOf(s.isExtraLegroom() ? 150000 : 60000));
-                        s.setBlocked(row == 12 && column == 'F');
-                        seatRows.add(s);
-                    }
-                f.setCapacity(71);
-                seats.saveAll(seatRows);
+                initializeSeats(f);
             }
         }
+    }
+    public void initializeSeats(Flight f) {
+        List<FlightSeat> seatRows = new ArrayList<>();
+        for (int row = 1; row <= 12; row++)
+            for (char column = 'A'; column <= 'F'; column++) {
+                FlightSeat s = new FlightSeat();
+                s.setFlight(f);
+                s.setSeatNumber(row + "" + column);
+                s.setExtraLegroom(row <= 2 || row == 8);
+                s.setPrice(BigDecimal.valueOf(s.isExtraLegroom() ? 150000 : 60000));
+                s.setBlocked(row == 12 && column == 'F');
+                seatRows.add(s);
+            }
+        f.setCapacity(71);
+        seats.saveAll(seatRows);
     }
 }

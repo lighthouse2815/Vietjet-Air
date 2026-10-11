@@ -78,7 +78,7 @@ public class FlightService {
             Duration.between(f.getDepartureTime(), f.getArrivalTime()).toMinutes(), f.getAircraft(),
             remainingSeats, prices);
     }
-    private List<FlightView> views(List<Flight> routeFlights) {
+    public List<FlightView> views(List<Flight> routeFlights) {
         Instant now = Instant.now();
         List<Flight> futureFlights =
             routeFlights.stream().filter(f -> f.getDepartureTime().isAfter(now)).toList();

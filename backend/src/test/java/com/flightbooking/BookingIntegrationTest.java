@@ -64,6 +64,7 @@ class BookingIntegrationTest {
     @Autowired AuthService auth;
     @Autowired ObjectMapper json;
     @Autowired EntityManagerFactory entityManagerFactory;
+    @Autowired AdminService admin;
     @Autowired VoucherService vouchers;
     @Autowired LoyaltyService loyalty;
     @Autowired ShopService shop;
@@ -102,6 +103,20 @@ class BookingIntegrationTest {
     }
     private BookingView create(String seat) {
         return bookings.create(input(flightId, seat, ""), null);
+    }
+
+    @Test
+    void adminEndpointsRequireAdminAndCannotMoveBookedFlights() throws Exception {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("admin-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        http.perform(get("/api/admin/bookings")).andExpect(status().isUnauthorized());
+        http.perform(get("/api/admin/bookings").header("Authorization","Bearer "+a.token())).andExpect(status().isForbidden());
+        tx.executeWithoutResult(s->userRepo.findById(a.id()).orElseThrow().setRole("ADMIN"));
+        var token=auth.login(new com.flightbooking.dto.request.AuthRequests.Login(a.email(),"Original123"),UUID.randomUUID().toString()).token();
+        http.perform(get("/api/admin/catalog").header("Authorization","Bearer "+token)).andExpect(status().isOk()).andExpect(jsonPath("$.products").isArray());
+        var b=create(null);var f=flights.get(flightId);
+        var edit=new com.flightbooking.dto.request.AdminRequests.FlightEdit(f.flightNumber(),f.origin().code(),f.destination().code(),f.departureTime().plusSeconds(60),f.arrivalTime().plusSeconds(60),71,f.aircraft(),BigDecimal.valueOf(490000),BigDecimal.valueOf(890000),BigDecimal.valueOf(1890000),BigDecimal.valueOf(3390000));
+        assertThatThrownBy(()->admin.flight(flightId,edit)).isInstanceOf(BusinessException.class);
+        bookings.cancel(b.id(),b.accessToken().toString());
     }
 
     @Test

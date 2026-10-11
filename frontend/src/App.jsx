@@ -19,6 +19,7 @@ const AccountPage = lazy(() => import("./pages/AccountPage"));
 const BookingManagePage = lazy(() => import("./pages/BookingManagePage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
 const CommercePage = lazy(() => import("./pages/CommercePage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
 export default function App() {
   const { pathname, key, hash } = useLocation();
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/check-in" element={<CheckInPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/account" element={<AccountPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/services/support" element={<SupportPage />} />
             <Route path="/services/skyshop" element={<CommercePage kind="shop" />} />
             <Route path="/services/voucher" element={<CommercePage kind="voucher" />} />

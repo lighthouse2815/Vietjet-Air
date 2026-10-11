@@ -14,5 +14,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select f from Flight f where f.id=:id")
     Optional<Flight> findLocked(Long id);
+    List<Flight> findByDepartureTimeAfterOrderByDepartureTimeAsc(Instant time, org.springframework.data.domain.Pageable pageable);
     boolean existsByFlightNumberAndDepartureTime(String flightNumber, Instant departureTime);
 }

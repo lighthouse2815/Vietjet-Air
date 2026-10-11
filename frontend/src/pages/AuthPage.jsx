@@ -96,6 +96,7 @@ export default function AuthPage() {
             <h2>Xin chào, {user.name}</h2>
             <p>{user.email}</p>
             <p><Link to="/account">Hồ sơ và hành khách thường dùng</Link> · <Link to="/services/support">Yêu cầu hỗ trợ</Link></p>
+            {user.role === "ADMIN" && <p><Link to="/admin">Quản trị nghiệp vụ</Link></p>}
             <button
               className="button primary"
               onClick={() => load()}
