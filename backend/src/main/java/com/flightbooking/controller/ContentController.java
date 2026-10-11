@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService service;
+    @GetMapping("/content/pages/{slug}")
+    public ContentView page(@PathVariable String slug) { return service.page(slug); }
+    @GetMapping("/site-statistics")
+    public ContentService.Statistics statistics() { return service.statistics(); }
     @GetMapping("/home")
     public ContentService.HomeView home() {
         return service.home();

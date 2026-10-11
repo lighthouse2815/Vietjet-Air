@@ -17,7 +17,7 @@ public final class Responses {
     public record ServiceView(
         Long id, String code, String name, String category, String description, BigDecimal price) {}
     public record
-        ContentView(Long id, String category, String title, String description, String image, String target) {
+        ContentView(Long id, String category, String title, String description, String image, String target, Map<String,Object> details) {
     }
     public record CalendarPrice(LocalDate date, BigDecimal price) {}
     public record PriceView(BigDecimal baseAmount, BigDecimal taxAmount, BigDecimal extrasAmount,
@@ -31,7 +31,7 @@ public final class Responses {
     public record BookingView(Long id, String code, UUID accessToken, String status, String contactEmail,
         String contactPhone, Instant createdAt, Instant expiresAt, List<SegmentView> segments,
         List<PassengerView> passengers, List<ExtraView> extras, PriceView price,
-        List<BoardingPassView> boardingPasses, String paymentStatus, String journeyType) {}
+        List<BoardingPassView> boardingPasses, String paymentStatus, String journeyType, boolean canPurchaseServices) {}
     public record PaymentView(
         Long id, Long bookingId, UUID requestKey, String status, BigDecimal amount, Instant createdAt) {}
     public record AuthView(String token, Long id, String email, String name, String role) {}

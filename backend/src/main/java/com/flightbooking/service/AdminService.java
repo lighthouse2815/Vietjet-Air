@@ -23,7 +23,7 @@ public class AdminService {
     private final BookingSegmentRepository segments;private final FlightSeedService seed;
     public record MailView(Long id,String recipient,String subject,String body,Instant createdAt) {}
     public record PromotionView(Long id,String code,int percent,BigDecimal maxDiscount,LocalDate expiresOn) {}
-    public record ContentView(Long id,String category,String title,String description,String image,String target,int sortOrder) {}
+    public record ContentView(Long id,String category,String title,String description,String image,String target,int sortOrder,Map<String,Object> details) {}
     @Transactional(readOnly=true)
     public Object list(String resource,int page,int size) {
         if(page<0||size<1||size>100)throw BusinessException.badRequest("Trang không âm; kích thước từ 1 đến 100");
@@ -37,7 +37,7 @@ public class AdminService {
             case "flights" -> flightService.views(flights.findByDepartureTimeAfterOrderByDepartureTimeAsc(Instant.now(),PageRequest.of(page,size)));
             case "catalog" -> Map.of("products",products.findAll().stream().map(shop::view).toList(),"ancillaries",ancillaries.findAll().stream().map(ContentService::view).toList(),
                 "promotions",promotions.findAll().stream().map(p->new PromotionView(p.getId(),p.getCode(),p.getPercent(),p.getMaxDiscount(),p.getExpiresOn())).toList(),
-                "content",content.findAll().stream().map(c->new ContentView(c.getId(),c.getCategory(),c.getTitle(),c.getDescription(),c.getImage(),c.getTarget(),c.getSortOrder())).toList());
+                "content",content.findAll().stream().map(c->new ContentView(c.getId(),c.getCategory(),c.getTitle(),c.getDescription(),c.getImage(),c.getTarget(),c.getSortOrder(),c.getDetails())).toList());
             default -> throw BusinessException.notFound("Không có danh mục quản trị này");
         };
     }
@@ -57,9 +57,31 @@ public class AdminService {
     }
     @Transactional
     public ContentView content(Long id,Content input) {
-        if(!input.image().isEmpty()&&!input.image().matches("/assets/[a-zA-Z0-9._-]+"))throw BusinessException.badRequest("Ảnh phải thuộc thư mục assets của web");
+        if(!input.image().isEmpty()&&!input.image().matches("/assets/(?:[a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-][a-zA-Z0-9._-]*"))throw BusinessException.badRequest("Ảnh phải thuộc thư mục assets của web");
         if(!input.target().matches("/[a-zA-Z0-9/_?#=&%.-]*")&&!input.category().equals("FAQ")&&!input.category().equals("DESTINATION"))throw BusinessException.badRequest("Liên kết phải là đường dẫn nội bộ");
-        ContentItem c=id==null?new ContentItem():content.findById(id).orElseThrow(()->BusinessException.notFound("Không tìm thấy nội dung"));c.setCategory(input.category());c.setTitle(input.title().trim());c.setDescription(input.description().trim());c.setImage(input.image());c.setTarget(input.target());c.setSortOrder(input.sortOrder());content.save(c);return new ContentView(c.getId(),c.getCategory(),c.getTitle(),c.getDescription(),c.getImage(),c.getTarget(),c.getSortOrder());
+        if(input.details()!=null) validateDetails(input.details(),0);
+        if(input.category().equals("PAGE")) content.findByCategoryAndTarget("PAGE",input.target()).filter(c->!c.getId().equals(id))
+            .ifPresent(c->{throw BusinessException.conflict("Trang đã có nội dung quản trị");});
+        ContentItem c=id==null?new ContentItem():content.findById(id).orElseThrow(()->BusinessException.notFound("Không tìm thấy nội dung"));c.setCategory(input.category());c.setTitle(input.title().trim());c.setDescription(input.description().trim());c.setImage(input.image());c.setTarget(input.target());c.setSortOrder(input.sortOrder());if(input.details()!=null)c.setDetails(input.details());content.save(c);return new ContentView(c.getId(),c.getCategory(),c.getTitle(),c.getDescription(),c.getImage(),c.getTarget(),c.getSortOrder(),c.getDetails());
+    }
+    private void validateDetails(Object value,int depth) {
+        if(depth>8)throw BusinessException.badRequest("Cấu hình nội dung không hợp lệ");
+        if(value instanceof Map<?,?> map) {
+            if(map.size()>50)throw BusinessException.badRequest("Cấu hình nội dung không hợp lệ");
+            for(var entry:map.entrySet()) {
+                if(entry.getValue() instanceof String text) {
+                    String key=entry.getKey().toString();
+                    if(List.of("image","mobileImage","logo","src","titleImage","footerImage","desktopImage").contains(key)
+                        && !text.matches("/assets/(?:[a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-][a-zA-Z0-9._-]*"))throw BusinessException.badRequest("Ảnh phải thuộc thư mục assets của web");
+                    if(key.equals("source") && (!text.startsWith("https://") || java.net.URI.create(text).getHost()==null))throw BusinessException.badRequest("Liên kết nhà cung cấp phải dùng HTTPS");
+                    if(key.equals("target") && (!text.startsWith("/")&&!text.startsWith("#") || text.startsWith("//")))throw BusinessException.badRequest("Liên kết phải là đường dẫn nội bộ");
+                }
+                validateDetails(entry.getValue(),depth+1);
+            }
+        } else if(value instanceof List<?> list) {
+            if(list.size()>100)throw BusinessException.badRequest("Cấu hình nội dung không hợp lệ");
+            list.forEach(item->validateDetails(item,depth+1));
+        } else if(value instanceof String text && text.length()>4000)throw BusinessException.badRequest("Cấu hình nội dung không hợp lệ");
     }
     @Transactional
     public com.flightbooking.dto.response.Responses.FlightView flight(Long id,FlightEdit input) {

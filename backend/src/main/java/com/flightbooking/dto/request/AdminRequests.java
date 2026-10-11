@@ -11,9 +11,11 @@ public final class AdminRequests {
         @NotNull @DecimalMin("0") @DecimalMax("100000000") BigDecimal price) {}
     public record Promotion(@NotBlank @Pattern(regexp="[A-Z0-9_]{2,30}") String code,@Min(1) @Max(100) int percent,
         @NotNull @DecimalMin("0") @DecimalMax("100000000") BigDecimal maxDiscount,@NotNull @FutureOrPresent LocalDate expiresOn) {}
-    public record Content(@NotBlank @Pattern(regexp="HERO|FEATURE|SERVICE|SHOP|TRAVEL|DESTINATION|FAQ|MEDIA|ACHIEVEMENT") String category,
+    public record Content(@NotBlank @Pattern(regexp="HERO|FEATURE|SERVICE|SHOP|TRAVEL|DESTINATION|FAQ|MEDIA|ACHIEVEMENT|PAGE") String category,
         @NotBlank @Size(max=200) String title,@NotBlank @Size(max=2000) String description,
-        @NotNull @Size(max=255) String image,@NotBlank @Size(max=255) String target,@Min(0) @Max(10000) int sortOrder) {}
+        @NotNull @Size(max=255) String image,@NotBlank @Size(max=255) String target,@Min(0) @Max(10000) int sortOrder,@Size(max=50) java.util.Map<String,Object> details) {
+        public Content(String category,String title,String description,String image,String target,int sortOrder) { this(category,title,description,image,target,sortOrder,null); }
+    }
     public record FlightEdit(@NotBlank @Pattern(regexp="[A-Z0-9]{2,12}") String flightNumber,
         @NotBlank @Pattern(regexp="[A-Z]{3}") String origin,@NotBlank @Pattern(regexp="[A-Z]{3}") String destination,
         @NotNull @Future Instant departureTime,@NotNull @Future Instant arrivalTime,

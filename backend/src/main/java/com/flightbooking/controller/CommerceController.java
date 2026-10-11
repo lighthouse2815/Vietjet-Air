@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController @RequiredArgsConstructor @RequestMapping("/api/commerce")
 public class CommerceController {
     private final ShopService shop;private final VoucherService vouchers;private final LoyaltyService loyalty;
+    @GetMapping("/rules") public Object rules(){return Map.of("quantityLimit",com.flightbooking.dto.request.CommerceRequests.QUANTITY_LIMIT,"loyalty",loyalty.rules(),
+        "voucherMinimum",com.flightbooking.dto.request.CommerceRequests.MIN_VOUCHER_VALUE,"voucherMaximum",com.flightbooking.dto.request.CommerceRequests.MAX_VOUCHER_VALUE);}
     @GetMapping("/products") public List<ShopService.ProductView> products(){return shop.products();}
     @GetMapping("/account/orders") public List<ShopService.OrderView> orders(@AuthenticationPrincipal Jwt jwt){return shop.list(id(jwt));}
     @PostMapping("/account/orders") public ShopService.OrderView order(@AuthenticationPrincipal Jwt jwt,@Valid @RequestBody CreateOrder input){return shop.create(id(jwt),input);}

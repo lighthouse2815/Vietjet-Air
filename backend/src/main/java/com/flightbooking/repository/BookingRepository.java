@@ -17,4 +17,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Long>
     findExpiredIds(Instant now);
     List<Booking> findByUserId(Long userId, Pageable pageable);
+    long countByStatus(com.flightbooking.enums.BookingStatus status);
 }

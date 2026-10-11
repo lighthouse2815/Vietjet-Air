@@ -37,8 +37,8 @@ public class VoucherService {
     @Transactional
     public VoucherView redeem(Long id,Redeem input) {
         UserAccount u=users.findLocked(id).orElseThrow();var previous=vouchers.findByRequestKey(input.requestKey());
-        if(previous.isPresent()){GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||!v.isReward()||v.getValue().compareTo(BigDecimal.valueOf(input.points()*1000))!=0)throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v,id);}
-        loyalty.spend(u,input.points(),"REDEEM:"+input.requestKey());return view(issue(u,input.points()*1000,u.getEmail(),input.requestKey(),true),id);
+        if(previous.isPresent()){GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||!v.isReward()||v.getValue().compareTo(BigDecimal.valueOf(input.points()*LoyaltyService.VOUCHER_VALUE_PER_POINT))!=0)throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v,id);}
+        loyalty.spend(u,input.points(),"REDEEM:"+input.requestKey());return view(issue(u,input.points()*LoyaltyService.VOUCHER_VALUE_PER_POINT,u.getEmail(),input.requestKey(),true),id);
     }
     @Transactional
     public VoucherView pay(Long userId,Long id,Pay input) {

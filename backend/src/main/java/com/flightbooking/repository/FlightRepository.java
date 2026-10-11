@@ -16,4 +16,8 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     Optional<Flight> findLocked(Long id);
     List<Flight> findByDepartureTimeAfterOrderByDepartureTimeAsc(Instant time, org.springframework.data.domain.Pageable pageable);
     boolean existsByFlightNumberAndDepartureTime(String flightNumber, Instant departureTime);
+    @Query("select count(distinct concat(f.origin.code,'-',f.destination.code)) from Flight f where f.departureTime>:now")
+    long countRoutes(Instant now);
+    @Query("select count(f) from Flight f where f.departureTime>=:start and f.departureTime<:end")
+    long countDepartures(Instant start,Instant end);
 }

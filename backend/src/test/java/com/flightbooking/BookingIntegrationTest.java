@@ -74,6 +74,8 @@ class BookingIntegrationTest {
     @Autowired AccountService accounts;
     @Autowired SupportService support;
     @Autowired SavedTravelerRepository travelerRepo;
+    @Autowired AirportRepository airportRepo;
+    @Autowired ContentItemRepository contentRepo;
     @Autowired MailMessageRepository mailRepo;
     private Long flightId;
     @BeforeEach
@@ -288,6 +290,35 @@ class BookingIntegrationTest {
         assertThatThrownBy(()->accounts.finishReset(new com.flightbooking.dto.request.AccountRequests.ResetFinish(token,"Again1234"),UUID.randomUUID().toString())).isInstanceOf(BusinessException.class);
         assertThat(auth.login(new com.flightbooking.dto.request.AuthRequests.Login(a.email(),"Recovered123"),UUID.randomUUID().toString()).id()).isEqualTo(a.id());
         http.perform(get("/api/account/profile")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void cmsMetadataChangesAreReturnedAndInvalidProviderLinksAreRejected() throws Exception {
+        var page=contentRepo.findByCategoryAndTarget("PAGE","/services/hotels").orElseThrow();
+        var original=new LinkedHashMap<>(page.getDetails());
+        try {
+            var changed=new LinkedHashMap<>(original);changed.put("heading","Nội dung từ database");
+            admin.content(page.getId(),new com.flightbooking.dto.request.AdminRequests.Content(page.getCategory(),page.getTitle(),page.getDescription(),page.getImage(),page.getTarget(),page.getSortOrder(),changed));
+            http.perform(get("/api/content/pages/hotels")).andExpect(status().isOk()).andExpect(jsonPath("$.details.heading").value("Nội dung từ database"));
+            changed.put("source","javascript:alert(1)");
+            assertThatThrownBy(()->admin.content(page.getId(),new com.flightbooking.dto.request.AdminRequests.Content(page.getCategory(),page.getTitle(),page.getDescription(),page.getImage(),page.getTarget(),page.getSortOrder(),changed))).isInstanceOf(BusinessException.class);
+            http.perform(post("/api/admin/content/"+page.getId()).contentType("application/json").content("{}")).andExpect(status().isUnauthorized());
+        } finally {
+            page.setDetails(original);contentRepo.save(page);
+        }
+    }
+
+    @Test
+    void publicPagesAndRulesAreDeliveredByBackend() throws Exception {
+        http.perform(get("/api/content/pages/hotels")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.details.heading").value("Khách sạn cho hành trình của bạn"))
+            .andExpect(jsonPath("$.details.fields[0].name").value("destination"));
+        http.perform(get("/api/content/pages/missing-page")).andExpect(status().isNotFound());
+        http.perform(get("/api/commerce/rules")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.loyalty.redemptionStep").value(100))
+            .andExpect(jsonPath("$.quantityLimit").value(10));
+        http.perform(get("/api/site-statistics")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.metrics[0].value").value(airportRepo.count()));
     }
 
     @Test

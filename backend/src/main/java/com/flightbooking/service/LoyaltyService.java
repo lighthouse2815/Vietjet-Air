@@ -2,6 +2,7 @@ package com.flightbooking.service;
 import com.flightbooking.entity.*;
 import com.flightbooking.exception.BusinessException;
 import com.flightbooking.repository.*;
+import static com.flightbooking.dto.request.CommerceRequests.*;
 import java.math.*;
 import java.time.Instant;
 import java.util.*;
@@ -11,6 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Service @RequiredArgsConstructor
 public class LoyaltyService {
+    public static final long SPEND_PER_POINT=10000, VOUCHER_VALUE_PER_POINT=1000;
+    public record Tier(String code,long minimumSpend) {}
+    public record Rules(long spendPerPoint,int minimumPoints,int maximumPoints,int redemptionStep,long voucherValuePerPoint,List<Tier> tiers) {}
+    private static final List<Tier> TIERS=List.of(new Tier("DIAMOND",50000000),new Tier("GOLD",10000000),new Tier("SILVER",3000000),new Tier("RED",0));
+    public Rules rules() { return new Rules(SPEND_PER_POINT,MIN_REDEEM_POINTS,MAX_REDEEM_POINTS,REDEMPTION_STEP,VOUCHER_VALUE_PER_POINT,TIERS); }
     private final UserAccountRepository users;
     private final PointEntryRepository entries;
     public record EntryView(Long id,long delta,String description,Instant createdAt) {}
@@ -18,7 +24,7 @@ public class LoyaltyService {
     @Transactional(readOnly=true)
     public WalletView wallet(Long id) {
         UserAccount u=users.findById(id).orElseThrow(()->BusinessException.notFound("Không tìm thấy tài khoản"));
-        String tier=u.getQualifyingSpend().compareTo(BigDecimal.valueOf(50000000))>=0?"DIAMOND":u.getQualifyingSpend().compareTo(BigDecimal.valueOf(10000000))>=0?"GOLD":u.getQualifyingSpend().compareTo(BigDecimal.valueOf(3000000))>=0?"SILVER":"RED";
+        String tier=TIERS.stream().filter(t->u.getQualifyingSpend().compareTo(BigDecimal.valueOf(t.minimumSpend()))>=0).findFirst().orElseThrow().code();
         return new WalletView(u.getPoints(),tier,u.getQualifyingSpend(),entries.findByUserIdOrderByIdDesc(id,PageRequest.of(0,100)).stream().map(e->new EntryView(e.getId(),e.getDelta(),e.getDescription(),e.getCreatedAt())).toList());
     }
     @Transactional
@@ -26,7 +32,7 @@ public class LoyaltyService {
         if(id==null)return;
         UserAccount u=users.findLocked(id).orElseThrow();
         if(entries.findBySource(source).isPresent())return;
-        record(u,source,amount.divideToIntegralValue(BigDecimal.valueOf(10000)).longValueExact(),amount,description);
+        record(u,source,amount.divideToIntegralValue(BigDecimal.valueOf(SPEND_PER_POINT)).longValueExact(),amount,description);
     }
     @Transactional
     public void reverse(String source) {
@@ -36,7 +42,7 @@ public class LoyaltyService {
         record(u,"REVERSE:"+source,-entry.get().getDelta(),entry.get().getSpend().negate(),"Đảo điểm giao dịch "+source);
     }
     public void spend(UserAccount u,long points,String source) {
-        if(points<100 || points%100!=0 || points>2000 || u.getPoints()<points)
+        if(points<MIN_REDEEM_POINTS || points%REDEMPTION_STEP!=0 || points>MAX_REDEEM_POINTS || u.getPoints()<points)
             throw BusinessException.badRequest("Đổi từ 100 đến 2.000 điểm, bội số 100 và không vượt số dư");
         record(u,source,-points,BigDecimal.ZERO,"Đổi điểm lấy voucher nội bộ");
     }

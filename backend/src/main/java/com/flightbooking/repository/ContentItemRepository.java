@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.*;
 public interface ContentItemRepository extends JpaRepository<ContentItem, Long> {
     List<ContentItem> findAllByOrderBySortOrderAscIdAsc();
     List<ContentItem> findByCategoryOrderBySortOrderAsc(String category);
+    Optional<ContentItem> findByCategoryAndTarget(String category, String target);
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -18,4 +21,7 @@ public class ContentItem {
     @Column(nullable = false) private String image;
     @Column(nullable = false) private String target;
     @Column(nullable = false) private int sortOrder;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(nullable = false, columnDefinition = "jsonb")
+    private Map<String,Object> details = new LinkedHashMap<>();
 }

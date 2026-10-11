@@ -290,6 +290,9 @@ public class BookingService {
         if (b.getSegments().stream().anyMatch(s -> !s.getFlight().getDepartureTime().isAfter(Instant.now().plusSeconds(3600))))
             throw BusinessException.conflict("Chuyến bay đã khởi hành hoặc sắp đóng thay đổi");
     }
+    private boolean canPurchaseServices(Booking b) {
+        try { mutable(b);return true; } catch(BusinessException ex) { return false; }
+    }
     public PriceView quoteChange(Booking b, CreateBooking input) {
         mutable(b);
         if(input.passengers().size()!=b.getPassengers().size() || input.segments().size()!=b.getSegments().size())
@@ -356,7 +359,7 @@ public class BookingService {
                 .toList(),
             payments.findFirstByBookingIdOrderByCreatedAtDescIdDesc(b.getId())
                 .map(Payment::getStatus)
-                .orElse("UNPAID"), b.getJourneyType());
+                .orElse("UNPAID"), b.getJourneyType(), canPurchaseServices(b));
     }
     private String newCode() {
         StringBuilder code = new StringBuilder();
