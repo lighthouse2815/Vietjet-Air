@@ -3,6 +3,10 @@ package com.flightbooking;
 import com.flightbooking.dto.request.BookingRequests.*;
 import com.flightbooking.dto.response.Responses.*;
 import com.flightbooking.enums.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.flightbooking.exception.BusinessException;
 import com.flightbooking.repository.*;
 import com.flightbooking.service.*;
@@ -47,6 +51,7 @@ class BookingIntegrationTest {
     @Autowired RateLimitService limits;
     @Autowired MockMvc http;
     @Autowired AuthService auth;
+    @Autowired ObjectMapper json;
     private Long flightId;
     @BeforeEach void chooseFlight(){
         flightId=flights.search("SGN","HAN",LocalDate.now(FlightService.ZONE).plusDays(1),1).getFirst().id();
@@ -62,6 +67,17 @@ class BookingIntegrationTest {
             List.of(new PassengerInput(PassengerType.ADULT,"MR","NGUYEN","VAN DEMO",LocalDate.of(1990,1,1),"Việt Nam")),"demo@example.com","0901234567",promo);
     }
     private BookingView create(String seat){return bookings.create(input(flightId,seat,""),null);}
+
+    @Test void nullElementsInBookingArraysReturnValidationErrors() throws Exception {
+        for(String field:List.of("segments","passengers","seats","extras")) {
+            ObjectNode request=json.valueToTree(input(flightId,null,""));
+            ArrayNode array=field.equals("segments")||field.equals("passengers")
+                ? (ArrayNode)request.get(field) : (ArrayNode)request.get("segments").get(0).get(field);
+            if(array.isEmpty())array.addNull();else array.set(0,NullNode.getInstance());
+            http.perform(post("/api/bookings/quote").contentType("application/json").content(request.toString()))
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_ERROR"));
+        }
+    }
 
     @Test void accountBookingsRequireAuthenticationAndPaginateOnlyOwnedRecords() throws Exception {
         var first=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("first-"+UUID.randomUUID()+"@example.com","DemoPassword123","First Demo"),"first-test");

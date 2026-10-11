@@ -15,9 +15,9 @@ public final class BookingRequests {
     public record SeatInput(@Min(0) int passengerIndex, @NotBlank @Pattern(regexp="[1-9][0-9]?[A-F]") String seatNumber) {}
     public record ExtraInput(@NotNull Long serviceId,@Min(0) int passengerIndex) {}
     public record SegmentInput(@NotNull Long flightId, @NotBlank String fareCode,
-            @NotNull @Size(max=9) List<@Valid SeatInput> seats, @NotNull @Size(max=40) List<@Valid ExtraInput> extras) {}
-    public record CreateBooking(@NotNull @Size(min=1,max=2) List<@Valid SegmentInput> segments,
-            @NotNull @Size(min=1,max=9) List<@Valid PassengerInput> passengers,
+            @NotNull @Size(max=9) List<@NotNull @Valid SeatInput> seats, @NotNull @Size(max=40) List<@NotNull @Valid ExtraInput> extras) {}
+    public record CreateBooking(@NotNull @Size(min=1,max=2) List<@NotNull @Valid SegmentInput> segments,
+            @NotNull @Size(min=1,max=9) List<@NotNull @Valid PassengerInput> passengers,
             @NotBlank @Email @Size(max=255) String contactEmail,
             @NotBlank @Pattern(regexp="[+0-9 ()-]{8,20}") String contactPhone,
             @Size(max=30) String promotionCode) {}
