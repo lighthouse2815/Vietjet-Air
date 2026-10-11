@@ -1,0 +1,150 @@
+import { test, expect } from "@playwright/test";
+function tomorrow(offset = 1) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+test("one-way checkout persists confirmed booking and allows lookup and check-in", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/");
+  await page.getByLabel("Một chiều", { exact: true }).first().check();
+  await page
+    .getByRole("button", { name: "Điểm khởi hành", exact: true })
+    .first()
+    .click();
+  await page.getByRole("combobox").fill("sgn");
+  await page.getByRole("option").first().click();
+  await page
+    .getByRole("button", { name: "Điểm đến", exact: true })
+    .first()
+    .click();
+  await page.getByRole("combobox").fill("han");
+  await page.getByRole("option").first().click();
+  await page
+    .getByRole("button", { name: "Ngày đi", exact: true })
+    .first()
+    .click();
+  await page
+    .getByRole("button", { name: `Ngày đi ${tomorrow()}`, exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Tìm chuyến bay", exact: true })
+    .first()
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Chọn chuyến bay" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: /Chọn Eco/ })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page).toHaveURL(/booking\/passengers/);
+  await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
+  await page.getByLabel("Tên đệm và tên").fill("VAN DEMO");
+  await page.getByLabel("Ngày sinh").fill("1990-01-01");
+  await page.getByLabel("Email liên hệ").fill("demo@example.com");
+  await page.getByLabel("Số điện thoại").fill("0901234567");
+  await page
+    .getByLabel("Ngày sinh")
+    .fill(`${new Date().getFullYear() - 5}-01-01`);
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(
+    page.getByText("Ngày sinh không phù hợp:", { exact: false }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/booking\/passengers/);
+  await page.getByLabel("Ngày sinh").fill("1990-01-01");
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page).toHaveURL(/booking\/extras/);
+  await page.getByLabel("Hành lý ký gửi 20 kg").check();
+  await page
+    .locator(".seat-map .seat:not([disabled]):not(.special)")
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page).toHaveURL(/booking\/review/);
+  await expect(
+    page.getByText("NGUYEN VAN DEMO", { exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Hành lý ký gửi 20 kg", { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Đặt chỗ và thanh toán demo" })
+    .click();
+  await expect(page).toHaveURL(/booking\/payment/);
+  await page.getByRole("button", { name: "Thanh toán thành công" }).click();
+  await expect(page).toHaveURL(/booking\/success/);
+  const code = await page.getByTestId("booking-code").innerText();
+  await page.reload();
+  await expect(page.getByTestId("booking-code")).toHaveText(code);
+  await expect(
+    page.getByText("Đã xác nhận", { exact: true }).first(),
+  ).toBeVisible();
+  await page.goto("/my-booking");
+  await page.getByLabel("Mã đặt chỗ").fill(code);
+  await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
+  await page.getByLabel("Tên đệm và tên").fill("VAN DEMO");
+  await page.getByRole("button", { name: "Tra cứu đặt chỗ" }).click();
+  await expect(page.getByTestId("booking-code")).toHaveText(code);
+  await page.goto("/check-in");
+  await page.getByLabel("Mã đặt chỗ").fill(code);
+  await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
+  await page.getByLabel("Tên đệm và tên").fill("VAN DEMO");
+  await page.getByRole("button", { name: "Tra cứu đặt chỗ" }).click();
+  await page.getByLabel("Tôi đồng ý điều kiện check-in demo").check();
+  await page.getByRole("button", { name: "Hoàn tất check-in" }).click();
+  await expect(page.getByText("BOARDING PASS · DEMO")).toBeVisible();
+  expect(errors).toEqual([]);
+});
+test("round-trip search selects both segments and preserves draft on reload", async ({
+  page,
+}) => {
+  await page.goto(
+    `/flights?origin=SGN&destination=DAD&date=${tomorrow()}&returnDate=${tomorrow(2)}&type=ROUND_TRIP&adults=1&children=1&infants=0`,
+  );
+  await page
+    .getByRole("button", { name: /Chọn Deluxe/ })
+    .first()
+    .click();
+  await page
+    .getByRole("button", { name: /Chọn Eco/ })
+    .last()
+    .click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByLabel("Họ", { exact: true }).first().fill("TRAN");
+  await page.getByLabel("Tên đệm và tên").first().fill("DEMO");
+  await page.getByLabel("Ngày sinh").first().fill("1990-01-01");
+  await page.getByLabel("Họ", { exact: true }).last().fill("TRAN");
+  await page.getByLabel("Tên đệm và tên").last().fill("BE DEMO");
+  await page
+    .getByLabel("Ngày sinh")
+    .last()
+    .fill(`${new Date().getFullYear() - 5}-01-01`);
+  await page.getByLabel("Email liên hệ").fill("roundtrip@example.com");
+  await page.getByLabel("Số điện thoại").fill("0901234567");
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Dịch vụ bổ sung" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(
+    page.getByText("TRAN BE DEMO", { exact: true }).first(),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Đặt chỗ và thanh toán demo" })
+    .click();
+  await page.getByRole("button", { name: "Thanh toán thất bại" }).click();
+  await expect(page.getByRole("alert")).toContainText("thất bại");
+  await page.getByRole("button", { name: "Thanh toán thành công" }).click();
+  await expect(page).toHaveURL(/booking\/success/);
+});
