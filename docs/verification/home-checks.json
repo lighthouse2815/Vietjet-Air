@@ -1,0 +1,34 @@
+[
+  {
+    "name": "desktop",
+    "width": 1920,
+    "height": 1080,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": []
+  },
+  {
+    "name": "laptop",
+    "width": 1440,
+    "height": 900,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": []
+  },
+  {
+    "name": "tablet",
+    "width": 768,
+    "height": 1024,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": []
+  },
+  {
+    "name": "mobile",
+    "width": 390,
+    "height": 844,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": []
+  }
+]
