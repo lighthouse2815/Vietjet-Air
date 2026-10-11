@@ -2,14 +2,30 @@ import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
 test.use({ trace: "off", screenshot: "off" });
+test.setTimeout(120000);
 const headers = user => ({ Authorization: `Bearer ${user.token}` });
 async function register(request) {
-  const response = await request.post("/api/auth/register", { data: { email: `service-${randomUUID()}@example.com`, password: "ServiceDemo123", name: "Khách demo" } });
+  const data = { email: `service-${randomUUID()}@example.com`, password: "ServiceDemo123", name: "Khách demo" };
+  let response = await request.post("/api/auth/register", { data });
+  if (response.status() === 429) {
+    await new Promise(resolve => setTimeout(resolve, 60000));
+    response = await request.post("/api/auth/register", { data });
+  }
   expect(response.status()).toBe(201); return response.json();
 }
 async function login(page, user) {
   await page.goto("/auth");
   await page.evaluate(user => { sessionStorage.setItem("demo-auth", user.token); sessionStorage.setItem("demo-user", JSON.stringify(user)); }, user);
+}
+async function signIn(page) {
+  async function attempt() {
+    const response = page.waitForResponse(result => new URL(result.url()).pathname === "/api/auth/login" && result.request().method() === "POST");
+    await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+    return response;
+  }
+  let response = await attempt();
+  if (response.status() === 429) { await new Promise(resolve => setTimeout(resolve, 60000)); response = await attempt(); }
+  expect(response.ok()).toBe(true);
 }
 async function tickets(request, user) {
   const response = await request.get("/api/support/tickets", { headers: headers(user) });
@@ -50,7 +66,7 @@ test("Khách sạn keeps a guest draft through login and only returns internally
   await page.getByRole("link", { name: "Đăng nhập để gửi yêu cầu", exact: true }).click();
   await page.getByLabel("Email", { exact: true }).fill(user.email);
   await page.getByLabel("Mật khẩu", { exact: true }).fill("ServiceDemo123");
-  await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+  await signIn(page);
   await expect(page).toHaveURL(/\/services\/hotels$/);
   await expect(page.getByLabel("Điểm đến", { exact: true })).toHaveValue("Phú Quốc");
 });
@@ -192,4 +208,90 @@ test("SkyJoy banners respect reduced motion and wallet errors can retry", async 
   await wallet.getByRole("button", { name: "Thử lại", exact: true }).click();
   await expect(wallet.getByRole("heading", { name: "Lịch sử điểm", exact: true })).toBeVisible();
   await expect(wallet.getByRole("button", { name: "Đổi điểm lấy voucher", exact: true })).toBeDisabled();
+});
+
+
+
+test("Service inquiry preserves values after network failure and creates one ticket", async ({ page, request }) => {
+  const user = await register(request); await login(page, user); await page.goto("/services/esim");
+  await page.getByLabel("Quốc gia sử dụng", { exact: true }).fill("Hàn Quốc");
+  await page.getByLabel("Thiết bị sử dụng", { exact: true }).fill("iPhone 15");
+  await page.getByLabel("Thiết bị hỗ trợ eSIM", { exact: true }).selectOption("Đã kiểm tra");
+  await page.route("**/api/support/tickets", route => route.abort());
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click();
+  await expect(page.locator(".service-request").getByRole("alert")).toBeVisible();
+  await expect(page.getByLabel("Quốc gia sử dụng", { exact: true })).toHaveValue("Hàn Quốc");
+  expect(await tickets(request, user)).toHaveLength(0);
+  await page.unroute("**/api/support/tickets");
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).evaluate(button => { button.click(); button.click(); });
+  await expect(page.getByRole("status")).toContainText("Đã gửi yêu cầu");
+  expect(await tickets(request, user)).toHaveLength(1);
+});
+
+
+
+test("Service login rejects an external return URL", async ({ page, request }) => {
+  const user = await register(request); await page.goto("/auth?returnTo=https://example.com");
+  await page.getByLabel("Email", { exact: true }).fill(user.email);
+  await page.getByLabel("Mật khẩu", { exact: true }).fill("ServiceDemo123");
+  await signIn(page);
+  await expect(page.getByRole("heading", { name: "Tài khoản của tôi", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/localhost:5173\/auth\?returnTo=/);
+});
+
+test("Bảo hiểm cannot offer a cancelled booking for purchase", async ({ page, request }) => {
+  const user = await register(request), booking = await confirmedBooking(request, user);
+  const cancelled = await request.post(`/api/bookings/${booking.id}/cancel`, { headers: { "X-Booking-Token": booking.accessToken }, data: {} });
+  expect(cancelled.ok()).toBe(true);
+  await login(page, user); await page.goto("/services/insurance");
+  await expect(page.getByLabel("Chuyến bay mua bảo hiểm", { exact: true })).toBeVisible();
+  await expect(page.getByLabel("Chuyến bay mua bảo hiểm", { exact: true }).locator(`option[value="${booking.code}"]`)).toHaveCount(0);
+  const lookup = page.locator(".lookup-form");
+  await lookup.getByLabel("Mã đặt chỗ", { exact: true }).fill(booking.code);
+  await lookup.getByLabel("Họ", { exact: true }).fill("NGUYEN");
+  await lookup.getByLabel("Tên đệm và tên", { exact: true }).fill("DEMO");
+  await lookup.getByRole("button", { name: "Tra cứu đặt chỗ", exact: true }).click();
+  await expect(page.locator(".service-booking-result")).toContainText("Booking này chưa đủ điều kiện mua thêm dịch vụ.");
+  await expect(page.getByRole("link", { name: "Mua bảo hiểm cho chuyến bay", exact: true })).toHaveCount(0);
+});
+
+test("Ngoại tệ preserves a guest booking reference through login", async ({ page, request }) => {
+  const user = await register(request), booking = await confirmedBooking(request, user);
+  await page.goto("/services/currency");
+  const lookup = page.locator(".lookup-form");
+  await lookup.getByLabel("Mã đặt chỗ", { exact: true }).fill(booking.code);
+  await lookup.getByLabel("Họ", { exact: true }).fill("NGUYEN"); await lookup.getByLabel("Tên đệm và tên", { exact: true }).fill("DEMO");
+  await lookup.getByRole("button", { name: "Tra cứu đặt chỗ", exact: true }).click();
+  await expect(page.locator(".service-booking-result")).toContainText(booking.code);
+  const form = page.locator(".service-request");
+  await form.getByLabel("Loại ngoại tệ", { exact: true }).selectOption("USD"); await form.getByLabel("Số tiền dự kiến", { exact: true }).fill("500");
+  await form.getByLabel("Nơi nhận mong muốn", { exact: true }).fill("Hà Nội");
+  await page.getByRole("link", { name: "Đăng nhập để gửi yêu cầu", exact: true }).click();
+  await page.getByLabel("Email", { exact: true }).fill(user.email); await page.getByLabel("Mật khẩu", { exact: true }).fill("ServiceDemo123");
+  await signIn(page); await expect(page).toHaveURL(/\/services\/currency$/);
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click(); await expect(page.getByRole("status")).toContainText("Đã gửi yêu cầu");
+  expect((await tickets(request, user))[0].messages[0].body).toContain(booking.code);
+});
+
+test("Service inquiry retry after a lost response reuses its saved ticket", async ({ page, request }) => {
+  const user = await register(request); await login(page, user); await page.goto("/services/esim");
+  await page.getByLabel("Quốc gia sử dụng", { exact: true }).fill("Singapore"); await page.getByLabel("Thiết bị sử dụng", { exact: true }).fill("iPhone 15");
+  await page.getByLabel("Thiết bị hỗ trợ eSIM", { exact: true }).selectOption("Đã kiểm tra");
+  await page.route("**/api/support/tickets", async route => { const response = await route.fetch(); expect(response.ok()).toBe(true); await route.abort(); });
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click(); await expect(page.locator(".service-request").getByRole("alert")).toBeVisible();
+  const [original] = await tickets(request, user); expect(original).toBeTruthy();
+  await page.unroute("**/api/support/tickets"); await page.reload();
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click(); await expect(page.getByRole("status")).toContainText(`#${original.id}`);
+  expect(await tickets(request, user)).toHaveLength(1);
+});
+
+test("Bảo hiểm blocks the backend one-hour departure cutoff", async ({ page, request }) => {
+  const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
+  await page.route("**/api/auth/bookings", async route => {
+    const response = await route.fetch(); const rows = await response.json();
+    rows.find(row => row.code === booking.code).segments[0].flight.departureTime = new Date(Date.now() + 30 * 60000).toISOString();
+    await route.fulfill({ response, json: rows });
+  });
+  await page.goto("/services/insurance"); const select = page.getByLabel("Chuyến bay mua bảo hiểm", { exact: true }); await expect(select).toBeVisible();
+  await expect(select.locator(`option[value="${booking.code}"]`)).toHaveCount(0);
 });

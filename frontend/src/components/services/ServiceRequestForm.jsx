@@ -6,9 +6,12 @@ import { t } from "../../i18n";
 export default function ServiceRequestForm({ slug, title, fields, bookingCode }) {
   const logged = !!sessionStorage.getItem("demo-auth");
   const storageKey = `service-inquiry-${slug}`;
+  const [saved] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem(storageKey) || "{}"); } catch { return {}; }
+  });
+  const [requestKey, setRequestKey] = useState(() => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(saved?._requestKey || "") ? saved._requestKey : crypto.randomUUID());
+  const [bookingReference, setBookingReference] = useState(() => typeof saved?._bookingCode === "string" ? saved._bookingCode.slice(0, 20) : "");
   const [values, setValues] = useState(() => {
-    let saved = {};
-    try { saved = JSON.parse(sessionStorage.getItem(storageKey) || "{}"); } catch { /* Discard malformed local drafts. */ }
     return Object.fromEntries(fields.map(field => [field.name,
       typeof saved?.[field.name] === "string" ? saved[field.name].slice(0, field.maxLength || 200) : field.defaultValue || ""]));
   });
@@ -17,10 +20,11 @@ export default function ServiceRequestForm({ slug, title, fields, bookingCode })
   const [error, setError] = useState("");
   const [ticket, setTicket] = useState(null);
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  useEffect(() => { if (bookingCode) setBookingReference(bookingCode); }, [bookingCode]);
   useEffect(() => {
     if (ticket) return;
-    try { sessionStorage.setItem(storageKey, JSON.stringify(values)); } catch { /* A full browser store must not prevent sending. */ }
-  }, [storageKey, values, ticket]);
+    try { sessionStorage.setItem(storageKey, JSON.stringify({ ...values, _requestKey: requestKey, _bookingCode: bookingReference })); } catch { /* A full browser store must not prevent sending. */ }
+  }, [storageKey, values, ticket, requestKey, bookingReference]);
   async function submit(event) {
     event.preventDefault();
     if (!logged || submitting.current || ticket) return;
@@ -32,8 +36,9 @@ export default function ServiceRequestForm({ slug, title, fields, bookingCode })
     }
     submitting.current = true; setBusy(true); setError("");
     try {
-      const body = [bookingCode ? `${t("Mã đặt chỗ")}: ${bookingCode}` : "", ...fields.map(field => `${t(field.label)}: ${values[field.name].trim()}`)].filter(Boolean).join("\n");
-      const { data } = await api.post("/support/tickets", { subject: `${t("Yêu cầu tư vấn")} · ${t(title)}`, category: "OTHER", body });
+      const code = bookingCode || bookingReference;
+      const body = [code ? `${t("Mã đặt chỗ")}: ${code}` : "", ...fields.map(field => `${t(field.label)}: ${values[field.name].trim()}`)].filter(Boolean).join("\n");
+      const { data } = await api.post("/support/tickets", { subject: `${t("Yêu cầu tư vấn")} · ${t(title)}`, category: "OTHER", body, requestKey });
       setTicket(data);
       try { sessionStorage.removeItem(storageKey); } catch { /* The submitted ticket remains in the account. */ }
     } catch (failure) { setError(errorMessage(failure)); }
@@ -42,9 +47,10 @@ export default function ServiceRequestForm({ slug, title, fields, bookingCode })
   return <section className="panel service-request" id="service-request">
     <h2>{t("Yêu cầu tư vấn")} · {t(title)}</h2>
     <p>{t("Yêu cầu được lưu trong tài khoản nội bộ. Nhân viên có thể trao đổi tại Trung tâm hỗ trợ; việc gửi yêu cầu chưa đặt hoặc thanh toán dịch vụ với đối tác.")}</p>
+    {(bookingCode || bookingReference) && <p>{t("Booking tham chiếu")}: <strong>{bookingCode || bookingReference}</strong></p>}
     {ticket ? <div className="notice-panel"><p role="status">{t("Đã gửi yêu cầu #{{id}}", { id: ticket.id })}</p>
       <Link className="button primary" to="/services/support">{t("Theo dõi yêu cầu")}</Link>
-      <button type="button" className="button secondary" onClick={() => { setTicket(null); setValues(Object.fromEntries(fields.map(field => [field.name, field.defaultValue || ""]))); }}>{t("Tạo yêu cầu mới")}</button>
+      <button type="button" className="button secondary" onClick={() => { setTicket(null); setRequestKey(crypto.randomUUID()); setValues(Object.fromEntries(fields.map(field => [field.name, field.defaultValue || ""]))); }}>{t("Tạo yêu cầu mới")}</button>
     </div> : <form onSubmit={submit}>
       <div className="form-grid">{fields.map(field => <label key={field.name}>{t(field.label)}
         {field.options ? <select name={field.name} aria-label={t(field.label)} required={field.required !== false} value={values[field.name]}

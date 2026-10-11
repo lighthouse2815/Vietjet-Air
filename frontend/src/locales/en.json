@@ -892,5 +892,9 @@
   "Đăng ký hoặc đăng nhập hội viên": "Join or sign in as a member",
   "Khám phá chương trình SkyJoy chính thức": "Explore the official SkyJoy program",
   "Liên kết hội viên, tích điểm SkyPoint thực và đổi quà của các thương hiệu cần kết nối GalaxyJoy. Bạn có thể xem thông tin chính thức tại trang đối tác.": "Membership linking, real SkyPoint earning and brand rewards require a GalaxyJoy connection. Visit the provider website for official information.",
-  "Mở SkyJoy chính thức": "Open official SkyJoy"
+  "Mở SkyJoy chính thức": "Open official SkyJoy",
+  "Ngày khởi hành": "Departure date",
+  "Booking tham chiếu": "Referenced booking",
+  "Có thể tra cứu booking bằng mã và tên hành khách. Chỉ booking đã xác nhận, chưa check-in và còn hơn một giờ trước khởi hành được mua thêm dịch vụ.": "Look up bookings with the code and traveler name. Only confirmed bookings without check-in and more than one hour before departure can purchase services.",
+  "Khóa yêu cầu đã được dùng với nội dung khác. Vui lòng theo dõi yêu cầu đã gửi.": "This request key was already used for different content. Please track your submitted request."
 }

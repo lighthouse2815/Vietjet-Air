@@ -14,7 +14,7 @@ export default function InsuranceBooking() {
   const [code, setCode] = useState("");
   const [lookedUp, setLookedUp] = useState(null);
   const eligible = booking => booking.status === "CONFIRMED" && !booking.boardingPasses.length
-    && booking.segments.every(segment => new Date(segment.flight.departureTime) > new Date());
+    && booking.segments.every(segment => new Date(segment.flight.departureTime).getTime() > Date.now() + 3600000);
   const available = (bookings.data || []).filter(eligible);
   const chosen = available.find(booking => booking.code === code) || (lookedUp?.code === code && eligible(lookedUp) ? lookedUp : null);
   const insurance = (services.data || []).filter(service => service.category === "INSURANCE");
@@ -26,7 +26,7 @@ export default function InsuranceBooking() {
           {available.map(booking => <option key={booking.code} value={booking.code}>{booking.code} · {booking.segments.map(segment => `${segment.flight.origin.code} → ${segment.flight.destination.code}`).join(" / ")}</option>)}
           {lookedUp && eligible(lookedUp) && !available.some(booking => booking.code === lookedUp.code) && <option value={lookedUp.code}>{lookedUp.code}</option>}
         </select></label>)}
-      <p>{t("Có thể tra cứu booking bằng mã và tên hành khách. Chỉ booking đã xác nhận, chưa check-in và chưa khởi hành được mua thêm dịch vụ.")}</p>
+      <p>{t("Có thể tra cứu booking bằng mã và tên hành khách. Chỉ booking đã xác nhận, chưa check-in và còn hơn một giờ trước khởi hành được mua thêm dịch vụ.")}</p>
     </div>
     <BookingLookupForm onResult={booking => { setLookedUp(booking); setCode(booking.code); }} />
     {lookedUp && <p className={`notice-panel service-booking-result ${eligible(lookedUp) ? "" : "error"}`}>

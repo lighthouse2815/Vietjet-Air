@@ -5,6 +5,7 @@
 .service-hero-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; color: white; }
 .service-hero-copy h1 { font: 400 clamp(30px, 4vw, 52px)/1.15 Jambono, sans-serif; max-width: 680px; margin: 12px 0 26px; }
 .service-content { padding-top: 24px; padding-bottom: 45px; }
+.service-page .stats-section { margin-top: 0; }
 .service-breadcrumb { display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; margin-bottom: 24px; }
 .service-breadcrumb a { color: var(--red); }
 .service-content > h1 { font-size: 32px; margin: 0 0 18px; }

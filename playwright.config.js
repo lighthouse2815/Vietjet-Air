@@ -10,18 +10,18 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
-      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js"],
+      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js", "services-layout.spec.js"],
       use: { viewport: { width: 1920, height: 1080 } },
     },
     { name: "laptop", use: { viewport: { width: 1440, height: 900 } } },
     {
       name: "tablet",
-      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js"],
+      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js", "services-layout.spec.js"],
       use: { viewport: { width: 768, height: 1024 } },
     },
     {
       name: "mobile",
-      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js"],
+      testMatch: ["booking.spec.js", "home.spec.js", "skyshop.spec.js", "evoucher.spec.js", "services-layout.spec.js"],
       use: { viewport: { width: 390, height: 844 } },
     },
   ],

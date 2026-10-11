@@ -12,7 +12,10 @@ const benefits = [
 ];
 export default function LoyaltyLanding({ logged }) {
   const [slide, setSlide] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [touching, setTouching] = useState(false);
+  const paused = hovered || focused || touching;
   const reduced = useReducedMotion();
   const touch = useRef(null);
   useEffect(() => {
@@ -27,12 +30,12 @@ export default function LoyaltyLanding({ logged }) {
       <a className="button primary" href="#skyjoy-wallet">{t("Ví điểm của tôi")}</a>
     </div></nav>
     <section className="skyjoy-carousel" aria-label={t("Ưu đãi SkyJoy tham chiếu")} aria-live={paused || reduced ? "polite" : "off"}
-      onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)}
-      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false); }}
-      onTouchStart={event => { touch.current = event.touches[0].clientX; setPaused(true); }}
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)}
+      onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}
+      onTouchStart={event => { touch.current = event.touches[0].clientX; setTouching(true); }}
       onTouchEnd={event => { const distance = touch.current === null ? 0 : touch.current - event.changedTouches[0].clientX;
-        if (Math.abs(distance) > 50) setSlide(current => (current + 1) % banners.length); touch.current = null; setPaused(false); }}
-      onTouchCancel={() => { touch.current = null; setPaused(false); }}>
+        if (Math.abs(distance) > 50) setSlide(current => (current + 1) % banners.length); touch.current = null; setTouching(false); }}
+      onTouchCancel={() => { touch.current = null; setTouching(false); }}>
       <div className="skyjoy-slides">{banners.map((banner, index) => <div key={banner} aria-hidden={index !== slide} className={`skyjoy-slide ${index === slide ? "visible" : ""}`}>
         <img src={`/assets/services/${banner}`} alt={t("Banner chương trình đối tác SkyJoy {{index}}", { index: index + 1 })} fetchPriority={index === 0 ? "high" : "auto"} />
       </div>)}</div>
