@@ -12,4 +12,4 @@ Mục tiêu: website demo độc lập chạy đầu cuối với React/JavaScri
 
 Điểm cần review: payload thiếu/null; seat race ở transaction; giá bị sửa ở client; booking hết hạn và thanh toán lặp; reload/chuyển bước không mất draft. Không xóa dữ liệu khác hoặc thay stack. Chỉ nhập dữ liệu mẫu và chỉ thanh toán giả lập.
 
-Hoàn thành triển khai và kiểm chứng local ngày 11/10/2026: 17 backend tests và 19 lượt Playwright đạt; persistence qua restart đạt. Các giới hạn sản phẩm/reference được ghi rõ trong README và VERIFICATION.md.
+Hoàn thành triển khai và kiểm chứng local ngày 11/10/2026: 18 backend tests và 23 lượt Playwright đạt; persistence qua restart đạt. Bổ sung ba ảnh hero riêng, bố cục tablet đúng snapshot, validation URL tìm kiếm, bàn phím/tìm không dấu, giữ lựa chọn khi quay lại checkout và liên kết FAQ. Các giới hạn sản phẩm/reference được ghi rõ trong README và VERIFICATION.md.

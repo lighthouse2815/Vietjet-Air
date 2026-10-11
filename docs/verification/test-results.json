@@ -1,6 +1,7 @@
 {
+  "verifiedAt": "2026-10-11T11:57:09.366Z",
   "backend": {
-    "tests": 17,
+    "tests": 18,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -8,8 +9,12 @@
   "backendCommand": "./backend/mvnw -f backend/pom.xml verify",
   "frontendBuild": "passed",
   "playwright": {
-    "passed": 19,
+    "passed": 23,
     "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "startedAt": "2026-10-11T11:51:48.768Z",
+    "durationMs": 72745,
     "backend": "packaged JAR",
     "frontend": "Vite preview production build",
     "viewports": [
