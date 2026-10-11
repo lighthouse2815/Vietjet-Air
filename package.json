@@ -6,6 +6,7 @@
     "audit:reference": "node scripts/reference-audit.mjs",
     "setup:env": "node scripts/init-env.mjs",
     "verify:home": "node scripts/verify-home.mjs",
+    "verify:skyshop": "node scripts/verify-skyshop.mjs",
     "test:e2e": "playwright test",
     "build": "npm --prefix frontend run build",
     "setup:admin": "node scripts/init-admin.mjs",

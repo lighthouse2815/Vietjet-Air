@@ -31,7 +31,9 @@ const notices = [
 ];
 export default function Header() {
   useTranslation();
-  const home = useLocation().pathname === "/";
+  const { pathname } = useLocation();
+  const home = pathname === "/";
+  const shop = pathname === "/services/skyshop";
   const [notice, setNotice] = useState(true);
   const [menu, setMenu] = useState(false);
   const [slide, setSlide] = useState(0);
@@ -89,7 +91,7 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`site-header ${home ? "over-hero" : ""} ${!notice ? "no-notice" : ""}`}
+        className={`site-header ${home || shop ? "over-hero" : ""} ${shop ? "skyshop-header" : ""} ${!notice ? "no-notice" : ""}`}
       >
         <div className="container header-main">
           <Link className="brand" to="/" onClick={() => setMenu(false)}>
@@ -140,8 +142,8 @@ export default function Header() {
         <nav className="product-nav" aria-label={t("Dịch vụ")}>
           <div className="container">
             {products.map(([label, path], i) => (
-              <Link className={i === 0 ? "current" : ""} key={label} to={path}>
-                <img src={`/assets/reference/product-${i}.png`} alt="" width="25" height="25" />
+              <Link className={i === (shop ? 1 : 0) ? "current" : ""} key={label} to={path}>
+                <img src={shop && i < 2 ? `/assets/skyshop/${i === 0 ? "nav-flight" : "nav-shop-active"}.png` : `/assets/reference/product-${i}.png`} alt="" width="25" height="25" />
                 {t(label)}
               </Link>
             ))}

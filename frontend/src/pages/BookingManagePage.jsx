@@ -1,7 +1,7 @@
 import { t } from "../i18n.js";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, useSearchParams, Navigate, Link } from "react-router-dom";
 import { api, bookingHeaders, money, errorMessage } from "../api/client";
 import { useApi } from "../hooks/useApi";
 import { bookingPayload, storeBooking } from "../utils/booking";
@@ -22,6 +22,7 @@ function ChangeLeg({segment,onChange,count}) {
 export default function BookingManagePage() {
   useTranslation();
   const {code}=useParams();const token=sessionStorage.getItem(`booking-token-${code}`);
+  const [params]=useSearchParams();const requestedService=Number(params.get("service"));
   const booking=useApi(token?`/bookings/${code}`:null,token);const services=useApi("/ancillary-services");
   const history=useApi(booking.data?.id?`/bookings/${booking.data.id}/history`:null,token);
   const [draft,setDraft]=useState(null);const [quote,setQuote]=useState(null);const [busy,setBusy]=useState(false);const [error,setError]=useState("");const [message,setMessage]=useState("");
@@ -30,6 +31,25 @@ export default function BookingManagePage() {
     const extras={},seats={};b.extras.forEach(e=>{extras[e.flightId]||={};(extras[e.flightId][e.passengerIndex]||=[]).push(e.service.id);});b.segments.forEach(s=>{seats[s.flight.id]={};s.seats.forEach(v=>{seats[s.flight.id][v.passengerIndex]=v.seatNumber;});});
     setDraft({journeyType:b.journeyType,segments:b.segments,passengers:b.passengers,contactEmail:b.contactEmail,contactPhone:b.contactPhone,promotionCode:"",extras,seats});setQuote(null);
   },[booking.data]);
+  useEffect(() => {
+    const service = services.data?.find(item => item.id === requestedService);
+    if (!service || booking.data?.status !== "CONFIRMED" || booking.data.boardingPasses.length) return;
+    setQuote(null);
+    setDraft(current => {
+      if (!current) return current;
+      const flight = current.segments[0].flight.id;
+      const traveler = current.passengers.find(person => person.type !== "INFANT");
+      if (!traveler) return current;
+      const chosen = current.extras[flight]?.[traveler.passengerIndex] || [];
+      if (chosen.includes(service.id)) return current;
+      const ids = [...chosen.filter(id => services.data.find(item => item.id === id)?.category !== service.category), service.id];
+      return { ...current, extras: { ...current.extras, [flight]: { ...current.extras[flight], [traveler.passengerIndex]: ids } } };
+    });
+  }, [requestedService,services.data,booking.data]);
+  const ready=!!draft;
+  useEffect(() => {
+    if (ready && requestedService) document.getElementById("services")?.scrollIntoView({ block: "start" });
+  }, [ready,requestedService]);
   if(!token)return <Navigate to="/my-booking" replace/>;
   if(booking.loading || !draft)return booking.error?<ErrorState message={booking.error} retry={booking.retry}/>:<LoadingState/>;
   const b=booking.data;const segment=draft.segments[leg];const flightId=segment.flight.id;const eligible=draft.passengers.filter(p=>p.type!=="INFANT");const selected=eligible.find(p=>p.passengerIndex===passenger)||eligible[0];const index=selected.passengerIndex;
@@ -42,7 +62,7 @@ export default function BookingManagePage() {
     {b.status==="CONFIRMED"&&!b.boardingPasses.length&&<>
       <p className="notice-panel">{t("Phí đổi chuyến/hạng vé demo: Eco 100.000đ, Deluxe 50.000đ, SkyBoss/Business 0đ mỗi hành khách có ghế, mỗi chặng đổi. Đổi thông tin liên hệ miễn phí. Giá giảm không tự hoàn phần chênh lệch; hoàn vé dùng luồng riêng.")}</p>
       {draft.segments.map((s,i)=><ChangeLeg key={i} segment={s} count={eligible.length} onChange={value=>{const segments=[...draft.segments];segments[i]=value;patch({segments,extras:{...draft.extras,[value.flight.id]:value.flight.id===s.flight.id?draft.extras[s.flight.id]:{}},seats:{...draft.seats,[value.flight.id]:value.flight.id===s.flight.id&&value.fare.code===s.fare.code?draft.seats[s.flight.id]:{}}});}}/>)}
-      <section className="panel"><h2>{t("Dịch vụ và ghế")}</h2><div className="form-grid"><label>{t("Chặng bay")}<select value={leg} onChange={e=>setLeg(Number(e.target.value))}>{draft.segments.map((s,i)=><option key={i} value={i}>{s.flight.origin.code} → {s.flight.destination.code}</option>)}</select></label><label>{t("Hành khách")}<select value={index} onChange={e=>setPassenger(Number(e.target.value))}>{eligible.map(p=><option key={p.passengerIndex} value={p.passengerIndex}>{p.lastName} {p.firstName}</option>)}</select></label></div>
+      <section className="panel" id="services"><h2>{t("Dịch vụ và ghế")}</h2><div className="form-grid"><label>{t("Chặng bay")}<select value={leg} onChange={e=>setLeg(Number(e.target.value))}>{draft.segments.map((s,i)=><option key={i} value={i}>{s.flight.origin.code} → {s.flight.destination.code}</option>)}</select></label><label>{t("Hành khách")}<select value={index} onChange={e=>setPassenger(Number(e.target.value))}>{eligible.map(p=><option key={p.passengerIndex} value={p.passengerIndex}>{p.lastName} {p.firstName}</option>)}</select></label></div>
         {services.error?<ErrorState message={services.error} retry={services.retry}/>:services.data?.map(s=><label className="ancillary-option" key={s.id}><input type="checkbox" checked={(draft.extras[flightId]?.[index]||[]).includes(s.id)} onChange={()=>toggle(s)}/><span>{t(s.name)}</span><b>{money(s.price)}</b></label>)}
         <SeatMap key={`${flightId}-${b.price.totalAmount}`} flightId={flightId} selected={draft.seats[flightId]?.[index]} ownedSeats={b.segments.find(s=>s.flight.id===flightId)?.seats.map(s=>s.seatNumber)||[]} otherSelections={Object.entries(draft.seats[flightId]||{}).filter(([p])=>Number(p)!==index).map(([,s])=>s)} onSelect={number=>patch({seats:{...draft.seats,[flightId]:{...draft.seats[flightId],[index]:number}}})}/>
       </section>

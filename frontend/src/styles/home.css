@@ -234,7 +234,8 @@ body:has(.hero.campaign) .site-header.over-hero {
   background-attachment: fixed;
 }
 .home .home-image-loaded,
-.home-footer-background .home-image-loaded {
+.skyshop-page .home-image-loaded,
+.footer-background .home-image-loaded {
   animation: home-image-in 1s ease-out both;
 }
 @keyframes home-image-in {
@@ -855,7 +856,8 @@ body:has(.hero.campaign) .site-header.over-hero {
     background-attachment: scroll;
   }
   .home .home-image-loaded,
-  .home-footer-background .home-image-loaded {
+  .skyshop-page .home-image-loaded,
+  .footer-background .home-image-loaded {
     animation: none;
   }
 }

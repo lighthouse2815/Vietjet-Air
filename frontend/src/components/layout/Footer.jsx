@@ -96,11 +96,13 @@ export default function Footer() {
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
-  const home = useLocation().pathname === "/";
+  const { pathname } = useLocation();
+  const home = pathname === "/";
+  const shop = pathname === "/services/skyshop";
   return (
     <>
       <div className={`footer-background ${home ? "home-footer-background" : ""}`}>
-        {home && (
+        {(home || shop) && (
           <ScrollCarousel
             className="awards container"
             label={t("Thành tựu trong giao diện tham chiếu")}
@@ -191,7 +193,7 @@ export default function Footer() {
           </div>
         </footer>
       </div>
-      <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
+      {!shop && <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
         <Link to="/">
           <Ticket />
           <span>{t("Đặt chuyến bay")}</span>
@@ -208,7 +210,7 @@ export default function Footer() {
           <MapPin />
           <span>{t("Check-in")}</span>
         </Link>
-      </nav>
+      </nav>}
       {home && (
         <Link
           className="help-bubble"

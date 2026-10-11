@@ -62,5 +62,13 @@
   {
     "file": "meal-vegetarian.jpg",
     "url": "https://skyshop-image.vietjetair.com/upload/7-1760431184030.%20Hotmeal_India_700x700px_com%20chien%20duong%20chau"
+  },
+  {
+    "file": "nav-flight.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/flightred1762852682966-1763036033286.png"
+  },
+  {
+    "file": "nav-shop-active.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/skyshophover1762853406458-1763046974048.png"
   }
 ]

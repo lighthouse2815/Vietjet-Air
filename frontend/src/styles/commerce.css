@@ -1,1 +1,146 @@
-.internal-product-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(250px,100%),1fr)); gap: 20px; margin: 20px 0; }
+.site-header.skyshop-header {
+  height: 110px;
+  background: linear-gradient(#3932328c, #ffffff33);
+}
+.skyshop-header .header-main { height: 70px; }
+.skyshop-header .primary-nav { display: none; }
+.skyshop-header .product-nav { height: 40px; }
+.skyshop-header .product-nav a { font-weight: 400; }
+.skyshop-header .brand { transform: translateY(12px); }
+.skyshop-header .brand em { font-size: 8px; margin-top: 3px; }
+.skyshop-page {
+  position: relative;
+  background: url("/assets/skyshop/background.webp") right top / cover no-repeat;
+  background-attachment: fixed;
+}
+.skyshop-hero { position: relative; height: 600px; }
+.skyshop-title { position: absolute; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skyshop-hero-image { width: 100%; height: 600px; object-fit: cover; }
+.skyshop-banner-dot {
+  position: absolute; width: 16px; height: 11px; border-radius: 10px;
+  background: #f41930; left: calc(50% - 8px); bottom: 110px;
+}
+.skyshop-cloud-edge {
+  position: absolute; width: 100%; max-width: none; height: auto; top: calc(100% - 72px);
+  pointer-events: none;
+}
+.skyshop-toolbar {
+  position: absolute; top: 110px; left: 0; right: 0; z-index: 30;
+  padding: 12px 0; color: white; background: #74736e33;
+}
+.skyshop-toolbar > .container { display: flex; align-items: center; gap: 12px; }
+.skyshop-home { display: flex; align-items: center; gap: 8px; color: #ee192e; font-family: Jambono, sans-serif; font-size: 20px; }
+.skyshop-delivery, .skyshop-flight { border: 1px solid white; border-radius: 8px; padding: 6px 9px; font-size: 12px; width: 150px; flex: 0 0 150px; }
+.skyshop-toolbar select {
+  border: 0; width: 100%; background: transparent; color: white; padding: 0;
+  font-size: 14px; line-height: 1.4; cursor: pointer;
+}
+.skyshop-toolbar option { color: #333; background: white; }
+.skyshop-search { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; padding: 5px 9px; border-radius: 4px; background: #ffffff66; }
+.skyshop-search input { width: 100%; padding: 0; border: 0; color: #333; background: none; height: 26px; font-size: 13px; }
+.skyshop-search input::placeholder { color: #fff; }
+.skyshop-search-toggle { display: none; }
+.skyshop-orders { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid white; border-radius: 8px; white-space: nowrap; }
+.skyshop-cart-link { position: relative; display: flex; color: #e61936; margin: 0 4px; }
+.skyshop-cart-link > span { position: absolute; right: -4px; top: -9px; font: 11px Arial, sans-serif; border: 1px solid white; background: #e61936; color: white; min-width: 17px; padding: 1px 3px; border-radius: 12px; }
+.skyshop-store { position: relative; padding-bottom: 20px; }
+.skyshop-categories { display: flex; justify-content: space-evenly; gap: 24px; padding: 16px 20px 40px; overflow: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.skyshop-categories > button { flex: 0 0 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; scroll-snap-align: center; }
+.skyshop-categories img { width: 52px; height: 52px; object-fit: contain; }
+.skyshop-categories svg { color: #e61936; }
+.skyshop-categories .selected { color: #e61936; font-weight: 700; }
+.skyshop-featured { border-radius: 12px; background: url("/assets/skyshop/featured-background.jpg") center / cover; margin-bottom: 32px; padding-bottom: 25px; }
+.skyshop-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 0 20px 20px 0; }
+.skyshop-section-heading > h2, .skyshop-category-section > h2 {
+  background: #e00000 url("/assets/skyshop/ribbon-corner.svg") right bottom / contain no-repeat;
+  color: white; font: 24px Jambono, sans-serif; border-radius: 0 0 8px 0; padding: 12px 50px 12px 32px;
+  margin: 0; transform: translateX(-8px);
+}
+.skyshop-section-heading > button { color: #ed1830; white-space: nowrap; font-size: 14px; }
+.skyshop-section-heading > button > span { font-size: 25px; margin-left: 8px; }
+.skyshop-featured-products { display: flex; gap: 12px; padding: 4px 36px 10px; overflow: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.skyshop-featured-products > article { flex: 0 0 calc((100% - 48px) / 5); scroll-snap-align: start; }
+.skyshop-product-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
+.skyshop-card.panel { padding: 0; border: none; box-shadow: none; margin: 0; overflow: hidden; border-radius: 12px; background: #fff8; }
+.skyshop-card-image { display: block; padding: 0; width: 100%; overflow: hidden; }
+.skyshop-card-image img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.skyshop-product-illustration { display: grid; place-items: center; width: 100%; aspect-ratio: 1; background: linear-gradient(135deg,#fff7d1,#c8f0ff); }
+.skyshop-product-illustration > svg { width: 45%; height: 45%; color: #e61936; stroke-width: 1.2; }
+.skyshop-card-body { padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.skyshop-card h3 { font-size: 16px; line-height: 1.35; margin: 0; }
+.skyshop-card p { font-size: 13px; line-height: 1.4; color: #6c7881; margin: 0; }
+.skyshop-price { color: #ed1830; font-size: 17px; }
+.skyshop-card small { color: #6c7881; }
+.skyshop-card label { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.skyshop-card input { width: 70px; min-width: 0; border: 1px solid #d5dce1; border-radius: 5px; padding: 5px 6px; background: white; }
+.skyshop-service-link { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #e61936; font-weight: 700; }
+.skyshop-detail-button { align-self: flex-start; font-size: 13px; padding: 3px 0; text-decoration: underline; }
+.skyshop-catalog, .skyshop-account, #skyshop-orders, #services { scroll-margin-top: 20px; }
+.skyshop-category-section { margin-bottom: 36px; }
+.skyshop-category-section > h2 { width: fit-content; margin: 0 0 18px; }
+.skyshop-empty { padding: 50px 20px; background: #fffc; text-align: center; border-radius: 12px; }
+.skyshop-demo-note { font-size: 13px; color: #53677a; margin: 0; }
+.skyshop-account { padding-bottom: 60px; }
+.skyshop-stats { margin-top: 0; }
+.skyshop-dialog { border: 0; border-radius: 16px; padding: 25px; max-width: min(500px,calc(100% - 30px)); width: 500px; max-height: calc(100% - 40px); }
+.skyshop-dialog::backdrop { background: #10243f88; }
+.skyshop-dialog-close { position: absolute; top: 12px; right: 12px; padding: 5px; background: white; border-radius: 50%; }
+.skyshop-detail-content { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; }
+.skyshop-detail-content > img, .skyshop-detail-content > .skyshop-product-illustration { width: min(100%,280px); height: auto; aspect-ratio: 1; object-fit: cover; align-self: center; }
+.skyshop-detail-content h2, .skyshop-detail-content p { margin: 0; }
+@media (max-width: 1300px) {
+  .skyshop-hero-image { object-fit: fill; }
+}
+@media (max-width: 1200px) {
+  .skyshop-home span { display: none; }
+  .skyshop-orders span { display: none; }
+  .skyshop-product-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
+  .skyshop-featured-products > article { flex-basis: calc((100% - 36px) / 4); }
+}
+@media (max-width: 900px) {
+  .site-header.skyshop-header, .skyshop-header .header-main { height: 56px; }
+  .skyshop-header .brand { transform: none; }
+  .skyshop-header .brand > img { width: 170px; }
+  .skyshop-header .utility-nav a { display: none; }
+  .skyshop-header .product-nav { display: none; }
+  .skyshop-toolbar { top: 56px; padding: 6px 0; }
+  .skyshop-toolbar > .container { gap: 8px; width: calc(100% - 24px); }
+  .skyshop-delivery, .skyshop-flight { border: 0; padding: 0; font-size: 10px; width: auto; min-width: 0; flex: 1; }
+  .skyshop-toolbar select { font-size: 12px; }
+  .skyshop-home { order: 0; }
+  .skyshop-orders { display: none; }
+  .skyshop-search { display: none; position: absolute; top: 100%; left: 12px; right: 12px; background: #fffffff2; color: #e61936; box-shadow: var(--shadow); }
+  .skyshop-search input::placeholder { color: #6c7881; }
+  .skyshop-search.open { display: flex; }
+  .skyshop-search-toggle { display: flex; align-items: center; padding: 4px; }
+  .skyshop-categories { justify-content: flex-start; gap: 12px; padding: 16px 4px 24px; }
+  .skyshop-categories > button { flex-basis: 105px; font-size: 14px; }
+  .skyshop-categories img, .skyshop-categories svg { width: 40px; height: 40px; }
+  .skyshop-product-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+  .skyshop-featured-products { padding: 5px 12px 10px; }
+  .skyshop-featured-products > article { flex-basis: 180px; }
+  .skyshop-section-heading { padding-right: 8px; gap: 8px; }
+  .skyshop-section-heading > h2, .skyshop-category-section > h2 { font-size: 19px; padding: 10px 30px 10px 18px; transform: none; }
+  .skyshop-section-heading > button { font-size: 12px; padding: 0; }
+}
+@media (max-width: 767px) {
+  .skyshop-hero, .skyshop-hero-image { height: 375px; }
+  .skyshop-hero-image { object-fit: cover; }
+  .skyshop-cloud-edge { display: none; }
+  .skyshop-banner-dot { bottom: 20px; }
+}
+@media (max-width: 600px) {
+  .skyshop-store { width: 100%; }
+  .skyshop-featured { border-radius: 0; background-position: right center; margin-bottom: 24px; }
+  .skyshop-catalog { padding: 0 12px; }
+  .skyshop-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .skyshop-demo-note { padding: 0 14px; }
+  .skyshop-card-body { padding: 10px; }
+  .skyshop-card h3 { font-size: 14px; }
+  .skyshop-card input { width: 55px; }
+  .skyshop-category-section { margin-bottom: 24px; }
+  .skyshop-account { padding-bottom: 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skyshop-page { background-attachment: scroll; }
+}
