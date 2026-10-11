@@ -106,6 +106,17 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void multiCityAcceptsConnectedLegsAndGroupsRespectTheirLimit() {
+        Long second=flights.search("HAN","DAD",LocalDate.now(FlightService.ZONE).plusDays(2),1).getFirst().id();
+        var first=input(flightId,null,"");
+        var multi=new CreateBooking(List.of(first.segments().getFirst(),new SegmentInput(second,"ECO",List.of(),List.of())),first.passengers(),first.contactEmail(),first.contactPhone(),"","MULTI_CITY");
+        var b=bookings.create(multi,null);assertThat(b.journeyType()).isEqualTo("MULTI_CITY");assertThat(b.segments()).hasSize(2);bookings.cancel(b.id(),b.accessToken().toString());
+        var passengers=new ArrayList<PassengerInput>();for(int i=0;i<10;i++)passengers.add(new PassengerInput(PassengerType.ADULT,"MR","NGUYEN","DEMO "+i,LocalDate.of(1990,1,1),"Việt Nam"));
+        assertThatThrownBy(()->bookings.create(new CreateBooking(first.segments(),passengers,first.contactEmail(),first.contactPhone(),""),null)).isInstanceOf(BusinessException.class);
+        var group=bookings.create(new CreateBooking(first.segments(),passengers,first.contactEmail(),first.contactPhone(),"","GROUP"),null);assertThat(group.passengers()).hasSize(10);bookings.cancel(group.id(),group.accessToken().toString());
+    }
+
+    @Test
     void adminEndpointsRequireAdminAndCannotMoveBookedFlights() throws Exception {
         var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("admin-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
         http.perform(get("/api/admin/bookings")).andExpect(status().isUnauthorized());

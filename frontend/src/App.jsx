@@ -20,6 +20,7 @@ const BookingManagePage = lazy(() => import("./pages/BookingManagePage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
 const CommercePage = lazy(() => import("./pages/CommercePage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
+const JourneyPage = lazy(() => import("./pages/JourneyPage"));
 export default function App() {
   const { pathname, key, hash } = useLocation();
   useEffect(() => {
@@ -54,6 +55,8 @@ export default function App() {
             <Route path="/services/skyshop" element={<CommercePage kind="shop" />} />
             <Route path="/services/voucher" element={<CommercePage kind="voucher" />} />
             <Route path="/services/skyjoy" element={<CommercePage kind="loyalty" />} />
+            <Route path="/services/multi-city" element={<JourneyPage />} />
+            <Route path="/services/groups" element={<JourneyPage group />} />
             <Route path="/services/:slug" element={<ContentPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

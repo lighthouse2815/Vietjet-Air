@@ -28,6 +28,7 @@ export function bookingPayload(draft) {
     contactEmail: draft.contactEmail,
     contactPhone: draft.contactPhone,
     promotionCode: draft.promotionCode || "",
+    journeyType: draft.search?.type || draft.journeyType || undefined,
   };
 }
 export function storeBooking(booking) {

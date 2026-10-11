@@ -71,6 +71,7 @@ public class BookingService {
             != input.segments().size())
             throw BusinessException.badRequest("Không thể chọn trùng chuyến bay trong hành trình");
         Booking booking = new Booking();
+        booking.setJourneyType(input.journeyType()==null?(input.segments().size()==2?"ROUND_TRIP":"ONE_WAY"):input.journeyType());
         if (existing != null) booking.setAdjustmentAmount(existing.getAdjustmentAmount());
         booking.setContactEmail(input.contactEmail().trim());
         booking.setContactPhone(input.contactPhone().trim());
@@ -153,6 +154,9 @@ public class BookingService {
         return new Prepared(booking, selected);
     }
     private void validatePassengers(CreateBooking input) {
+        int limit="GROUP".equals(input.journeyType())?30:9;
+        if(input.passengers().size()>limit)throw BusinessException.badRequest("Đặt vé thường tối đa 9 người; đặt nhóm tối đa 30 người");
+        if(input.segments().size()>2&&!"MULTI_CITY".equals(input.journeyType()))throw BusinessException.badRequest("Hành trình trên hai chặng cần chọn nhiều chặng");
         long adults = input.passengers().stream().filter(p -> p.type() == PassengerType.ADULT).count();
         long infants = input.passengers().stream().filter(p -> p.type() == PassengerType.INFANT).count();
         if (adults < 1 || infants > adults)
@@ -175,7 +179,13 @@ public class BookingService {
         }
     }
     private void validateJourney(Booking booking) {
-        if (booking.getSegments().size() == 2) {
+        if(booking.getJourneyType().equals("MULTI_CITY")) {
+            for(int i=1;i<booking.getSegments().size();i++) {
+                Flight previous=booking.getSegments().get(i-1).getFlight(), next=booking.getSegments().get(i).getFlight();
+                if(!previous.getDestination().getId().equals(next.getOrigin().getId())||!next.getDepartureTime().isAfter(previous.getArrivalTime()))
+                    throw BusinessException.badRequest("Các chặng phải nối tiếp và khởi hành sau giờ đến chặng trước");
+            }
+        } else if (booking.getSegments().size() == 2) {
             Flight out = booking.getSegments().get(0).getFlight(),
                    back = booking.getSegments().get(1).getFlight();
             if (!out.getOrigin().getId().equals(back.getDestination().getId())
@@ -288,7 +298,7 @@ public class BookingService {
             Passenger p=b.getPassengers().get(i), n=target.getPassengers().get(i);
             p.setTitle(n.getTitle());p.setLastName(n.getLastName());p.setFirstName(n.getFirstName());p.setDateOfBirth(n.getDateOfBirth());p.setNationality(n.getNationality());
         }
-        b.setContactEmail(target.getContactEmail());b.setContactPhone(target.getContactPhone());
+        b.setJourneyType(target.getJourneyType());b.setContactEmail(target.getContactEmail());b.setContactPhone(target.getContactPhone());
         b.setBaseAmount(target.getBaseAmount());b.setTaxAmount(target.getTaxAmount());b.setDiscountAmount(target.getDiscountAmount());
         b.setPromotionCode(target.getPromotionCode());b.setAdjustmentAmount(target.getAdjustmentAmount().add(fee).add(retained));
         b.setExtrasAmount(target.getExtrasAmount().add(fee).add(retained));b.setTotalAmount(total);b.setRevision(b.getRevision()+1);
@@ -334,7 +344,7 @@ public class BookingService {
                 .toList(),
             payments.findFirstByBookingIdOrderByCreatedAtDescIdDesc(b.getId())
                 .map(Payment::getStatus)
-                .orElse("UNPAID"));
+                .orElse("UNPAID"), b.getJourneyType());
     }
     private String newCode() {
         StringBuilder code = new StringBuilder();

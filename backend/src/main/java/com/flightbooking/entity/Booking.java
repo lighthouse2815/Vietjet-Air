@@ -30,6 +30,7 @@ public class Booking {
     @Column(nullable = false, precision = 14, scale = 2) private BigDecimal extrasAmount;
     @Column(nullable = false, precision = 14, scale = 2) private BigDecimal discountAmount;
     @Column(nullable = false, precision = 14, scale = 2) private BigDecimal totalAmount;
+    @Column(nullable=false) private String journeyType = "ONE_WAY";
     private String promotionCode;
     @Column(nullable=false) private int revision;
     @Column(nullable=false,precision=14,scale=2) private BigDecimal adjustmentAmount = BigDecimal.ZERO;

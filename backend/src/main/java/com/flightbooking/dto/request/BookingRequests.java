@@ -16,13 +16,18 @@ public final class BookingRequests {
         @Min(0) int passengerIndex, @NotBlank @Pattern(regexp = "[1-9][0-9]?[A-F]") String seatNumber) {}
     public record ExtraInput(@NotNull Long serviceId, @Min(0) int passengerIndex) {}
     public record SegmentInput(@NotNull Long flightId, @NotBlank String fareCode,
-        @NotNull @Size(max = 9) List<@NotNull @Valid SeatInput> seats,
-        @NotNull @Size(max = 40) List<@NotNull @Valid ExtraInput> extras) {}
-    public record CreateBooking(@NotNull @Size(min = 1, max = 2) List<@NotNull @Valid SegmentInput> segments,
-        @NotNull @Size(min = 1, max = 9) List<@NotNull @Valid PassengerInput> passengers,
+        @NotNull @Size(max = 30) List<@NotNull @Valid SeatInput> seats,
+        @NotNull @Size(max = 180) List<@NotNull @Valid ExtraInput> extras) {}
+    public record CreateBooking(@NotNull @Size(min = 1, max = 6) List<@NotNull @Valid SegmentInput> segments,
+        @NotNull @Size(min = 1, max = 30) List<@NotNull @Valid PassengerInput> passengers,
         @NotBlank @Email @Size(max = 255) String contactEmail,
         @NotBlank @Pattern(regexp = "[+0-9 ()-]{8,20}") String contactPhone,
-        @Size(max = 30) String promotionCode) {}
+        @Size(max = 30) String promotionCode,
+        @Pattern(regexp="ONE_WAY|ROUND_TRIP|MULTI_CITY|GROUP") String journeyType) {
+        public CreateBooking(List<SegmentInput> segments,List<PassengerInput> passengers,String contactEmail,String contactPhone,String promotionCode) {
+            this(segments,passengers,contactEmail,contactPhone,promotionCode,null);
+        }
+    }
     public record Lookup(@NotBlank @Size(max = 20) String bookingCode,
         @NotBlank @Size(max = 100) String lastName, @NotBlank @Size(max = 100) String firstName) {}
     public record DemoPayment(@NotNull Long bookingId, @NotNull UUID requestKey,

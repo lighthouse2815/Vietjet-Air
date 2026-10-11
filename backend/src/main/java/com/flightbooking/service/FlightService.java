@@ -24,7 +24,7 @@ public class FlightService {
     @Transactional(readOnly = true)
     public List<FlightView> search(String origin, String destination, LocalDate date, int passengers) {
         validateRoute(origin, destination);
-        if (date.isBefore(LocalDate.now(ZONE)) || passengers < 1 || passengers > 9)
+        if (date.isBefore(LocalDate.now(ZONE)) || passengers < 1 || passengers > 30)
             throw BusinessException.badRequest("Ngày bay hoặc số hành khách không hợp lệ");
         return views(routeFlights(origin, destination, date, date.plusDays(1)))
             .stream()

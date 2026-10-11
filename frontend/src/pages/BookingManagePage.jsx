@@ -24,7 +24,7 @@ export default function BookingManagePage() {
   const [leg,setLeg]=useState(0);const [passenger,setPassenger]=useState(0);
   useEffect(()=>{const b=booking.data;if(!b?.id)return;
     const extras={},seats={};b.extras.forEach(e=>{extras[e.flightId]||={};(extras[e.flightId][e.passengerIndex]||=[]).push(e.service.id);});b.segments.forEach(s=>{seats[s.flight.id]={};s.seats.forEach(v=>{seats[s.flight.id][v.passengerIndex]=v.seatNumber;});});
-    setDraft({segments:b.segments,passengers:b.passengers,contactEmail:b.contactEmail,contactPhone:b.contactPhone,promotionCode:"",extras,seats});setQuote(null);
+    setDraft({journeyType:b.journeyType,segments:b.segments,passengers:b.passengers,contactEmail:b.contactEmail,contactPhone:b.contactPhone,promotionCode:"",extras,seats});setQuote(null);
   },[booking.data]);
   if(!token)return <Navigate to="/my-booking" replace/>;
   if(booking.loading || !draft)return booking.error?<ErrorState message={booking.error} retry={booking.retry}/>:<LoadingState/>;

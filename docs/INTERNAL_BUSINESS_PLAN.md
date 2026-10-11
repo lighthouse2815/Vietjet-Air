@@ -9,7 +9,7 @@ Phạm vi được người dùng xác nhận ngày 11/10/2026: triển khai ngh
 - [x] Cửa hàng nội bộ: danh mục/tồn kho, giỏ hàng, đơn mua, thanh toán/hủy và nhận hàng theo booking.
 - [x] Hội viên nội bộ: số dư, tích điểm khi giao dịch thành công, lịch sử, đổi điểm lấy voucher; chống cộng/trừ lặp.
 - [x] Quản trị: phân quyền ADMIN; booking, hoàn vé, hỗ trợ, chuyến/giá, dịch vụ, sản phẩm/tồn kho, khuyến mại và nội dung.
-- [ ] Đặt vé nhiều chặng và đặt nhóm trong giới hạn sức chứa; tải boarding pass demo.
+- [x] Đặt vé nhiều chặng và đặt nhóm trong giới hạn sức chứa; tải boarding pass demo.
 - [ ] Chuyển tiếng Việt/Anh, liên kết header/footer tới đúng nghiệp vụ.
 - [ ] Kiểm thử PostgreSQL và trình duyệt, build, cập nhật API/README; commit/push từng phần đã kiểm chứng.
 

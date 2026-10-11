@@ -20,7 +20,7 @@ public class FlightController {
     public List<FlightView> search(@RequestParam @Pattern(regexp = "[A-Z]{3}") String origin,
         @RequestParam @Pattern(regexp = "[A-Z]{3}") String destination,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-        @RequestParam(defaultValue = "1") @Min(1) @Max(9) int passengers) {
+        @RequestParam(defaultValue = "1") @Min(1) @Max(30) int passengers) {
         return service.search(origin, destination, date, passengers);
     }
     @GetMapping("/calendar")

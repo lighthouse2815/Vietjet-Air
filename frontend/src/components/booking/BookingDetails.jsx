@@ -117,6 +117,10 @@ export default function BookingDetails({ booking }) {
               </dl>
               <code>{pass.boardingCode}</code>
               <small>Vé lên tàu bay mô phỏng · Không sử dụng tại sân bay</small>
+              <button className="button secondary" onClick={()=>{
+                const body=["BOARDING PASS · DEMO — KHÔNG CÓ GIÁ TRỊ TẠI SÂN BAY",`${p.lastName} ${p.firstName}`,`${flight.flightNumber} · ${flight.origin.code} → ${flight.destination.code}`,`${dateLabel(flight.departureTime)} · ${timeLabel(flight.departureTime)}`,`Ghế ${pass.seatNumber}`,pass.boardingCode].join("\n");
+                const url=URL.createObjectURL(new Blob([body],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download=`boarding-pass-${pass.boardingCode}.txt`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+              }}>Tải boarding pass demo</button>
             </article>
           );
         })}

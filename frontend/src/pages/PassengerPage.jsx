@@ -211,7 +211,7 @@ export default function PassengerPage() {
         <div className="actions justify-between">
           <Link
             className="button secondary"
-            to={`/flights?${new URLSearchParams(draft.search)}`}
+            to={draft.search?.type==="MULTI_CITY"?"/services/multi-city":draft.search?.type==="GROUP"?"/services/groups":`/flights?${new URLSearchParams(draft.search)}`}
           >
             Chọn lại chuyến bay
           </Link>
