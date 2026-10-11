@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
+import { postAuth } from './helpers/auth.js';
 
 // Never retain an administrator session or credentials in browser artifacts.
 test.use({ trace: 'off', screenshot: 'off' });
+test.setTimeout(120000);
 const password = 'InternalDemo123';
 const authHeaders = user => ({ Authorization: `Bearer ${user.token}` });
 const bookingHeaders = booking => ({ 'X-Booking-Token': booking.accessToken });
@@ -11,9 +13,9 @@ const date = offset => new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit',
 }).format(new Date(Date.now() + offset * 86400000));
 async function register(request) {
-  const response = await request.post('/api/auth/register', { data: {
+  const response = await postAuth(request, 'register', {
     email: `internal-${randomUUID()}@example.com`, password, name: 'Khách demo',
-  }});
+  });
   expect(response.status()).toBe(201);
   return response.json();
 }
@@ -49,7 +51,7 @@ async function confirm(request, booking) {
 async function administrator(request) {
   const local = readFileSync('.env', 'utf8');
   const value = name => process.env[name] || local.match(new RegExp(`^${name}=(.*)$`, 'm'))?.[1];
-  const response = await request.post('/api/auth/login', { data: { email: value('ADMIN_EMAIL'), password: value('ADMIN_PASSWORD') }});
+  const response = await postAuth(request, 'login', { email: value('ADMIN_EMAIL'), password: value('ADMIN_PASSWORD') });
   expect(response.status(), 'Run npm run setup:admin and restart the backend before internal E2E tests').toBe(200);
   return response.json();
 }
@@ -223,7 +225,7 @@ test('password recovery from the demo outbox revokes the old session', async ({ 
   await page.getByRole('button', { name: 'Lưu mật khẩu mới', exact: true }).click();
   await expect(page.locator('p[role="status"]')).toContainText('Đã khôi phục mật khẩu.');
   expect((await request.get('/api/account/profile', { headers: authHeaders(user) })).status()).toBe(401);
-  const login = await request.post('/api/auth/login', { data: { email: user.email, password: 'RecoveredDemo123' }});
+  const login = await postAuth(request, 'login', { email: user.email, password: 'RecoveredDemo123' });
   expect(login.status()).toBe(200);
 });
 

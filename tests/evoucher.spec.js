@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
+import { postAuth } from "./helpers/auth.js";
 
 test.use({ trace: "off", screenshot: "off" });
+test.setTimeout(120000);
 const headers = (user) => ({ Authorization: `Bearer ${user.token}` });
 async function register(request) {
-  const response = await request.post("/api/auth/register", { data: {
+  const response = await postAuth(request, "register", {
     email: `evoucher-${randomUUID()}@example.com`, password: "EVoucherDemo123", name: "Khách demo",
-  } });
+  });
   expect(response.status()).toBe(201);
   return response.json();
 }
@@ -39,6 +41,7 @@ test("eVoucher partner details explain availability and its terms menu reaches t
   await page.goto("/services/voucher");
   await page.locator(".evoucher-combos article").first().getByRole("button", { name: "Xem nhanh", exact: true }).click();
   await expect(page.getByRole("dialog")).toContainText("Dịch vụ đang chờ tích hợp nhà cung cấp.");
+  await expect.poll(() => page.getByRole("dialog").locator("img").evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
   await expect(page.getByRole("dialog").getByRole("button", { name: "Tạo đơn voucher", exact: true })).toHaveCount(0);
   await page.keyboard.press("Escape");
   if (page.viewportSize().width <= 900) await page.getByRole("button", { name: "Mở menu", exact: true }).click();

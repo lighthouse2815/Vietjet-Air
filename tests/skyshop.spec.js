@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
+import { postAuth } from "./helpers/auth.js";
+
+test.setTimeout(120000);
 
 test("SkyShop searches and filters the live service catalog", async ({ page, request }) => {
   const services = await (await request.get("/api/ancillary-services")).json();
@@ -64,9 +67,9 @@ test("SkyShop identifies supplier services and keeps its layout usable in Englis
 });
 
 test("SkyShop opens a confirmed booking with the chosen service prepared", async ({ page, request }) => {
-  const auth = await request.post("/api/auth/register", { data: {
+  const auth = await postAuth(request, "register", {
     email: `skyshop-${randomUUID()}@example.com`, name: "Khách demo", password: "SkyShopDemo123",
-  } });
+  });
   expect(auth.status()).toBe(201);
   const user = await auth.json();
   const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(Date.now() + 86400000));

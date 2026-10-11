@@ -1,16 +1,13 @@
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
+import { postAuth } from "./helpers/auth.js";
 
 test.use({ trace: "off", screenshot: "off" });
 test.setTimeout(120000);
 const headers = user => ({ Authorization: `Bearer ${user.token}` });
 async function register(request) {
   const data = { email: `service-${randomUUID()}@example.com`, password: "ServiceDemo123", name: "Khách demo" };
-  let response = await request.post("/api/auth/register", { data });
-  if (response.status() === 429) {
-    await new Promise(resolve => setTimeout(resolve, 60000));
-    response = await request.post("/api/auth/register", { data });
-  }
+  const response = await postAuth(request, "register", data);
   expect(response.status()).toBe(201); return response.json();
 }
 async function login(page, user) {
@@ -230,13 +227,13 @@ test("Service inquiry preserves values after network failure and creates one tic
 
 
 
-test("Service login rejects an external return URL", async ({ page, request }) => {
+test("Service login rejects an external return URL", async ({ page, request, baseURL }) => {
   const user = await register(request); await page.goto("/auth?returnTo=https://example.com");
   await page.getByLabel("Email", { exact: true }).fill(user.email);
   await page.getByLabel("Mật khẩu", { exact: true }).fill("ServiceDemo123");
   await signIn(page);
   await expect(page.getByRole("heading", { name: "Tài khoản của tôi", exact: true })).toBeVisible();
-  await expect(page).toHaveURL(/localhost:5173\/auth\?returnTo=/);
+  await expect(page).toHaveURL(new URL("/auth?returnTo=https://example.com", baseURL).href);
 });
 
 test("Bảo hiểm cannot offer a cancelled booking for purchase", async ({ page, request }) => {
@@ -285,11 +282,11 @@ test("Service inquiry retry after a lost response reuses its saved ticket", asyn
   expect(await tickets(request, user)).toHaveLength(1);
 });
 
-test("Bảo hiểm blocks the backend one-hour departure cutoff", async ({ page, request }) => {
+test("Bảo hiểm obeys service eligibility returned by the backend", async ({ page, request }) => {
   const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
   await page.route("**/api/auth/bookings", async route => {
     const response = await route.fetch(); const rows = await response.json();
-    rows.find(row => row.code === booking.code).segments[0].flight.departureTime = new Date(Date.now() + 30 * 60000).toISOString();
+    rows.find(row => row.code === booking.code).canPurchaseServices = false;
     await route.fulfill({ response, json: rows });
   });
   await page.goto("/services/insurance"); const select = page.getByLabel("Chuyến bay mua bảo hiểm", { exact: true }); await expect(select).toBeVisible();

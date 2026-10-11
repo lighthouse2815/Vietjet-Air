@@ -43,9 +43,13 @@ test("homepage displays captions edited in the content catalog", async ({
     const banner = data.items.find((item) => item.category === "HERO");
     banner.title = "Hành trình mới từ danh mục nội dung";
     banner.description = "Nội dung banner đã được cập nhật";
+    // Match the backend contract: edited captions disable reference artwork.
+    delete banner.details.artwork;
     const feature = data.items.find((item) => item.category === "FEATURE");
     feature.title = "Dịch vụ được cập nhật";
     feature.description = "Nội dung dịch vụ từ danh mục";
+    delete feature.details.artwork;
+    delete feature.details.displayTitle;
     await route.fulfill({ response, json: data });
   });
   await page.goto("/");

@@ -10,37 +10,23 @@ import ScrollCarousel from "../components/home/ScrollCarousel";
 import StatsSection from "../components/home/StatsSection";
 import BookingForm from "../components/booking/BookingForm";
 import { getContentArtwork } from "../components/home/artwork";
-const quick = [
-  ["Đặt chuyến bay", "/"],
-  ["Mua hành lý, suất ăn, chọn chỗ", "/my-booking"],
-  ["Ưu tiên làm thủ tục nhanh", "/services/priority"],
-  ["Hàng miễn thuế", "/services/skyshop"],
-  ["Bảo hiểm", "/services/insurance"],
-  ["Vietjet e-Voucher", "/services/voucher"],
-];
-const faqArtwork = {
-  booking: ["Đặt vé trực tuyến", 0],
-  seats: ["Chỗ ngồi", 1],
-  baggage: ["Hành lý", 2],
-  "check-in": ["Check-in", 3],
-  connections: ["Nối chuyến", 4],
-  meals: ["Suất ăn", 5],
-};
 export default function HomePage() {
   useTranslation();
   const { data, loading, error, retry } = useApi("/home");
-  if (loading)
+  const content = useApi("/content/pages/home");
+  if (loading || content.loading)
     return (
       <div className="home-loading">
         <LoadingState label={t("Đang chuẩn bị hành trình của bạn...")} />
       </div>
     );
-  if (error)
+  if (error || content.error)
     return (
       <main className="page container">
-        <ErrorState message={t(error)} retry={retry} />
+        <ErrorState message={t(error || content.error)} retry={error ? retry : content.retry} />
       </main>
     );
+  const page = content.data.details;
   const items = (category) => data.items.filter((i) => i.category === category);
   const cards = (category) => (
     <div className={`home-card-grid cards-${category.toLowerCase()}`}>
@@ -74,8 +60,8 @@ export default function HomePage() {
         >
           <h2 className="ribbon">
             {t(
-              artwork && category === "FEATURE"
-                ? "Đăng ký Hội viên Vietjet SkyJoy"
+              artwork && item.details.displayTitle
+                ? item.details.displayTitle
                 : item.title,
             )}
           </h2>
@@ -154,38 +140,8 @@ export default function HomePage() {
             </div>
             <BookingForm compact />
           </div>
-          <div className="information-banners">
-            <Link
-              to="/services/travel-advice"
-              aria-label={t("KHUYẾN CÁO DI CHUYỂN")}
-            >
-              <img
-                src="/assets/reference/travel-advice.jpg"
-                alt={t("KHUYẾN CÁO DI CHUYỂN")}
-                loading="lazy"
-              />
-            </Link>
-            <Link to="/services/groups">
-              <img
-                src="/assets/reference/group-travel.jpg"
-                alt={t("BAY THEO ĐOÀN")}
-                loading="lazy"
-              />
-            </Link>
-          </div>
-          <nav className="quick-access" aria-label={t("Tiện ích chuyến bay")}>
-            {quick.map(([title, path], i) => (
-              <Link key={title} to={path}>
-                <img
-                  className="quick-icon"
-                  src={`/assets/reference/quick-${i}.${i === 5 ? "png" : "svg"}`}
-                  alt=""
-                  loading="lazy"
-                />
-                <strong>{t(title)}</strong>
-              </Link>
-            ))}
-          </nav>
+          <div className="information-banners">{(page.informationBanners ?? []).map(item => <Link key={item.target} to={item.target} aria-label={t(item.title)}><img src={item.image} alt={t(item.title)} loading="lazy" /></Link>)}</div>
+          <nav className="quick-access" aria-label={t("Tiện ích chuyến bay")}>{(page.quick ?? []).map(item => <Link key={item.target} to={item.target}><img className="quick-icon" src={item.image} alt="" loading="lazy" /><strong>{t(item.title)}</strong></Link>)}</nav>
           {feature("FEATURE")}
           {cards("SERVICE")}
         </div>
@@ -215,9 +171,9 @@ export default function HomePage() {
             <div className="faq-categories">
               {items("FAQ").map((item) => (
                 <Link key={item.id} to={`/services/faq#${item.target}`}>
-                  {faqArtwork[item.target]?.[0] === item.title ? (
+                  {item.details.artwork?.[0] ? (
                     <img
-                      src={`/assets/reference/faq-${faqArtwork[item.target][1]}.svg`}
+                      src={item.details.artwork[0]}
                       alt={t(item.title)}
                       loading="lazy"
                     />

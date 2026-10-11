@@ -3,6 +3,7 @@ import i18n from "../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useApi } from "../../hooks/useApi";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   Bell,
@@ -13,22 +14,6 @@ import {
   UserCircle,
   Menu,
 } from "lucide-react";
-const products = [
-  ["Đặt vé", "/"],
-  ["Skyshop", "/services/skyshop"],
-  ["Khách sạn", "/services/hotels"],
-  ["E-Voucher", "/services/voucher"],
-  ["E-Sim", "/services/esim"],
-  ["E-Visa", "/services/visa"],
-  ["Mua ngoại tệ", "/services/currency"],
-  ["Bảo hiểm", "/services/insurance"],
-  ["SkyJoy", "/services/skyjoy"],
-];
-const notices = [
-  "[BẢN MÔ PHỎNG ĐỘC LẬP] Đặt vé và thanh toán demo — không phải website chính thức của Vietjet.",
-  "Khám phá hành trình demo · Dùng mã DEMO10 giảm 10%, tối đa 200.000 đ.",
-  "Check-in demo mở 30 ngày và đóng 1 giờ trước khởi hành.",
-];
 const voucherLinks = [
   ["Điều kiện và Điều khoản", "#evoucher-terms"],
   ["Mua e-Voucher", "#evoucher-values"],
@@ -38,6 +23,9 @@ const voucherLinks = [
 export default function Header() {
   useTranslation();
   const { pathname } = useLocation();
+  const content = useApi("/content/pages/home");
+  const products = content.data?.details.products || [];
+  const notices = content.data?.details.notices || [];
   const home = pathname === "/";
   const shop = pathname === "/services/skyshop";
   const voucher = pathname === "/services/voucher";
@@ -48,13 +36,13 @@ export default function Header() {
   const [paused, setPaused] = useState(false);
   const reducedMotion = useReducedMotion();
   useEffect(() => {
-    if (!notice || paused || reducedMotion) return;
+    if (!notice || paused || reducedMotion || notices.length < 2) return;
     const timer = setInterval(
       () => setSlide((i) => (i + 1) % notices.length),
       5000,
     );
     return () => clearInterval(timer);
-  }, [notice, paused, reducedMotion]);
+  }, [notice, paused, reducedMotion, notices.length]);
   return (
     <>
       <div
@@ -75,21 +63,21 @@ export default function Header() {
                 className="announcement-message"
                 key={message}
                 aria-hidden={i !== slide}
-                style={{ transform: `translateX(${i === slide ? 0 : i === (slide + 2) % 3 ? -100 : 100}%)` }}
+                style={{ transform: `translateX(${i === slide ? 0 : i === (slide + notices.length - 1) % notices.length ? -100 : 100}%)` }}
               >
                 {t(message)}
               </span>
             ))}
           </div>
           <button
-            aria-label={t("Thông báo trước")}
-            onClick={() => setSlide((slide + 2) % 3)}
+            disabled={!notices.length} aria-label={t("Thông báo trước")}
+            onClick={() => setSlide((slide + notices.length - 1) % notices.length)}
           >
             <ChevronLeft size={18} />
           </button>
           <button
-            aria-label={t("Thông báo tiếp")}
-            onClick={() => setSlide((slide + 1) % 3)}
+            disabled={!notices.length} aria-label={t("Thông báo tiếp")}
+            onClick={() => setSlide((slide + 1) % notices.length)}
           >
             <ChevronRight size={18} />
           </button>

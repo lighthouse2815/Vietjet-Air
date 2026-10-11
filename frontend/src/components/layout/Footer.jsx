@@ -2,6 +2,7 @@ import { t } from "../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useApi } from "../../hooks/useApi";
 import ScrollCarousel from "../home/ScrollCarousel";
 import {
   Plane,
@@ -15,78 +16,12 @@ import {
   Youtube,
   Mail,
 } from "lucide-react";
-const groups = [
-  [
-    "Để có chuyến bay tốt đẹp",
-    [
-      "Điều lệ vận chuyển",
-      "Điều kiện vé",
-      "Vietjet e-Voucher",
-      "Phí và lệ phí",
-      "Giấy tờ tùy thân",
-      "Quy định hành lý",
-      "Thông tin nối chuyến",
-      "Kênh thanh toán",
-      "Hóa đơn VAT",
-      "Hướng dẫn làm thủ tục chuyến bay",
-    ],
-  ],
-  [
-    "Mua hành lý, suất ăn, chọn chỗ ngồi và hơn thế nữa...",
-    [
-      "Chọn chỗ ngồi ưu tiên",
-      "Mua trước hành lý",
-      "Đặt trước suất ăn",
-      "Hàng miễn thuế",
-      "Quà lưu niệm",
-      "Giải trí",
-      "Dịch vụ đặc biệt",
-    ],
-  ],
-  [
-    "Dịch vụ cao cấp",
-    [
-      "Hạng vé Business",
-      "Hạng vé SkyBoss",
-      "Phòng chờ sang trọng",
-      "Về Vietjet",
-      "Giới thiệu dự án",
-      "Tin tức và khuyến mại",
-      "Cẩm nang du lịch",
-    ],
-  ],
-  [
-    "Trung tâm phục vụ Khách hàng",
-    [
-      "Hỗ trợ",
-      "Liên hệ",
-      "Mua vé ở đâu?",
-      "Phòng bán vé",
-      "Đại lý bán vé",
-      "Tìm vật phẩm bỏ quên",
-    ],
-  ],
-  [
-    "Chính sách",
-    [
-      "Chính sách quyền riêng tư",
-      "Chính sách sử dụng Cookies",
-      "Dịch vụ hàng hóa",
-      "Quy trình đổi, hoàn, hủy vé",
-      "Điều kiện bản demo",
-    ],
-  ],
-];
-const footerTargets = {
-  "Vietjet e-Voucher":"/services/voucher", "Chọn chỗ ngồi ưu tiên":"/my-booking", "Mua trước hành lý":"/my-booking", "Đặt trước suất ăn":"/my-booking",
-  "Hàng miễn thuế":"/services/skyshop", "Quà lưu niệm":"/services/skyshop", "Hướng dẫn làm thủ tục chuyến bay":"/check-in",
-  "Quy trình đổi, hoàn, hủy vé":"/my-booking", "Chính sách quyền riêng tư":"/services/privacy", "Chính sách sử dụng Cookies":"/services/cookies",
-  "Tin tức và khuyến mại":"/services/promotions", "Quy định hành lý":"/services/faq#baggage", "Điều kiện vé":"/services/faq#booking",
-  "Điều lệ vận chuyển":"/services/booking", "Phí và lệ phí":"/services/faq#booking", "Thông tin nối chuyến":"/services/multi-city",
-  "Dịch vụ hàng hóa":"/services/cargo", "Giới thiệu dự án":"/services/booking", "Điều kiện bản demo":"/services/booking", "Hạng vé Business":"/", "Hạng vé SkyBoss":"/",
-};
 export default function Footer() {
   useTranslation();
+  const content = useApi("/content/pages/home");
+  const groups = content.data?.details.footerGroups || [];
+  const footerTargets = content.data?.details.footerTargets || {};
+  const awards = content.data?.details.awards || [];
   const [compact, setCompact] = useState(
     () => window.matchMedia("(max-width: 900px)").matches,
   );
@@ -108,26 +43,7 @@ export default function Footer() {
             className="awards container"
             label={t("Thành tựu trong giao diện tham chiếu")}
           >
-            {[
-              t("Hàng không chi phí thấp"),
-              t("Doanh nghiệp ngành hàng không"),
-              t("Top công ty niêm yết"),
-              t("Thương hiệu Châu Á"),
-              t("Môi trường làm việc"),
-              t("Phát triển bền vững"),
-            ].map((label, i) => (
-              <div key={label}>
-                <img
-                  src={`/assets/reference/award-${i}.png`}
-                  alt=""
-                  loading="lazy"
-                  onLoad={(event) =>
-                    event.currentTarget.classList.add("home-image-loaded")
-                  }
-                />
-                <span>{t(label)}</span>
-              </div>
-            ))}
+            {awards.map(item => <div key={item.image}><img src={item.image} alt="" loading="lazy" onLoad={event => event.currentTarget.classList.add("home-image-loaded")} /><span>{t(item.title)}</span></div>)}
           </ScrollCarousel>
         )}
         <footer className="site-footer">

@@ -10,11 +10,11 @@ import BookingLookupForm from "../booking/BookingLookupForm";
 export default function InsuranceBooking() {
   const logged = !!sessionStorage.getItem("demo-auth");
   const services = useApi("/ancillary-services");
+  const media = useApi("/content/pages/skyshop");
   const bookings = useApi(logged ? "/auth/bookings" : null);
   const [code, setCode] = useState("");
   const [lookedUp, setLookedUp] = useState(null);
-  const eligible = booking => booking.status === "CONFIRMED" && !booking.boardingPasses.length
-    && booking.segments.every(segment => new Date(segment.flight.departureTime).getTime() > Date.now() + 3600000);
+  const eligible = booking => booking.canPurchaseServices;
   const available = (bookings.data || []).filter(eligible);
   const chosen = available.find(booking => booking.code === code) || (lookedUp?.code === code && eligible(lookedUp) ? lookedUp : null);
   const insurance = (services.data || []).filter(service => service.category === "INSURANCE");
@@ -34,7 +34,7 @@ export default function InsuranceBooking() {
     </p>}
     {services.loading ? <LoadingState /> : services.error ? <ErrorState message={t(services.error)} retry={services.retry} /> : insurance.length === 0 ? <p className="notice-panel">{t("Danh mục hiện chưa có bảo hiểm nội bộ.")}</p> : <div className="service-insurance-products">
       {insurance.map(service => <article className="panel" key={service.id}>
-        <img src="/assets/skyshop/insurance.jpg" alt="" loading="lazy" width="220" height="220" />
+        {media.data?.details.serviceImages?.[service.code] && <img src={media.data.details.serviceImages[service.code]} alt="" loading="lazy" width="220" height="220" />}
         <div><h3>{t(service.name)}</h3><p>{t(service.description)}</p><strong className="red">{money(service.price)}</strong><p>{t("Mỗi hành khách, mỗi chặng. Máy chủ xác nhận giá khi báo giá thay đổi.")}</p>
           {chosen ? <Link className="button primary" to={`/my-booking/${chosen.code}/manage?service=${service.id}#services`} onClick={() => storeBooking(chosen)}>{t("Mua bảo hiểm cho chuyến bay")}</Link>
             : <a className="button secondary" href="#service-request">{t("Chọn hoặc tra cứu chuyến bay")}</a>}

@@ -8,21 +8,10 @@ import { useApi } from "../../hooks/useApi";
 import ScrollCarousel from "./ScrollCarousel";
 import { LoadingState, ErrorState } from "../common/States";
 
-const categories = [
-  ["INSURANCE", "Bảo hiểm Travel Safe", "category-insurance.png"],
-  ["MEAL", "Hotmeal", "category-meal.png"],
-  ["BAGGAGE", "Hành lý ký gửi", "category-baggage.png"],
-  ["ESIM", "eSIM", "category-esim.jpg"],
-  ["TAXI", "Taxi", "category-taxi.jpg"],
-  ["SHOP", "Quà lưu niệm", null],
-];
-const serviceImages = {
-  INSURANCE: "insurance.jpg", BAG20: "baggage-20.jpg", BAG30: "baggage-30.jpg",
-  MEAL_RICE: "meal.jpg", MEAL_VEG: "meal-vegetarian.jpg",
-};
-
-export default function SkyShopStorefront({ products, bookings, cart, setCart, bookingCode, setBookingCode, logged }) {
+export default function SkyShopStorefront({ content, quantityLimit, products, bookings, cart, setCart, bookingCode, setBookingCode, logged }) {
   useTranslation();
+  const categories = (content.details.categories ?? []).map(item => [item.code, item.title, item.image]);
+  const serviceImages = content.details.serviceImages ?? {};
   const services = useApi("/ancillary-services");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
@@ -30,8 +19,7 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
   const [searchOpen, setSearchOpen] = useState(false);
   const [detail, setDetail] = useState(null);
   const dialog = useRef(null);
-  const confirmed = (bookings.data || []).filter((booking) => booking.status === "CONFIRMED"
-    && !booking.boardingPasses.length && booking.segments.every((s) => new Date(s.flight.departureTime) > new Date()));
+  const confirmed = (bookings.data || []).filter(booking => booking.canPurchaseServices);
   const chosenBooking = confirmed.find((booking) => booking.code === bookingCode);
   const serviceTarget = (item) => chosenBooking
     ? `/my-booking/${chosenBooking.code}/manage?service=${item.id}#services` : "/my-booking";
@@ -57,7 +45,7 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
   }
   function artwork(item) {
     const image = serviceImages[item.code];
-    return image ? <img src={`/assets/skyshop/${image}`} alt="" loading="lazy" width="446" height="446" />
+    return image ? <img src={image} alt="" loading="lazy" width="446" height="446" />
       : <div className="skyshop-product-illustration">{item.service ? <Plane /> : <Gift />}</div>;
   }
   function card(item, featured = false) {
@@ -68,9 +56,9 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
         <strong className="skyshop-price">{money(item.price)}</strong>
         {!item.service && !featured ? <>
           <small>{t("Còn {{count}} sản phẩm", { count: item.stock })}</small>
-          <label>{t("Số lượng")}<input type="number" min="0" max={Math.min(10, item.stock)} disabled={!item.stock}
+          <label>{t("Số lượng")}<input type="number" min="0" max={Math.min(quantityLimit, item.stock)} disabled={!item.stock}
             value={cart[item.id] || 0} onChange={(event) => setCart((current) => ({ ...current,
-              [item.id]: Math.max(0, Math.min(10, item.stock, Math.trunc(Number(event.target.value)) || 0)),
+              [item.id]: Math.max(0, Math.min(quantityLimit, item.stock, Math.trunc(Number(event.target.value)) || 0)),
             }))} /></label>
         </> : <Link className="skyshop-service-link" to={serviceTarget(item)} onClick={rememberBooking}>{chosenBooking ? t("Mua thêm dịch vụ") : t("Chọn chuyến bay")} <Plane size={16} /></Link>}
         <button className="skyshop-detail-button" onClick={() => open(item)}>{t("Xem chi tiết")}</button>
@@ -79,10 +67,10 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
   }
   return <>
     <section className="skyshop-hero" aria-label={t("SkyShop – mua sắm trên chuyến bay")}>
-      <h1 className="skyshop-title">SkyShop</h1>
+      <h1 className="skyshop-title">{t(content.title)}</h1>
       <a href="#skyshop-products"><picture>
-        <source media="(max-width: 767px)" srcSet="/assets/skyshop/hero-mobile.jpg" />
-        <img className="skyshop-hero-image" src="/assets/skyshop/hero.jpg" alt={t("Bay khắp thế giới, mua sắm kiểu mới")} fetchPriority="high" />
+        <source media="(max-width: 767px)" srcSet={content.details.mobileImage} />
+        <img className="skyshop-hero-image" src={content.image} alt={t("Bay khắp thế giới, mua sắm kiểu mới")} fetchPriority="high" />
       </picture></a>
       <div className="skyshop-banner-dot" aria-hidden="true" />
       <img className="skyshop-cloud-edge" src="/assets/skyshop/cloud-header.svg" alt="" />
@@ -106,7 +94,7 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
       <ScrollCarousel className="skyshop-categories" label={t("Danh mục SkyShop")}>
         {categories.map(([id, label, image]) => <button key={id} className={category === id ? "selected" : ""}
           onClick={() => ["ESIM", "TAXI"].includes(id) ? open({ name: label, provider: true }) : choose(id)}>
-          {image ? <img src={`/assets/skyshop/${image}`} alt="" width="52" height="52" /> : <Gift size={52} />}<span>{t(label)}</span>
+          {image ? <img src={image} alt="" width="52" height="52" /> : <Gift size={52} />}<span>{t(label)}</span>
         </button>)}
       </ScrollCarousel>
       {bookings.error && <ErrorState message={bookings.error} retry={bookings.retry} />}
@@ -141,7 +129,7 @@ export default function SkyShopStorefront({ products, bookings, cart, setCart, b
             dialog.current.close();
           }}>{chosenBooking ? t("Mua thêm dịch vụ") : t("Chọn chuyến bay")}</Link>
             : <button className="button primary" disabled={!detail.stock} onClick={() => {
-              setCart((current) => ({ ...current, [detail.id]: Math.min(10, detail.stock, (current[detail.id] || 0) + 1) }));
+              setCart((current) => ({ ...current, [detail.id]: Math.min(quantityLimit, detail.stock, (current[detail.id] || 0) + 1) }));
               dialog.current.close(); document.getElementById("skyshop-cart")?.scrollIntoView({ block: "start" });
             }}>{t("Thêm vào giỏ hàng")}</button>}
         </>}

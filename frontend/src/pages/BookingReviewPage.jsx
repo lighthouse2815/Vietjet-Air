@@ -93,7 +93,7 @@ export default function BookingReviewPage() {
                 placeholder="DEMO10"
               />
             </label>
-            <p className="small muted">{t("Booking chờ thanh toán giữ chỗ 15 phút. Không thu tiền thật.")}</p>
+            <p className="small muted">{t("Thời hạn giữ booking được máy chủ xác nhận khi tạo đặt chỗ. Không thu tiền thật.")}</p>
           </section>
           {error && <ErrorState message={t(error)} />}
         </div>
