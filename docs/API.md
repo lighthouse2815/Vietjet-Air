@@ -128,6 +128,8 @@ Hoàn chỉ booking có payment SUCCESS, chưa check-in và còn trước khởi
 
 Mỗi `requestKey` UUID phải giữ nguyên khi thử lại **cùng** yêu cầu. Key đã dùng cho payload/kết quả khác trả 409. Kho giữ 15 phút; payment thất bại có thể thử lại. delivery PICKUP hoặc ON_BOARD; ON_BOARD cần booking/token hợp lệ, đã trả tiền và còn thời gian bay. Đơn nhận theo chuyến không thanh toán/giao hàng khi booking đang chờ xử lý hoàn vé. Đơn/voucher/điểm thuộc tài khoản; thông tin giá/tồn/điểm đều được xác nhận trong transaction.
 
+Voucher trả `{id,code,recipientEmail,status,value,balance,expiresAt,reward,purchased}`. `purchased` cho biết người dùng hiện tại có phải người mua; người nhận được nhìn thấy voucher nhưng không có quyền thanh toán/hủy. Trường mới chỉ bổ sung vào response, không đổi request hoặc quy tắc kiểm tra quyền ở server. Frontend ẩn nút thanh toán/hủy với voucher nhận từ người khác, voucher thưởng hoặc voucher đã dùng theo điều kiện tương ứng.
+
 ## Quản trị
 
 Bearer JWT có role ADMIN; USER nhận 403, thiếu JWT nhận 401.

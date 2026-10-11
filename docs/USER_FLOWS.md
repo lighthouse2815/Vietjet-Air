@@ -30,7 +30,7 @@ Quy tắc demo: mở 720 giờ (30 ngày) và đóng 1 giờ trước khởi hà
 | Hỗ trợ | `/services/support` → tạo yêu cầu → khách/ADMIN trả lời → xem lịch sử → đóng; sau đóng không nhận trả lời |
 | Mua thêm / đổi vé | Tra cứu `/my-booking` → mở quản lý → chọn dịch vụ/ghế/chuyến/hạng hoặc sửa liên hệ → báo giá → thanh toán SUCCESS mới áp dụng; FAILED cho thử lại |
 | Hoàn vé | Booking đã trả tiền, chưa check-in → gửi lý do → ADMIN duyệt/từ chối → duyệt giải phóng ghế → hoàn tiền demo → trả voucher và đảo điểm một lần |
-| Voucher | Đăng nhập → mua/tặng theo email → thanh toán phát hành → người nhận chọn voucher tại payment booking → trừ số dư, phần còn lại thanh toán demo |
+| Voucher | `/services/voucher` → xem nhanh/chọn mệnh giá (giữ qua reload) → đăng nhập → mua/tặng theo email → người mua thanh toán/thử lại hoặc hủy khi chưa dùng → tìm theo mã/email và trạng thái → người nhận chọn voucher tại payment booking → trừ số dư, phần còn lại thanh toán demo |
 | Cửa hàng | Chọn lượng → tạo đơn giữ hàng → trả tiền / thử lại → nhận tại quầy hoặc theo booking → ADMIN xác nhận giao; hủy/hết hạn trả kho |
 | Điểm thưởng | Thanh toán vé/thay đổi/cửa hàng → tích điểm trên chi tiêu hợp lệ → xem số dư/hạng/lịch sử → đổi bội số 100 điểm lấy voucher |
 | Nhiều chặng | `/services/multi-city` → 2–6 chặng nối tiếp → chọn vé mỗi chặng → checkout chung |

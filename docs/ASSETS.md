@@ -22,3 +22,9 @@ Banner có chữ được hiển thị nguyên ảnh, kèm tiêu đề đọc đ
 Ngày 12/10/2026, đối chiếu [SkyShop công khai](https://skyshop.vietjetair.com/vi) và lưu 18 ảnh/SVG, tổng 3.751.371 byte, tại `frontend/public/assets/skyshop/`. [sources.json](../frontend/public/assets/skyshop/sources.json) ghi URL từng file: banner desktop/mobile, viền mây, nền trang, nền dịch vụ nổi bật, góc ribbon, năm icon danh mục, năm ảnh dịch vụ và hai icon điều hướng. Frontend tải từ local; không gọi API mua hàng của website tham chiếu.
 
 Banner dùng ảnh riêng ở chiều rộng ≤767px, theo breakpoint của SkyShop. Các ảnh suất ăn và bảo hiểm là minh họa từ tham chiếu, không xác nhận trùng sản phẩm demo. Tên, giá, mô tả và tồn kho lấy từ API nội bộ. Quà lưu niệm dùng icon Lucide có sẵn. Những asset tham chiếu thuộc chủ sở hữu gốc; không gán giấy phép mở hay mô tả là ảnh do project tạo.
+
+## Asset eVoucher
+
+Ngày 12/10/2026, lưu 17 ảnh/SVG (5.645.017 byte) từ [eVoucher công khai](https://evoucher.vietjetair.com/) tại `frontend/public/assets/evoucher/`: logo trắng, ba banner, nền mây, nền/viền/góc footer, sáu ảnh khách sạn và ba ảnh ưu đãi đối tác. [sources.json](../frontend/public/assets/evoucher/sources.json) ghi nguồn từng file. Dùng font KoHo đã có trong project; thẻ mệnh giá nội bộ được dựng bằng CSS và icon Ticket của Lucide.
+
+Thẻ khách sạn và ưu đãi chỉ dùng tên/ảnh để đối chiếu bố cục, có nhãn chờ nhà cung cấp; không sao chép giá hoặc chiết khấu thành giao dịch nội bộ. Banner giữ nguyên artwork tham chiếu. Những file này thuộc chủ sở hữu gốc, không có giấy phép mở do project cấp.

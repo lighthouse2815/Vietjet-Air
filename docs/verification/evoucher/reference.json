@@ -1,0 +1,728 @@
+{
+  "capturedAt": "2026-10-11T18:41:10.825Z",
+  "url": "https://evoucher.vietjetair.com/",
+  "observedMotion": {
+    "library": "Slick",
+    "autoplaySpeedMs": 5000,
+    "slideTransitionMs": 300,
+    "infinite": false
+  },
+  "views": [
+    {
+      "name": "laptop",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "url": "https://evoucher.vietjetair.com/",
+      "title": "Hệ Thống Voucher",
+      "backgroundLayers": [
+        {
+          "tag": "DIV",
+          "className": "wrapper__main",
+          "image": "url(\"https://evoucher.vietjetair.com/images/bg_may.png\")",
+          "size": "cover",
+          "position": "0% 0%",
+          "rect": {
+            "x": 0,
+            "y": 96,
+            "width": 1440,
+            "height": 2623.234375,
+            "top": 96,
+            "right": 1440,
+            "bottom": 2719.234375,
+            "left": 0
+          }
+        },
+        {
+          "tag": "DIV",
+          "className": "wrapper__footer",
+          "image": "url(\"https://evoucher.vietjetair.com/images/bg-footer-2.png\")",
+          "size": "cover",
+          "position": "50% 0%",
+          "rect": {
+            "x": 0,
+            "y": 2719.234375,
+            "width": 1440,
+            "height": 308,
+            "top": 2719.234375,
+            "right": 1440,
+            "bottom": 3027.234375,
+            "left": 0
+          }
+        }
+      ],
+      "images": [
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "Tiếng Việt",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-en.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-cn.png",
+          "alt": "简体中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-tw.png",
+          "alt": "繁體中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/vj-logo-white.svg",
+          "alt": "Logo Vietjet",
+          "width": 267,
+          "height": 48
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/user.svg",
+          "alt": "user",
+          "width": 28,
+          "height": 28
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "Tiếng Việt",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-en.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-cn.png",
+          "alt": "简体中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-tw.png",
+          "alt": "繁體中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menasconnectingevoucherbannervi-1749865837905.jpg",
+          "alt": "",
+          "width": 1272,
+          "height": 423.734375
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topbanner02-1668049785556.jpg",
+          "alt": "",
+          "width": 1272,
+          "height": 424
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evcombovie-1774944550018.jpg",
+          "alt": "",
+          "width": 1272,
+          "height": 424
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlbeachfrontnhatrang-1769013800533.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcombovi-1768579827490.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/hontamnhatrang-1769503329631.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortspaphuquoc-1769013852898.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcombovi-1768579827490.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortnhatrang-1769013852892.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlempirenhatrang-1769013832340.png",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/thumbnailaus275x160-1790062723730.jpg",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/thumbnailaus550x320-1790062723733.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas300kvithumb-1749865832140.jpg",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas300kvi-1749865824597.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas500kvithumb-1749865837899.jpg",
+          "alt": "voucher 1",
+          "width": 300,
+          "height": 192
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas500kvi-1749865837895.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/fb.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/ins.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/tw.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/line.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 31.140625
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/wec.png",
+          "alt": "",
+          "width": 30,
+          "height": 30
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/zl.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 29.390625
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/googleplay.png",
+          "alt": "",
+          "width": 112,
+          "height": 34
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/applestore.png",
+          "alt": "",
+          "width": 110,
+          "height": 34
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/bct.png",
+          "alt": "",
+          "width": 112,
+          "height": 43
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "url": "https://evoucher.vietjetair.com/",
+      "title": "Hệ Thống Voucher",
+      "backgroundLayers": [
+        {
+          "tag": "DIV",
+          "className": "wrapper__main",
+          "image": "url(\"https://evoucher.vietjetair.com/images/bg_may.png\")",
+          "size": "cover",
+          "position": "0% 0%",
+          "rect": {
+            "x": 0,
+            "y": 50,
+            "width": 390,
+            "height": 4982.671875,
+            "top": 50,
+            "right": 390,
+            "bottom": 5032.671875,
+            "left": 0
+          }
+        },
+        {
+          "tag": "DIV",
+          "className": "wrapper__footer",
+          "image": "url(\"https://evoucher.vietjetair.com/images/bg-footer-2.png\")",
+          "size": "cover",
+          "position": "50% 0%",
+          "rect": {
+            "x": 0,
+            "y": 5032.671875,
+            "width": 390,
+            "height": 543,
+            "top": 5032.671875,
+            "right": 390,
+            "bottom": 5575.671875,
+            "left": 0
+          }
+        }
+      ],
+      "images": [
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "Tiếng Việt",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-en.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-cn.png",
+          "alt": "简体中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-tw.png",
+          "alt": "繁體中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/vj-logo-white.svg",
+          "alt": "Logo Vietjet",
+          "width": 130,
+          "height": 23.359375
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/user.svg",
+          "alt": "user",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-vn.jpg",
+          "alt": "Tiếng Việt",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-en.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-cn.png",
+          "alt": "简体中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/flag-zh-tw.png",
+          "alt": "繁體中文",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menasconnectingevoucherbannervi-1749865837905.jpg",
+          "alt": "",
+          "width": 342,
+          "height": 113.921875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topbanner02-1668049785556.jpg",
+          "alt": "",
+          "width": 342,
+          "height": 114
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evcombovie-1774944550018.jpg",
+          "alt": "",
+          "width": 342,
+          "height": 114
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlbeachfrontnhatrang-1769013800533.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcombovi-1768579827490.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/hontamnhatrang-1769503329631.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortspaphuquoc-1769013852898.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcombovi-1768579827490.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortnhatrang-1769013852892.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlempirenhatrang-1769013832340.png",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/detailcomboen-1768579827483.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/thumbnailaus275x160-1790062723730.jpg",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 198.96875
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/thumbnailaus550x320-1790062723733.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas300kvithumb-1749865832140.jpg",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 218.875
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas300kvi-1749865824597.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas500kvithumb-1749865837899.jpg",
+          "alt": "voucher 1",
+          "width": 342,
+          "height": 218.875
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 19,
+          "height": 18
+        },
+        {
+          "src": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas500kvi-1749865837895.jpg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/gift.svg",
+          "alt": "",
+          "width": 0,
+          "height": 0
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/fb.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/ins.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/tw.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 30.578125
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/line.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 31.140625
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/wec.png",
+          "alt": "",
+          "width": 30,
+          "height": 30
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/zl.png",
+          "alt": "",
+          "width": 29.984375,
+          "height": 29.390625
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/googleplay.png",
+          "alt": "",
+          "width": 112,
+          "height": 34
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/applestore.png",
+          "alt": "",
+          "width": 110,
+          "height": 34
+        },
+        {
+          "src": "https://evoucher.vietjetair.com/images/bct.png",
+          "alt": "",
+          "width": 112,
+          "height": 43
+        }
+      ]
+    }
+  ]
+}

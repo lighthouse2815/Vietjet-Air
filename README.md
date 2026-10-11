@@ -95,6 +95,7 @@ Khứ hồi mẫu: SGN → Đà Nẵng (DAD), đi ngày mai, về ngày kế ti�
 - Hoàn vé đã trả tiền: yêu cầu, tính phí, duyệt/từ chối/hoàn tiền demo; trả số dư voucher và đảo điểm; chống xử lý lặp.
 - Mua/tặng voucher, dùng số dư khi trả booking; cửa hàng có giữ tồn kho, đơn/nhận theo chuyến, thanh toán thử lại, hủy và xác nhận giao hàng.
 - SkyShop theo bố cục cửa hàng tham chiếu: banner desktop/mobile, tìm kiếm/lọc, danh mục, chi tiết và giỏ hàng qua reload; chọn booking để mua thêm dịch vụ. [Ảnh đối chiếu và kiểm chứng](docs/verification/SKYSHOP.md).
+- eVoucher theo trang tham chiếu: header đỏ, ba banner trượt, nền mây và các nhóm Combo/ưu đãi. Chọn mệnh giá qua reload, mua/tặng, tra cứu mã/email và trạng thái; người mua thanh toán/hủy, người nhận dùng số dư cho booking. [Ảnh đối chiếu và kiểm chứng](docs/verification/EVOUCHER.md).
 - Điểm/hạng hội viên, sổ giao dịch, đổi điểm lấy voucher; không cộng điểm từ tiền voucher.
 - ADMIN quản lý booking, hoàn vé, hỗ trợ, đơn hàng, lịch/giá chuyến, dịch vụ, sản phẩm/tồn kho, khuyến mại, nội dung và hộp thư demo.
 - Đặt nhiều chặng/nhóm dùng chung checkout, tải boarding pass demo; Việt/Anh bằng i18next, lưu ngôn ngữ qua reload.
@@ -156,6 +157,7 @@ npm run setup:admin # nếu chưa có ADMIN, sau đó khởi động lại backe
 npm run check:i18n
 npm run test:e2e
 npm run verify:skyshop
+npm run verify:evoucher
 ```
 
 Linux thiếu thư viện Chromium có thể cần `npx playwright install --with-deps chromium`. Suite chạy booking một chiều và khứ hồi tại 1920×1080, 1440×900, 768×1024, 390×844; kiểm tra quản lý/tài khoản/empty state và nghiệp vụ nội bộ tại laptop; kiểm tra ngôn ngữ tại cả bốn chiều rộng. ADMIN cần được tạo bằng cấu hình trên; các bài kiểm thử quản trị không lưu trace/screenshot phiên đăng nhập. Test tạo booking và tài khoản **mẫu** trong database đang chạy. Có thể đặt `CAPTURE_E2E=1 npm run test:e2e` để cập nhật ảnh trong `docs/verification/checkout`.
@@ -180,5 +182,5 @@ Named volume bị xóa; Flyway và seed tạo dữ liệu mới. Giữ `.env`, h
 
 - [Khảo sát reference](docs/REFERENCE_AUDIT.md), [component](docs/UI_COMPONENTS.md), [luồng người dùng](docs/USER_FLOWS.md), [nguồn asset](docs/ASSETS.md).
 - [Phạm vi nghiệp vụ nội bộ](docs/INTERNAL_BUSINESS_PLAN.md), [backlog nhà cung cấp](docs/PROVIDER_BACKLOG.md).
-- [Database và ERD](docs/DATABASE.md), [REST API](docs/API.md), [báo cáo kiểm chứng](docs/VERIFICATION.md), [đối chiếu SkyShop](docs/verification/SKYSHOP.md).
+- [Database và ERD](docs/DATABASE.md), [REST API](docs/API.md), [báo cáo kiểm chứng](docs/VERIFICATION.md), [đối chiếu SkyShop](docs/verification/SKYSHOP.md), [đối chiếu eVoucher](docs/verification/EVOUCHER.md).
 - Ảnh reference trong `docs/reference/`; ảnh local và đối chiếu trong `docs/verification/`.
