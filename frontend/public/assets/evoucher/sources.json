@@ -1,0 +1,70 @@
+[
+  {
+    "file": "logo.svg",
+    "url": "https://evoucher.vietjetair.com/images/vj-logo-white.svg"
+  },
+  {
+    "file": "background.png",
+    "url": "https://evoucher.vietjetair.com/images/bg_may.png"
+  },
+  {
+    "file": "footer.png",
+    "url": "https://evoucher.vietjetair.com/images/bg-footer-2.png"
+  },
+  {
+    "file": "cloud-edge.png",
+    "url": "https://evoucher.vietjetair.com/images/curver_2.png"
+  },
+  {
+    "file": "footer-corner.png",
+    "url": "https://evoucher.vietjetair.com/images/red-corner.png"
+  },
+  {
+    "file": "hero-menas.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menasconnectingevoucherbannervi-1749865837905.jpg"
+  },
+  {
+    "file": "hero-guide.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topbanner02-1668049785556.jpg"
+  },
+  {
+    "file": "hero-combo.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evcombovie-1774944550018.jpg"
+  },
+  {
+    "file": "hotel-hoi-an.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlnamhoian-1769013836079.png"
+  },
+  {
+    "file": "hotel-beachfront.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlbeachfrontnhatrang-1769013800533.png"
+  },
+  {
+    "file": "hotel-hon-tam.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/hontamnhatrang-1769503329631.png"
+  },
+  {
+    "file": "hotel-phu-quoc.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortspaphuquoc-1769013852898.png"
+  },
+  {
+    "file": "hotel-nha-trang.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlresortnhatrang-1769013852892.png"
+  },
+  {
+    "file": "hotel-empire.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vinpearlempirenhatrang-1769013832340.png"
+  },
+  {
+    "file": "welcome.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/thumbnailaus275x160-1790062723730.jpg"
+  },
+  {
+    "file": "menas-300.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas300kvithumb-1749865832140.jpg"
+  },
+  {
+    "file": "menas-500.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/menas500kvithumb-1749865837899.jpg"
+  }
+]
