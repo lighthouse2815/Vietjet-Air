@@ -1,0 +1,59 @@
+{
+  "verifiedAt": "2026-10-11T18:33:57.473Z",
+  "url": "http://localhost:5173/services/skyshop",
+  "reference": "https://skyshop.vietjetair.com/vi",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1920,
+      "height": 1080,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "heroImage": "http://localhost:5173/assets/skyshop/hero.jpg",
+      "catalogCards": 10,
+      "background": "fixed",
+      "reducedBackground": "scroll",
+      "errors": []
+    },
+    {
+      "name": "laptop",
+      "width": 1440,
+      "height": 900,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "heroImage": "http://localhost:5173/assets/skyshop/hero.jpg",
+      "catalogCards": 10,
+      "background": "fixed",
+      "reducedBackground": "scroll",
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "heroImage": "http://localhost:5173/assets/skyshop/hero.jpg",
+      "catalogCards": 10,
+      "background": "fixed",
+      "reducedBackground": "scroll",
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "heroImage": "http://localhost:5173/assets/skyshop/hero-mobile.jpg",
+      "catalogCards": 10,
+      "background": "fixed",
+      "reducedBackground": "scroll",
+      "errors": []
+    }
+  ]
+}

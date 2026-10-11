@@ -1,0 +1,224 @@
+{
+  "at": "2026-10-11T17:46:43.354Z",
+  "url": "https://skyshop.vietjetair.com/vi",
+  "hero": {
+    "desktopHeight": 600,
+    "mobileHeight": 375,
+    "mobileMaxWidth": 767,
+    "cloudTopOffset": -72
+  },
+  "views": [
+    {
+      "name": "laptop",
+      "width": 1440,
+      "height": 900,
+      "layers": [
+        {
+          "className": "global-background flex min-h-screen flex-col",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/sky-bg-cloud-desktop.webp\")",
+          "size": "cover",
+          "position": "100% 0px",
+          "y": 0,
+          "height": 6641.8125,
+          "width": 1440
+        },
+        {
+          "className": "container relative overflow-hidden rounded-md md:rounded-xl home-product-best-seller_homeProductBestSellerContent__iKTWP",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/bg-product-best-seller-v3.jpg\")",
+          "size": "cover",
+          "position": "50% 50%",
+          "y": 733,
+          "height": 475.984375,
+          "width": 1200
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-best-seller_homeProductBestSellerRibbon__TDlrj css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 733,
+          "height": 48,
+          "width": 342
+        },
+        {
+          "className": "home-product-flexible-one-item_flexibleOneCardCorner__icIKo",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/card-corner.svg\")",
+          "size": "contain",
+          "position": "0% 0%",
+          "y": 1374.484375,
+          "height": 105,
+          "width": 139
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible-one-item_flexibleOneBgBadgeRibbonHeader__hISb8 css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 1240.984375,
+          "height": 48,
+          "width": 319
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 1526.984375,
+          "height": 48,
+          "width": 188
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 2239.96875,
+          "height": 48,
+          "width": 337
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 2702.953125,
+          "height": 48,
+          "width": 148
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 3189.9375,
+          "height": 48,
+          "width": 140
+        },
+        {
+          "className": "footer-future_footerBgDonate__FQlRF",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/footer/bg-donate.webp\")",
+          "size": "cover",
+          "position": "50% 0%",
+          "y": 5303.5625,
+          "height": 400,
+          "width": 1440
+        },
+        {
+          "className": "footer_footerContainer__wPJvR",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/footer/footer-pattern.svg\"), url(\"https://skyshop.vietjetair.com/static/assets/images/footer/bg-footer.webp\")",
+          "size": "300px auto, cover",
+          "position": "100% 100%, 50% 0%",
+          "y": 5703.5625,
+          "height": 938.25,
+          "width": 1440
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "layers": [
+        {
+          "className": "global-background flex min-h-screen flex-col",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/sky-bg-cloud-desktop.webp\")",
+          "size": "cover",
+          "position": "100% 0px",
+          "y": 0,
+          "height": 7157.71875,
+          "width": 390
+        },
+        {
+          "className": "container relative overflow-hidden rounded-md md:rounded-xl home-product-best-seller_homeProductBestSellerContent__iKTWP",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/bg-product-best-seller-v3.jpg\")",
+          "size": "cover",
+          "position": "100% 50%",
+          "y": 496,
+          "height": 366.203125,
+          "width": 390
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-best-seller_homeProductBestSellerRibbon__TDlrj css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 496,
+          "height": 38,
+          "width": 230
+        },
+        {
+          "className": "home-product-flexible-one-item_flexibleOneCardCorner__icIKo",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/card-corner-mobile.svg\")",
+          "size": "contain",
+          "position": "0% 0%",
+          "y": 1012.640625,
+          "height": 105,
+          "width": 139
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible-one-item_flexibleOneBgBadgeRibbonHeader__hISb8 css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 886.203125,
+          "height": 38,
+          "width": 213
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 1148.203125,
+          "height": 38,
+          "width": 133
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 1756.40625,
+          "height": 38,
+          "width": 226
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 2119,
+          "height": 38,
+          "width": 109
+        },
+        {
+          "className": "ant-ribbon ant-ribbon-placement-start w-fit font-specific md:text-2xl home-product-flexible_homeProductFlexibleRibbon__teWUx css-zvs0tr",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/corner/header-corner.svg\")",
+          "size": "contain",
+          "position": "100% 100%",
+          "y": 2501.203125,
+          "height": 38,
+          "width": 105
+        },
+        {
+          "className": "footer-future_footerBgDonate__FQlRF",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/footer/bg-footer-mobile.webp\")",
+          "size": "auto",
+          "position": "50% 0%",
+          "y": 5637.65625,
+          "height": 260,
+          "width": 390
+        },
+        {
+          "className": "footer_footerContainer__wPJvR",
+          "image": "url(\"https://skyshop.vietjetair.com/static/assets/images/footer/footer-pattern.svg\"), url(\"https://skyshop.vietjetair.com/static/assets/images/footer/bg-footer.webp\")",
+          "size": "200px auto, cover",
+          "position": "100% 100%, 50% 0%",
+          "y": 5897.65625,
+          "height": 1260.0625,
+          "width": 390
+        }
+      ]
+    }
+  ]
+}

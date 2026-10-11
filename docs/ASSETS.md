@@ -16,3 +16,9 @@ Các ảnh tạo ban đầu dưới đây được giữ cho nội dung khác v�
 Theo yêu cầu căn chỉnh giao diện, `frontend/public/assets/reference/` lưu bản tải của logo, chín banner desktop/mobile, nền mây, ảnh dịch vụ/điểm đến, icon, ảnh giải thưởng và font tiêu đề từ trang tham chiếu công khai `https://www.vietjetair.com/vi`. Nguồn đầy đủ 78 file nằm trong `sources.json`; chạy `node scripts/sync-home-artwork.mjs` để tải lại. Hai ảnh bổ sung ngày 12/10/2026 là nền thống kê desktop/mobile, được đối chiếu trong [verification/BACKGROUNDS.md](verification/BACKGROUNDS.md). Đây là asset tham chiếu của chủ sở hữu gốc, không phải ảnh AI hay asset do dự án sáng tác; không gán giấy phép mở cho các file này.
 
 Banner có chữ được hiển thị nguyên ảnh, kèm tiêu đề đọc được bằng trình đọc màn hình, để tránh chồng thêm chữ HTML. Các giá/chiến dịch trong artwork thuộc ảnh tham chiếu; giá và giao dịch của ứng dụng được trả từ API demo. Ảnh CMS tùy chỉnh tiếp tục hiển thị trực tiếp cùng tiêu đề HTML.
+
+## Asset SkyShop
+
+Ngày 12/10/2026, đối chiếu [SkyShop công khai](https://skyshop.vietjetair.com/vi) và lưu 18 ảnh/SVG, tổng 3.751.371 byte, tại `frontend/public/assets/skyshop/`. [sources.json](../frontend/public/assets/skyshop/sources.json) ghi URL từng file: banner desktop/mobile, viền mây, nền trang, nền dịch vụ nổi bật, góc ribbon, năm icon danh mục, năm ảnh dịch vụ và hai icon điều hướng. Frontend tải từ local; không gọi API mua hàng của website tham chiếu.
+
+Banner dùng ảnh riêng ở chiều rộng ≤767px, theo breakpoint của SkyShop. Các ảnh suất ăn và bảo hiểm là minh họa từ tham chiếu, không xác nhận trùng sản phẩm demo. Tên, giá, mô tả và tồn kho lấy từ API nội bộ. Quà lưu niệm dùng icon Lucide có sẵn. Những asset tham chiếu thuộc chủ sở hữu gốc; không gán giấy phép mở hay mô tả là ảnh do project tạo.

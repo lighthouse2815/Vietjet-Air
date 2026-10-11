@@ -9,6 +9,7 @@ Backlog được tách theo yêu cầu người dùng ngày 11/10/2026. Những 
 | Email/SMS | Gửi xác nhận vé, khôi phục mật khẩu, thông báo đơn/yêu cầu | Nhà cung cấp hoặc SMTP cấu hình, retry, không lộ token; outbox local chỉ dành demo |
 | Khách sạn | Tồn phòng, giá, giữ phòng, xác nhận/hủy booking | API/allotment khách sạn; xác nhận thật và chính sách hủy; chưa chọn provider |
 | eSIM | Danh mục quốc gia/gói, cấp eSIM/QR, kích hoạt và tra cứu | API đơn vị eSIM, sandbox, không tạo QR demo rồi tuyên bố dùng được |
+| Taxi/đặt xe trên SkyShop | Điểm đón/trả, báo giá, đặt/hủy xe, điều phối và trạng thái chuyến | Chọn đơn vị vận chuyển, API được cấp quyền, sandbox và quy tắc hủy/hoàn; danh mục hiện chỉ thông báo chờ tích hợp |
 | eVisa | Thông tin yêu cầu, chuyển hồ sơ, phí và cập nhật tiến độ | Dịch vụ hồ sơ được cấp quyền; quyết định visa thuộc cơ quan có thẩm quyền |
 | Ngoại tệ | Tỷ giá, hồ sơ, điểm nhận, xác nhận/cấp ngoại tệ | Đơn vị thực hiện, điều kiện giao dịch và quyền tích hợp; không dùng tỷ giá mẫu cho giao dịch thật |
 | Bảo hiểm | Phí, phát hành hợp đồng/chứng nhận, hủy và bồi thường | API doanh nghiệp bảo hiểm, điều kiện sản phẩm và sandbox |
@@ -19,4 +20,6 @@ Backlog được tách theo yêu cầu người dùng ngày 11/10/2026. Những 
 
 Mỗi tích hợp cần tài liệu endpoint/schema, cơ chế xác thực, môi trường sandbox, timeout/retry, callback có xác minh, quy tắc hủy/hoàn và kiểm thử đầu cuối. Secret chỉ lưu trong môi trường; không commit credentials. Chỉ thêm adapter cụ thể khi đã chọn provider và có tài liệu, không dựng lớp trừu tượng trước nhu cầu.
 
-Nguồn khảo sát để xem lại, không phải cam kết có API công khai: [eVisa/điều hướng Vietjet](https://www.vietjetair.com/vi/e-visa), [eSIM](https://www.vietjetair.com/vi/pages/bay-khap-the-gioi-mua-ngay-esim-sieu-toc-1726636005286), [Travel Safe](https://www.vietjetair.com/vi/FAQ/faqs-travel-safe-16883976458321), [SkyJoy](https://skyjoy.vietjetair.com/cau-hoi-thuong-gap/).
+Nguồn khảo sát để xem lại, không phải cam kết có API công khai: [eVisa/điều hướng Vietjet](https://www.vietjetair.com/vi/e-visa), [eSIM](https://www.vietjetair.com/vi/pages/bay-khap-the-gioi-mua-ngay-esim-sieu-toc-1726636005286), [Travel Safe](https://www.vietjetair.com/vi/FAQ/faqs-travel-safe-16883976458321), [SkyJoy](https://skyjoy.vietjetair.com/cau-hoi-thuong-gap/), [SkyShop](https://skyshop.vietjetair.com/vi).
+
+SkyShop nội bộ dùng danh mục, giá, tồn kho và đơn hàng từ API của project. Hành lý, suất ăn, ưu tiên và bảo hiểm demo đi qua luồng mua thêm của booking đã xác nhận; bảo hiểm demo không phát hành hợp đồng. eSIM và Taxi chỉ hiển thị thông tin chờ tích hợp, không tạo đơn nhà cung cấp. Phần hàng hóa thật, phát hành bảo hiểm, eSIM và điều phối xe vẫn thuộc các mục trên.

@@ -1,6 +1,6 @@
 # Báo cáo kiểm chứng
 
-Báo cáo bổ sung cho nghiệp vụ nội bộ: [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md). Các con số dưới đây ghi nhận đợt kiểm chứng luồng lõi ban đầu.
+Báo cáo bổ sung cho nghiệp vụ nội bộ: [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md); giao diện và luồng SkyShop: [verification/SKYSHOP.md](verification/SKYSHOP.md), gồm kết quả 76 E2E và ảnh bốn viewport. Các con số dưới đây ghi nhận đợt kiểm chứng luồng lõi ban đầu.
 
 Mốc 11/10/2026, Asia/Ho_Chi_Minh. Chạy trực tiếp trong workspace, PostgreSQL 17 Docker, Java 21.0.12.1, Node 26.9.0/npm 12, Chromium Playwright 1.64.0. Backend Spring Boot 3.5.16 và frontend Vite production build; website local http://localhost:5173, API 8085.
 
