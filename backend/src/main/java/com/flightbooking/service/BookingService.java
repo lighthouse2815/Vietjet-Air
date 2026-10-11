@@ -283,6 +283,7 @@ public class BookingService {
         refunds.findByBookingId(b.getId()).filter(r -> List.of("REQUESTED","APPROVED").contains(r.getStatus()))
             .ifPresent(r -> { throw BusinessException.conflict("Booking đang xử lý hoàn vé"); });
     }
+    public int holdMinutes() { return holdMinutes; }
     public void mutable(Booking b) {
         if (b.getStatus()!=BookingStatus.CONFIRMED) throw BusinessException.conflict("Chỉ sửa booking đã xác nhận");
         noPendingRefund(b);

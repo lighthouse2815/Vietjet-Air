@@ -16,6 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service @RequiredArgsConstructor
 public class BookingChangeService {
+    public static final int HOLD_SECONDS=900;
+    private static final Map<String,Long> CHANGE_FEES=Map.of("ECO",100000L,"DELUXE",50000L);
+    private static final Map<String,Long> REFUND_PERCENT=Map.of("ECO",20L,"DELUXE",10L);
+    private final FareClassRepository classes;
+    public record FareRule(String code,String name,long changeFee,long refundPercent) {}
+    public List<FareRule> rules() { return classes.findAllByOrderByIdAsc().stream().map(f->new FareRule(f.getCode(),f.getName(),CHANGE_FEES.getOrDefault(f.getCode(),0L),REFUND_PERCENT.getOrDefault(f.getCode(),0L))).toList(); }
+
     private final BookingService bookings;
     private final BookingChangeRepository changes;
     private final ChangePaymentRepository payments;
@@ -39,11 +46,11 @@ public class BookingChangeService {
         for(int i=0;i<input.segments().size();i++) {
             var old=b.getSegments().get(i);var target=input.segments().get(i);
             if(!old.getFlight().getId().equals(target.flightId()) || !old.getFareClass().getCode().equals(target.fareCode()))
-                fee=fee.add(BigDecimal.valueOf((old.getFareClass().getCode().equals("ECO")?100000:old.getFareClass().getCode().equals("DELUXE")?50000:0)*old.getSeatedPassengers()));
+                fee=fee.add(BigDecimal.valueOf(CHANGE_FEES.getOrDefault(old.getFareClass().getCode(),0L)*old.getSeatedPassengers()));
         }
         BookingChange c=new BookingChange();c.setBooking(b);c.setPayload(encode(input));c.setRevision(b.getRevision());
         c.setAmount(price.totalAmount().subtract(b.getTotalAmount()).max(BigDecimal.ZERO).add(fee));c.setFee(fee);c.setTargetAmount(price.totalAmount());
-        c.setStatus("PENDING");c.setCreatedAt(Instant.now());c.setExpiresAt(Instant.now().plusSeconds(900));return view(changes.save(c));
+        c.setStatus("PENDING");c.setCreatedAt(Instant.now());c.setExpiresAt(Instant.now().plusSeconds(HOLD_SECONDS));return view(changes.save(c));
     }
     @Transactional
     public Map<String,Object> history(Long id,String token) {
@@ -88,7 +95,7 @@ public class BookingChangeService {
         if(r.getId()!=null && !r.getStatus().equals("REJECTED")) return view(r);
         BigDecimal multiplier=b.getPassengers().stream().map(p->pricing.passengerMultiplier(p.getType())).reduce(BigDecimal.ZERO,BigDecimal::add);
         BigDecimal fee=b.getSegments().stream().map(s->s.getUnitPrice().multiply(multiplier).multiply(
-            new BigDecimal(s.getFareClass().getCode().equals("ECO")?"0.20":s.getFareClass().getCode().equals("DELUXE")?"0.10":"0"))).reduce(b.getAdjustmentAmount(),BigDecimal::add).setScale(2,RoundingMode.HALF_UP).min(b.getTotalAmount());
+            BigDecimal.valueOf(REFUND_PERCENT.getOrDefault(s.getFareClass().getCode(),0L)).movePointLeft(2))).reduce(b.getAdjustmentAmount(),BigDecimal::add).setScale(2,RoundingMode.HALF_UP).min(b.getTotalAmount());
         r.setBooking(b);r.setStatus("REQUESTED");r.setReason(input.reason().trim());r.setStaffNote(null);r.setCompletedAt(null);
         r.setFee(fee);r.setAmount(b.getTotalAmount().subtract(fee));r.setCreatedAt(Instant.now());return view(refunds.save(r));
     }

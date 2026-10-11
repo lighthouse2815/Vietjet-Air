@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Service @RequiredArgsConstructor
 public class ShopService {
+    public static final int HOLD_SECONDS=900;
     private final ShopProductRepository products;
     private final ShopOrderRepository orders;
     private final UserAccountRepository users;
@@ -38,7 +39,7 @@ public class ShopService {
         UserAccount u=users.findLocked(userId).orElseThrow();var old=orders.findByRequestKey(input.requestKey());
         if(old.isPresent()){if(!old.get().getUser().getId().equals(userId)||!old.get().getDelivery().equals(input.delivery())||!old.get().getItems().stream().map(i->new OrderItem(i.getProduct().getId(),i.getQuantity())).toList().equals(input.items()))throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(old.get());}
         if(input.items().stream().map(OrderItem::productId).distinct().count()!=input.items().size())throw BusinessException.badRequest("Mỗi sản phẩm chỉ có một dòng trong giỏ");
-        ShopOrder o=new ShopOrder();o.setUser(u);o.setDelivery(input.delivery());o.setStatus("PENDING");o.setRequestKey(input.requestKey());o.setCreatedAt(Instant.now());o.setExpiresAt(Instant.now().plusSeconds(900));
+        ShopOrder o=new ShopOrder();o.setUser(u);o.setDelivery(input.delivery());o.setStatus("PENDING");o.setRequestKey(input.requestKey());o.setCreatedAt(Instant.now());o.setExpiresAt(Instant.now().plusSeconds(HOLD_SECONDS));
         if(input.delivery().equals("ON_BOARD")) {
             if(input.bookingCode()==null||input.bookingToken()==null)throw BusinessException.badRequest("Chọn booking đã xác nhận để nhận hàng theo chuyến");
             Booking entity=deliveryBooking;

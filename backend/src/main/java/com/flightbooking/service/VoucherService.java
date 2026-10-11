@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Service @RequiredArgsConstructor
 public class VoucherService {
+    public static final int HOLD_SECONDS=900, VALIDITY_DAYS=365;
     private final GiftVoucherRepository vouchers;
     private final VoucherUsageRepository usages;
     private final CommercePaymentRepository receipts;
@@ -32,7 +33,7 @@ public class VoucherService {
     }
     private GiftVoucher issue(UserAccount buyer,long value,String email,UUID key,boolean reward) {
         GiftVoucher v=new GiftVoucher();v.setCode(UUID.randomUUID());v.setBuyer(buyer);v.setRecipientEmail(email);v.setValue(BigDecimal.valueOf(value));
-        v.setBalance(reward?v.getValue():BigDecimal.ZERO);v.setStatus(reward?"ACTIVE":"PENDING");v.setReward(reward);v.setRequestKey(key);v.setCreatedAt(Instant.now());v.setExpiresAt(Instant.now().plusSeconds(365*86400L));return vouchers.save(v);
+        v.setBalance(reward?v.getValue():BigDecimal.ZERO);v.setStatus(reward?"ACTIVE":"PENDING");v.setReward(reward);v.setRequestKey(key);v.setCreatedAt(Instant.now());v.setExpiresAt(Instant.now().plusSeconds(VALIDITY_DAYS*86400L));return vouchers.save(v);
     }
     @Transactional
     public VoucherView redeem(Long id,Redeem input) {
@@ -45,8 +46,8 @@ public class VoucherService {
         GiftVoucher v=ownedBuyer(userId,id);
         if(replayed("VOUCHER",id,input))return view(v,userId);
         if(v.getStatus().equals("ACTIVE")&&input.outcome().equals("SUCCESS"))return view(v,userId);
-        if(!List.of("PENDING","FAILED").contains(v.getStatus()) || v.getCreatedAt().plusSeconds(900).isBefore(Instant.now()))throw BusinessException.conflict("Đơn voucher đã hết hạn hoặc đã xử lý");
-        if(input.outcome().equals("SUCCESS")){v.setStatus("ACTIVE");v.setBalance(v.getValue());v.setExpiresAt(Instant.now().plusSeconds(365*86400L));}
+        if(!List.of("PENDING","FAILED").contains(v.getStatus()) || v.getCreatedAt().plusSeconds(HOLD_SECONDS).isBefore(Instant.now()))throw BusinessException.conflict("Đơn voucher đã hết hạn hoặc đã xử lý");
+        if(input.outcome().equals("SUCCESS")){v.setStatus("ACTIVE");v.setBalance(v.getValue());v.setExpiresAt(Instant.now().plusSeconds(VALIDITY_DAYS*86400L));}
         else v.setStatus(input.outcome().equals("CANCELLED")?"CANCELLED":"FAILED");
         receipt("VOUCHER",id,input,v.getValue());return view(v,userId);
     }
@@ -85,5 +86,5 @@ public class VoucherService {
         if(!old.get().getKind().equals(kind)||!old.get().getPurchaseId().equals(id)||!old.get().getOutcome().equals(input.outcome()))throw BusinessException.conflict("Mã giao dịch đã dùng cho yêu cầu khác");return true;
     }
     public void receipt(String kind,Long id,Pay input,BigDecimal amount) {CommercePayment p=new CommercePayment();p.setKind(kind);p.setPurchaseId(id);p.setRequestKey(input.requestKey());p.setOutcome(input.outcome());p.setAmount(amount);p.setCreatedAt(Instant.now());receipts.save(p);}
-    private VoucherView view(GiftVoucher v,Long userId) {String status=v.getStatus();if(status.equals("ACTIVE")&&!v.getExpiresAt().isAfter(Instant.now())||List.of("PENDING","FAILED").contains(status)&&!v.getCreatedAt().plusSeconds(900).isAfter(Instant.now()))status="EXPIRED";return new VoucherView(v.getId(),v.getCode(),v.getRecipientEmail(),status,v.getValue(),v.getBalance(),v.getExpiresAt(),v.isReward(),v.getBuyer().getId().equals(userId));}
+    private VoucherView view(GiftVoucher v,Long userId) {String status=v.getStatus();if(status.equals("ACTIVE")&&!v.getExpiresAt().isAfter(Instant.now())||List.of("PENDING","FAILED").contains(status)&&!v.getCreatedAt().plusSeconds(HOLD_SECONDS).isAfter(Instant.now()))status="EXPIRED";return new VoucherView(v.getId(),v.getCode(),v.getRecipientEmail(),status,v.getValue(),v.getBalance(),v.getExpiresAt(),v.isReward(),v.getBuyer().getId().equals(userId));}
 }
