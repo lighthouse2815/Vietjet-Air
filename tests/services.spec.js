@@ -128,3 +128,36 @@ test("Ngoại tệ looks up an internal booking and saves currency preferences",
   expect(ticket.messages[0].body).toContain(booking.code); expect(ticket.messages[0].body).toContain("USD"); expect(ticket.messages[0].body).toContain("500");
   await expect(page.getByText("Tỷ giá và điều kiện mua do HDBank xác nhận. Yêu cầu nội bộ chưa tạo giao dịch ngoại tệ.", { exact: true })).toBeVisible();
 });
+
+test("Bảo hiểm uses API pricing and completes a booking service purchase", async ({ page, request }) => {
+  const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
+  const response = await request.get("/api/ancillary-services"); expect(response.ok()).toBe(true);
+  const insurance = (await response.json()).find(service => service.category === "INSURANCE");
+  await page.goto("/services/insurance");
+  await expect(page.getByRole("heading", { name: "Bảo hiểm du lịch Vietjet Travel Safe", exact: true })).toBeVisible();
+  await page.getByLabel("Chuyến bay mua bảo hiểm", { exact: true }).selectOption(booking.code);
+  const card = page.locator(".service-insurance-products article").filter({ hasText: insurance.name });
+  await expect(card).toContainText(new Intl.NumberFormat("vi-VN").format(insurance.price));
+  await card.getByRole("link", { name: "Mua bảo hiểm cho chuyến bay", exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`/my-booking/${booking.code}/manage`));
+  await expect(page.locator("#services").getByLabel(insurance.name)).toBeChecked();
+  await page.getByRole("button", { name: "Báo giá thay đổi", exact: true }).click();
+  await page.getByRole("button", { name: "Thanh toán thay đổi thành công", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Đã áp dụng thay đổi.");
+  const result = await request.get(`/api/bookings/${booking.code}`, { headers: { "X-Booking-Token": booking.accessToken } });
+  expect(result.ok()).toBe(true); const updated = await result.json();
+  expect(updated.extras.some(extra => extra.service.id === insurance.id)).toBe(true);
+  await page.reload(); await expect(page.locator("#services").getByLabel(insurance.name)).toBeChecked();
+});
+
+test("Bảo hiểm catalog retries after a network failure and supports guest lookup", async ({ page }) => {
+  await page.route("**/api/ancillary-services", route => route.abort());
+  await page.goto("/services/insurance");
+  const catalog = page.locator(".service-insurance");
+  await expect(catalog.getByRole("button", { name: "Thử lại", exact: true })).toBeVisible();
+  await page.unroute("**/api/ancillary-services");
+  await catalog.getByRole("button", { name: "Thử lại", exact: true }).click();
+  await expect(page.locator(".service-insurance-products article")).not.toHaveCount(0);
+  await expect(page.locator(".lookup-form")).toBeVisible();
+  await expect(catalog.getByRole("link", { name: "Mua bảo hiểm cho chuyến bay", exact: true })).toHaveCount(0);
+});

@@ -58,6 +58,7 @@ export default function App() {
             <Route path="/services/esim" element={<PartnerServicePage key="esim" slug="esim" />} />
             <Route path="/services/visa" element={<PartnerServicePage key="visa" slug="visa" />} />
             <Route path="/services/currency" element={<PartnerServicePage key="currency" slug="currency" />} />
+            <Route path="/services/insurance" element={<PartnerServicePage key="insurance" slug="insurance" />} />
             <Route path="/services/skyshop" element={<CommercePage kind="shop" />} />
             <Route path="/services/voucher" element={<CommercePage kind="voucher" />} />
             <Route path="/services/skyjoy" element={<CommercePage kind="loyalty" />} />

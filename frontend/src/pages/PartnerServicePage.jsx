@@ -7,9 +7,19 @@ import ServiceRequestForm from "../components/services/ServiceRequestForm";
 import StatsSection from "../components/home/StatsSection";
 import BookingForm from "../components/booking/BookingForm";
 import BookingLookupForm from "../components/booking/BookingLookupForm";
+import InsuranceBooking from "../components/services/InsuranceBooking";
 import "../styles/services.css";
 
 const services = {
+  insurance: {
+    title: "Bảo hiểm", heading: "Bảo hiểm du lịch Vietjet Travel Safe", image: "/assets/services/insurance-banner.jpg",
+    description: "Chuẩn bị hành trình an tâm với thông tin bảo hiểm. Bạn có thể chọn bảo hiểm demo trong booking và thanh toán qua luồng mua thêm dịch vụ hiện có.",
+    provider: "Vietjet Travel Safe", source: "https://www.vietjetair.com/vi/insurance",
+    steps: ["Chọn booking đã xác nhận", "Xem giá bảo hiểm nội bộ", "Báo giá và thanh toán mua thêm"],
+    faq: [["Tôi có nhận chứng nhận bảo hiểm thật không?", "Bảo hiểm nội bộ chỉ phục vụ trải nghiệm demo. Chứng nhận, điều khoản, hiệu lực và yêu cầu bồi thường thực tế phải được xác nhận với nhà cung cấp."],
+      ["Tôi chọn bảo hiểm cho ai và chặng nào?", "Nút mua thêm chuyển tới quản lý booking và chọn trước dịch vụ cho hành khách có ghế đầu tiên, ở chặng đầu tiên. Bạn có thể đổi hành khách và chặng trước khi báo giá."],
+      ["Tôi mua bảo hiểm khi đặt vé mới thế nào?", "Chọn chuyến bay và nhập hành khách; tại bước dịch vụ bổ sung, chọn bảo hiểm cho từng hành khách và chặng rồi tiếp tục thanh toán demo."]],
+  },
   currency: {
     title: "Mua ngoại tệ", heading: "Mua ngoại tệ cho chuyến đi", image: "/assets/services/currency-banner.jpg",
     description: "Vietjet giới thiệu dịch vụ ngoại tệ cùng HDBank. Tra cứu booking nội bộ và gửi nhu cầu tư vấn cho chuyến đi của bạn.",
@@ -74,7 +84,7 @@ export default function PartnerServicePage({ slug }) {
         {booking && <p className="notice-panel service-booking-result">{t("Mã đặt chỗ")}: <strong>{booking.code}</strong> · {booking.segments.map(segment => `${segment.flight.origin.code} → ${segment.flight.destination.code}`).join(" / ")} · {t(booking.status)}</p>}
       </>}
       <div className="service-steps">{service.steps.map((step, index) => { const Icon = [MapPin, CalendarDays, MessageCircle][index]; return <article key={step}><Icon size={30} /><span>{index + 1}</span><h2>{t(step)}</h2></article>; })}</div>
-      <ServiceRequestForm key={slug} slug={slug} title={service.title} fields={service.fields} bookingCode={booking?.code} />
+      {slug === "insurance" ? <InsuranceBooking /> : <ServiceRequestForm key={slug} slug={slug} title={service.title} fields={service.fields} bookingCode={booking?.code} />}
       {slug === "currency" && <section className="service-guides"><h2>{t("Hướng dẫn từ nhà cung cấp")}</h2><p>{t("Ảnh hướng dẫn tham chiếu; các bước giao dịch ngân hàng được thực hiện trên kênh của đối tác.")}</p>
         {[1, 2].map(index => <details key={index}><summary>{index === 1 ? t("Mua ngoại tệ khi đặt chuyến bay") : t("Mua ngoại tệ từ Chuyến bay của tôi")}</summary><img src={`/assets/services/currency-guide-${index}.jpg`} alt={t("Hướng dẫn mua ngoại tệ của HDBank")} loading="lazy" /></details>)}
       </section>}
