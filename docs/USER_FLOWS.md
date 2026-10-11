@@ -8,7 +8,7 @@ Draft lưu sessionStorage để reload và chuyển bước không mất dữ li
 
 ## Quản lý booking
 
-`/my-booking` → nhập mã + họ + tên của một hành khách → API kiểm tra → hiện hành trình, dịch vụ, giá/trạng thái → có thể hủy booking demo theo điều kiện. Tra cứu sai trả lỗi chung và bị giới hạn số lần theo IP.
+`/my-booking` → nhập mã + họ + tên của một hành khách → API kiểm tra → hiện hành trình, dịch vụ, giá, trạng thái booking và trạng thái thanh toán → có thể hủy booking demo theo điều kiện hoặc tiếp tục thanh toán booking PENDING. Tra cứu sai trả lỗi chung và bị giới hạn số lần theo IP. Dịch vụ bổ sung được chọn trong luồng tạo booking; chưa mua thêm/đổi dịch vụ sau xác nhận.
 
 ## Check-in
 

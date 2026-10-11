@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "audit:reference": "node scripts/reference-audit.mjs",
+    "setup:env": "node scripts/init-env.mjs",
+    "verify:home": "node scripts/verify-home.mjs",
     "test:e2e": "playwright test",
     "build": "npm --prefix frontend run build"
   },
