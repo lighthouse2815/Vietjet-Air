@@ -2,6 +2,8 @@
 
 Ngày 11/10/2026, Chromium kiểm tra Vite preview tại `http://localhost:5173`, Spring Boot tại 8085 và PostgreSQL local tại 5438. Kết quả mới nằm trong [home-alignment-results.json](home-alignment-results.json) và [home-checks.json](home-checks.json).
 
+Lượt bổ sung animation ngày 12/10/2026: build, 525 vị trí dịch và **52 E2E** đạt. Fade banner/ảnh, thanh thông báo trượt, nền mây khi cuộn, nút hỗ trợ nhấp nhô và điều khiển các dải cuộn đã được kiểm chứng qua khung hình/video. Xem [MOTION.md](MOTION.md) để xem video, thông số và lệnh chạy lại; các số 30/42 bên dưới là kết quả của lượt căn chỉnh trước.
+
 Trang chủ hiện dùng logo/font tiêu đề, chín banner với ảnh desktop/mobile, nền mây, ảnh khuyến mãi, sáu icon tiện ích, banner SkyJoy/mua sắm, ảnh dịch vụ/điểm đến, FAQ và giải thưởng từ bản tham chiếu. Nguồn 76 file nằm trong [sources.json](../../frontend/public/assets/reference/sources.json); asset được phục vụ từ local. V8 thêm sáu bản ghi HERO vào bảng nội dung hiện có, vẫn chỉnh được trong ADMIN.
 
 Các lệnh xác minh:

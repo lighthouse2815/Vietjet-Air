@@ -83,6 +83,7 @@ Khứ hồi mẫu: SGN → Đà Nẵng (DAD), đi ngày mai, về ngày kế ti�
 
 - Khảo sát Playwright ở bốn viewport; tài liệu đo giao diện, snapshot và giới hạn khảo sát.
 - Trang chủ đầy đủ nhóm section theo thứ tự khảo sát, header/dropdown/menu mobile, carousel autoplay/swipe, form sân bay/lịch giá/hành khách, footer, responsive và reduced motion.
+- Motion trang chủ: fade banner/ảnh, thông báo trượt, nền mây desktop cố định, hỗ trợ nhấp nhô và điều khiển dải vé/giải thưởng. [Kết quả 52 E2E và video](docs/verification/MOTION.md).
 - Tìm chuyến một chiều/khứ hồi, hạng vé, thông tin hành khách, chọn dịch vụ/ghế theo người và chặng, review, thanh toán demo, mã đặt chỗ và dữ liệu PostgreSQL thật.
 - Draft lưu sessionStorage qua refresh và các bước. Mất session vẫn tra cứu lại được qua tên/mã.
 - Giá backend bằng BigDecimal, snapshot khi tạo booking, giữ chỗ có hạn, khóa transaction chống ghế trùng và overbooking, giải phóng chỗ khi hủy/hết hạn, thanh toán thành công idempotent.

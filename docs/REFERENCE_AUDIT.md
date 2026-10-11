@@ -34,7 +34,7 @@ Viewport: desktop 1920×1080; laptop 1440×900; tablet 768×1024; mobile 390×84
 - Nội dung thường 16px, tiêu đề card 18px, tiêu đề banner 24px. Tiêu đề banner ribbon cao 42px tại desktop.
 - Container 1200px; ba cột dịch vụ có bước x≈410px, gap khoảng 30px. Sáu điểm đến có nhịp tương ứng.
 - Màu chủ đạo: đỏ, vàng, trắng, nền trời xanh. Màu computed chi tiết nằm trong JSON. Sản phẩm dùng biến CSS, KoHo (Google Fonts, SIL OFL) và font Jambono tải từ bản tham chiếu; nguồn ghi trong `ASSETS.md`.
-- Chuyển slide được quan sát tự động. Không đo chắc chắn easing/duration nội bộ, không khẳng định autoplay pause-on-hover đã xác minh.
+- Chuyển slide được quan sát tự động. Lượt đối chiếu motion bổ sung đo fade hero 0,5 giây, ảnh fade 1 giây, thanh thông báo chu kỳ 5 giây và nút chat nhấp nhô chu kỳ 3 giây; nền mây desktop giữ cố định khi cuộn. [Bằng chứng motion](verification/reference-motion-summary.json) lưu cấu hình/DOM/CSS đọc từ trang công khai. Pause khi hover là hành vi của bản local đã kiểm thử, không khẳng định tất cả slider hãng dùng cùng hành vi.
 
 ## Responsive và tương tác
 

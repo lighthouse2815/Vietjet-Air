@@ -54,6 +54,7 @@ Build có cảnh báo comment annotation từ Zod/Rollup và cảnh báo agent c
 npm --prefix frontend run build
 npm run test:e2e
 npm run verify:home
+node scripts/verify-home-motion.mjs
 ```
 
 Xem README để khởi động database/backend/frontend và cài Chromium. Kết quả lần chạy sau có thể thay đổi khi môi trường, ngày hoặc dữ liệu mẫu thay đổi. Test khứ hồi chọn ngày đủ hai ghế từ API; test một chiều tìm ngày còn ghế thường trên chuyến SGN–HAN đầu tiên, trong 30 ngày tới. Không xóa/reset dữ liệu local khi chạy lại.

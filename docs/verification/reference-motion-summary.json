@@ -1,0 +1,383 @@
+{
+  "url": "https://www.vietjetair.com/vi",
+  "capturedAt": "2026-10-11T16:41:43.565Z",
+  "observed": {
+    "heroCrossfadeMs": 500,
+    "heroAutoplayApproxMs": 8000,
+    "announcementIntervalMs": 5000,
+    "imageFadeMs": 1000,
+    "supportFloatMs": 3000,
+    "desktopCloudAttachment": "fixed",
+    "mobileCloudAttachment": "scroll"
+  },
+  "viewports": [
+    {
+      "width": 1440,
+      "sliders": [
+        {
+          "label": "Announcements",
+          "settings": {
+            "autoplay": true,
+            "autoplaySpeed": 5000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Hero",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 10000,
+            "speed": 500,
+            "fade": true,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": true,
+            "pauseOnHover": false,
+            "pauseOnFocus": false,
+            "swipe": false,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Promotions",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 5,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Information",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 2,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Membership",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Services",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 3,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Shop",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Travel",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 3,
+            "slidesToScroll": 3,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "FAQ",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 6,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Awards",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 6,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        }
+      ],
+      "imageFade": {
+        "fromOpacity": 0,
+        "toOpacity": 1,
+        "durationMs": 1000,
+        "timingFunction": "ease-out"
+      }
+    },
+    {
+      "width": 390,
+      "sliders": [
+        {
+          "label": "Announcements",
+          "settings": {
+            "autoplay": true,
+            "autoplaySpeed": 5000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Hero",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 10000,
+            "speed": 500,
+            "fade": true,
+            "infinite": true,
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": true,
+            "pauseOnHover": false,
+            "pauseOnFocus": false,
+            "swipe": false,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Promotions",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 3,
+            "slidesToScroll": 1,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Information",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Membership",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Services",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Shop",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Travel",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": false,
+            "slidesToShow": 1.25,
+            "slidesToScroll": 1,
+            "arrows": false,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        },
+        {
+          "label": "Awards",
+          "settings": {
+            "autoplay": false,
+            "autoplaySpeed": 3000,
+            "speed": 500,
+            "fade": false,
+            "infinite": true,
+            "slidesToShow": 3,
+            "slidesToScroll": 3,
+            "arrows": true,
+            "dots": false,
+            "pauseOnHover": true,
+            "pauseOnFocus": false,
+            "swipe": true,
+            "draggable": true
+          }
+        }
+      ],
+      "imageFade": {
+        "fromOpacity": 0,
+        "toOpacity": 1,
+        "durationMs": 1000,
+        "timingFunction": "ease-out"
+      }
+    }
+  ],
+  "notes": [
+    "Hero interval is from observed slide changes; values are not a promise about future changes to the reference site.",
+    "Provider chat motion was compared visually; the local support link remains an internal route."
+  ]
+}
