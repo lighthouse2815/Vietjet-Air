@@ -5,8 +5,8 @@ const normalize = (value) =>
   value
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
-    .replace(/đ/g, "d")
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/đ/g, "d");
 export default function AirportPicker({
   label,
   value,

@@ -39,9 +39,16 @@ test("airport search preserves text typed immediately after opening", async ({
   const origin = page
     .getByRole("button", { name: "Điểm khởi hành", exact: true })
     .first();
-  for (const code of ["HAN", "SGN", "PQC", "DAD", "HAN", "CXR"]) {
+  for (const [query, code] of [
+    ["ha noi", "HAN"],
+    ["SGN", "SGN"],
+    ["phu quoc", "PQC"],
+    ["da nang", "DAD"],
+    ["ĐÀ NẴNG", "DAD"],
+    ["CXR", "CXR"],
+  ]) {
     await origin.click();
-    await page.getByRole("combobox").fill(code);
+    await page.getByRole("combobox").fill(query);
     await page.getByRole("combobox").press("Enter");
     await expect(origin).toContainText(code);
   }
