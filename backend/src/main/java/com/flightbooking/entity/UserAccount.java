@@ -21,4 +21,6 @@ public class UserAccount {
     private String phone;
     private String resetHash;
     private Instant resetExpiresAt;
+    @Column(nullable=false) private long points;
+    @Column(nullable=false,precision=14,scale=2) private java.math.BigDecimal qualifyingSpend = java.math.BigDecimal.ZERO;
 }

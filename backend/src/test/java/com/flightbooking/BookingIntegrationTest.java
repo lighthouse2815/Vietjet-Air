@@ -64,6 +64,11 @@ class BookingIntegrationTest {
     @Autowired AuthService auth;
     @Autowired ObjectMapper json;
     @Autowired EntityManagerFactory entityManagerFactory;
+    @Autowired VoucherService vouchers;
+    @Autowired LoyaltyService loyalty;
+    @Autowired ShopService shop;
+    @Autowired ShopProductRepository productRepo;
+    @Autowired UserAccountRepository userRepo;
     @Autowired BookingChangeService changes;
     @Autowired AccountService accounts;
     @Autowired SupportService support;
@@ -97,6 +102,48 @@ class BookingIntegrationTest {
     }
     private BookingView create(String seat) {
         return bookings.create(input(flightId, seat, ""), null);
+    }
+
+    @Test
+    void vouchersPayOnlyForRecipientAndRestoreBalanceOnRefund() {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var other=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());
+        var v=vouchers.buy(a.id(),new com.flightbooking.dto.request.CommerceRequests.BuyVoucher(1000000L,a.email(),UUID.randomUUID()));
+        vouchers.pay(a.id(),v.id(),new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(),"SUCCESS"));
+        var b=bookings.create(input(flightId,null,""),a.id());String token=b.accessToken().toString();UUID key=UUID.randomUUID();
+        var request=new com.flightbooking.dto.request.CommerceRequests.VoucherPay(v.id(),b.id(),key);
+        assertThatThrownBy(()->vouchers.payBooking(other.id(),request,token)).isInstanceOf(BusinessException.class);
+        vouchers.payBooking(a.id(),request,token);vouchers.payBooking(a.id(),request,token);
+        assertThat(vouchers.list(a.id()).getFirst().balance()).isEqualByComparingTo(BigDecimal.valueOf(1000000).subtract(b.price().totalAmount()));
+        assertThat(loyalty.wallet(a.id()).points()).isZero();
+        var r=changes.requestRefund(b.id(),token,new com.flightbooking.dto.request.ChangeRequests.Refund("Hoàn voucher"));
+        changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("APPROVE","Duyệt"));
+        changes.decide(r.id(),new com.flightbooking.dto.request.ChangeRequests.RefundDecision("COMPLETE","Hoàn demo"));
+        assertThat(vouchers.list(a.id()).getFirst().balance()).isEqualByComparingTo(BigDecimal.valueOf(1000000).subtract(r.fee()));
+    }
+
+    @Test
+    void shopUsesServerPricesReservesStockAndReversesPointsOnCancel() {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("shop-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        var p=shop.products().getFirst();UUID requestKey=UUID.randomUUID();
+        var input=new com.flightbooking.dto.request.CommerceRequests.CreateOrder(List.of(new com.flightbooking.dto.request.CommerceRequests.OrderItem(p.id(),2)),"PICKUP",null,null,requestKey);
+        var o=shop.create(a.id(),input);assertThat(shop.create(a.id(),input).id()).isEqualTo(o.id());
+        assertThat(o.total()).isEqualByComparingTo(p.price().multiply(BigDecimal.valueOf(2)));
+        assertThat(shop.products().getFirst().stock()).isEqualTo(p.stock()-2);
+        var pay=new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(),"SUCCESS");shop.pay(a.id(),o.id(),pay);shop.pay(a.id(),o.id(),pay);
+        assertThat(loyalty.wallet(a.id()).points()).isEqualTo(o.total().divideToIntegralValue(BigDecimal.valueOf(10000)).longValue());
+        shop.cancel(a.id(),o.id());shop.cancel(a.id(),o.id());
+        assertThat(shop.products().getFirst().stock()).isEqualTo(p.stock());assertThat(loyalty.wallet(a.id()).points()).isZero();
+    }
+
+    @Test
+    void loyaltyRedemptionIsAtomicAndRejectsInsufficientPoints() {
+        var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("points-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
+        loyalty.award(a.id(),"TEST:"+a.id(),BigDecimal.valueOf(2000000),"Giao dịch kiểm thử");
+        var input=new com.flightbooking.dto.request.CommerceRequests.Redeem(100,UUID.randomUUID());var v=vouchers.redeem(a.id(),input);
+        assertThat(vouchers.redeem(a.id(),input).id()).isEqualTo(v.id());assertThat(loyalty.wallet(a.id()).points()).isEqualTo(100);
+        assertThatThrownBy(()->vouchers.redeem(a.id(),new com.flightbooking.dto.request.CommerceRequests.Redeem(200,UUID.randomUUID()))).isInstanceOf(BusinessException.class);
+        assertThat(loyalty.wallet(a.id()).points()).isEqualTo(100);
     }
 
     @Test

@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentService {
     private final PaymentRepository payments;
     private final BookingService bookings;
+    private final LoyaltyService loyalty;
+    private final com.flightbooking.repository.VoucherUsageRepository voucherUsages;
     @Transactional
     public PaymentView pay(DemoPayment input, String token) {
         Booking b = bookings.locked(input.bookingId(), token);
@@ -40,8 +42,11 @@ public class PaymentService {
         payment.setAmount(b.getTotalAmount());
         payment.setCreatedAt(Instant.now());
         payments.save(payment);
-        if (input.outcome().equals("SUCCESS"))
+        if (input.outcome().equals("SUCCESS")) {
             b.setStatus(BookingStatus.CONFIRMED);
+            loyalty.award(b.getUser()==null?null:b.getUser().getId(),"BOOKING:"+b.getId(),
+                b.getTotalAmount().subtract(voucherUsages.findByBookingId(b.getId()).map(VoucherUsage::getAmount).orElse(java.math.BigDecimal.ZERO)),"Thanh toán vé "+b.getCode());
+        }
         if (input.outcome().equals("CANCELLED")) {
             b.setStatus(BookingStatus.CANCELLED);
             bookings.releaseSeats(b);

@@ -5,9 +5,9 @@ Phạm vi được người dùng xác nhận ngày 11/10/2026: triển khai ngh
 - [x] Tài khoản: hồ sơ, đổi/quên mật khẩu, hành khách thường dùng; hỗ trợ: yêu cầu, trao đổi, lịch sử.
 - [x] Sau đặt vé: mua bổ sung/đổi ghế, đổi chuyến/ngày/hạng vé và thông tin liên hệ; báo giá máy chủ, xác nhận thanh toán phần chênh lệch, lịch sử giao dịch.
 - [ ] Hoàn vé: yêu cầu, tính phí demo, duyệt/từ chối, theo dõi hoàn tiền; giải phóng ghế và chống xử lý lặp.
-- [ ] e-Voucher: mua/tặng, phát hành, hạn dùng/số dư, thanh toán booking và lịch sử sử dụng.
-- [ ] Cửa hàng nội bộ: danh mục/tồn kho, giỏ hàng, đơn mua, thanh toán/hủy và nhận hàng theo booking.
-- [ ] Hội viên nội bộ: số dư, tích điểm khi giao dịch thành công, lịch sử, đổi điểm lấy voucher; chống cộng/trừ lặp.
+- [x] e-Voucher: mua/tặng, phát hành, hạn dùng/số dư, thanh toán booking và lịch sử sử dụng.
+- [x] Cửa hàng nội bộ: danh mục/tồn kho, giỏ hàng, đơn mua, thanh toán/hủy và nhận hàng theo booking.
+- [x] Hội viên nội bộ: số dư, tích điểm khi giao dịch thành công, lịch sử, đổi điểm lấy voucher; chống cộng/trừ lặp.
 - [ ] Quản trị: phân quyền ADMIN; booking, hoàn vé, hỗ trợ, chuyến/giá, dịch vụ, sản phẩm/tồn kho, khuyến mại và nội dung.
 - [ ] Đặt vé nhiều chặng và đặt nhóm trong giới hạn sức chứa; tải boarding pass demo.
 - [ ] Chuyển tiếng Việt/Anh, liên kết header/footer tới đúng nghiệp vụ.

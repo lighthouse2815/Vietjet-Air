@@ -4,20 +4,23 @@ import { CheckCircle2, XCircle, Ban } from "lucide-react";
 import { useBooking } from "../context/BookingContext";
 import { api, bookingHeaders, errorMessage, money } from "../api/client";
 import BookingSteps from "../components/booking/BookingSteps";
+import { useApi } from "../hooks/useApi";
 export default function PaymentPage() {
   const { draft, update } = useBooking();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const booking = draft.booking;
+  const vouchers = useApi(sessionStorage.getItem("demo-auth") ? "/commerce/account/vouchers" : null);
+  const [voucherId, setVoucherId] = useState("");
   if (!booking) return <Navigate to="/booking/review" replace />;
   async function pay(outcome) {
     setBusy(true);
     setError("");
     try {
       await api.post(
-        "/payments/demo",
-        { bookingId: booking.id, requestKey: crypto.randomUUID(), outcome },
+        voucherId && outcome === "SUCCESS" ? "/commerce/account/vouchers/pay-booking" : "/payments/demo",
+        voucherId && outcome === "SUCCESS" ? {voucherId:Number(voucherId),bookingId:booking.id,requestKey:crypto.randomUUID()} : { bookingId: booking.id, requestKey: crypto.randomUUID(), outcome },
         bookingHeaders(booking.accessToken),
       );
       const { data } = await api.get(
@@ -62,6 +65,7 @@ export default function PaymentPage() {
           </p>
         )}
         <div className="payment-options">
+          {!!vouchers.data?.length && <label>Dùng voucher nội bộ<select value={voucherId} onChange={e=>setVoucherId(e.target.value)}><option value="">Thanh toán demo thông thường</option>{vouchers.data.filter(v=>v.status==="ACTIVE"&&v.balance>0&&v.recipientEmail===JSON.parse(sessionStorage.getItem("demo-user")||"{}").email).map(v=><option key={v.id} value={v.id}>{v.code} · {money(v.balance)}</option>)}</select>{voucherId&&<small>Trừ số dư voucher trước, phần còn lại thanh toán demo. Không thu tiền thật.</small>}</label>}
           <button
             className="button primary"
             disabled={busy}

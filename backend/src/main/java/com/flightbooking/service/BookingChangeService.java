@@ -23,6 +23,8 @@ public class BookingChangeService {
     private final CheckInRepository checkIns;
     private final ObjectMapper json;
     private final PricingService pricing;
+    private final LoyaltyService loyalty;
+    private final VoucherService vouchers;
     public record ChangeView(Long id,String status,BigDecimal amount,BigDecimal fee,BigDecimal targetAmount,
         Instant createdAt,Instant expiresAt,CreateBooking requested) {}
     public record RefundView(Long id,Long bookingId,String status,String reason,String staffNote,
@@ -68,6 +70,7 @@ public class BookingChangeService {
             if(bookings.quoteChange(b,requested).totalAmount().compareTo(c.getTargetAmount())!=0)
                 throw BusinessException.conflict("Giá dịch vụ đã thay đổi. Vui lòng báo giá lại.");
             bookings.applyChange(b,requested,c.getFee());c.setRequestKey(input.requestKey());
+            loyalty.award(b.getUser()==null?null:b.getUser().getId(),"CHANGE:"+c.getId(),c.getAmount(),"Thay đổi vé "+b.getCode());
         }
         ChangePayment payment=new ChangePayment();payment.setChange(c);payment.setRequestKey(input.requestKey());
         payment.setStatus(input.outcome());payment.setAmount(c.getAmount());payment.setCreatedAt(Instant.now());payments.save(payment);
@@ -96,6 +99,8 @@ public class BookingChangeService {
         if(input.action().equals("COMPLETE")) {
             if(!r.getStatus().equals("APPROVED")) throw BusinessException.conflict("Chỉ hoàn tiền yêu cầu đã được duyệt");
             r.setStatus("COMPLETED");r.setCompletedAt(Instant.now().truncatedTo(java.time.temporal.ChronoUnit.MICROS));
+            vouchers.refundBooking(b.getId(),r.getAmount());loyalty.reverse("BOOKING:"+b.getId());
+            changes.findByBookingIdOrderByIdDesc(b.getId()).stream().filter(c->c.getStatus().equals("SUCCESS")).forEach(c->loyalty.reverse("CHANGE:"+c.getId()));
         } else {
             if(!r.getStatus().equals("REQUESTED")) throw BusinessException.conflict("Yêu cầu đã được xử lý");
             if(input.action().equals("APPROVE")) {
