@@ -23,6 +23,7 @@ const SupportPage = lazy(() => import("./pages/SupportPage"));
 const CommercePage = lazy(() => import("./pages/CommercePage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const JourneyPage = lazy(() => import("./pages/JourneyPage"));
+const PartnerServicePage = lazy(() => import("./pages/PartnerServicePage"));
 export default function App() {
   useTranslation();
   const { pathname, key, hash } = useLocation();
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/account" element={<AccountPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/services/support" element={<SupportPage />} />
+            <Route path="/services/hotels" element={<PartnerServicePage slug="hotels" />} />
             <Route path="/services/skyshop" element={<CommercePage kind="shop" />} />
             <Route path="/services/voucher" element={<CommercePage kind="voucher" />} />
             <Route path="/services/skyjoy" element={<CommercePage kind="loyalty" />} />

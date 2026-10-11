@@ -150,7 +150,7 @@ export default function Header() {
         <nav className="product-nav" aria-label={t("Dịch vụ")}>
           <div className="container">
             {products.map(([label, path], i) => (
-              <Link className={i === (shop ? 1 : 0) ? "current" : ""} key={label} to={path}>
+              <Link className={path === pathname ? "current" : ""} aria-current={path === pathname ? "page" : undefined} key={label} to={path}>
                 <img src={shop && i < 2 ? `/assets/skyshop/${i === 0 ? "nav-flight" : "nav-shop-active"}.png` : `/assets/reference/product-${i}.png`} alt="" width="25" height="25" />
                 {t(label)}
               </Link>

@@ -1,0 +1,40 @@
+.service-page { background: #fff url('/assets/reference/cloud-background.webp') center 380px / 100% auto no-repeat; }
+.service-hero { position: relative; overflow: hidden; background: var(--sky); }
+.service-hero > img { display: block; width: 100%; height: auto; max-height: 460px; object-fit: cover; }
+.service-hotels .service-hero > img { height: 420px; filter: brightness(.7); }
+.service-hero-copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; color: white; }
+.service-hero-copy h1 { font: 400 clamp(30px, 4vw, 52px)/1.15 Jambono, sans-serif; max-width: 680px; margin: 12px 0 26px; }
+.service-content { padding-top: 24px; padding-bottom: 45px; }
+.service-breadcrumb { display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; margin-bottom: 24px; }
+.service-breadcrumb a { color: var(--red); }
+.service-content > h1 { font-size: 32px; margin: 0 0 18px; }
+.service-intro { max-width: 980px; font-size: 18px; }
+.service-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 30px 0; }
+.service-steps article { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 25px; position: relative; }
+.service-steps svg { color: var(--red); }
+.service-steps span { float: right; background: #fff0e9; color: var(--red); border-radius: 50%; padding: 3px 13px; font-weight: 700; }
+.service-steps h2 { font-size: 19px; margin-bottom: 0; }
+.service-request h2, .service-section-title { background: var(--red); color: white; border-radius: 8px 8px 0 0; padding: 15px 24px; margin: -24px -24px 24px; }
+.service-request { padding: 24px; margin-bottom: 24px; overflow: hidden; }
+.service-request .form-grid { gap: 18px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.service-request label { min-width: 0; }
+.service-request input, .service-request select { width: 100%; }
+.service-request .button { margin: 20px 10px 0 0; }
+.service-faq { margin: 24px 0; }
+.service-faq details { border-bottom: 1px solid var(--line); padding: 14px 0; }
+.service-faq summary { cursor: pointer; font-weight: 600; }
+.service-provider { border: 1px solid var(--line); border-radius: 12px; padding: 24px; background: #fff9e7; }
+.service-provider .button { margin: 8px 10px 0 0; }
+.service-content .lookup-form { margin-bottom: 24px; }
+.service-page a:focus-visible, .service-page summary:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+@media (max-width: 767px) {
+  .service-hero > img { min-height: 160px; }
+  .service-hotels .service-hero > img { height: 320px; }
+  .service-hero-copy { padding: 24px; }
+  .service-content > h1 { font-size: 26px; }
+  .service-steps { grid-template-columns: 1fr; gap: 12px; }
+  .service-steps article { padding: 18px; }
+  .service-request .form-grid { grid-template-columns: 1fr; }
+  .service-request { padding: 18px; }
+  .service-request h2 { margin: -18px -18px 18px; padding: 16px 18px; font-size: 22px; }
+}

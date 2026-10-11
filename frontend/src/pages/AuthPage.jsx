@@ -2,12 +2,14 @@ import { t } from "../i18n.js";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { api, errorMessage } from "../api/client";
 import { storeBooking } from "../utils/booking";
 export default function AuthPage() {
   useTranslation();
   const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const returnTo = params.get("returnTo");
   const [resetMessage, setResetMessage] = useState("");
   const [resetToken, setResetToken] = useState(params.get("reset") || "");
   const [mode, setMode] = useState("login");
@@ -37,6 +39,10 @@ export default function AuthPage() {
       sessionStorage.setItem("demo-auth", data.token);
       sessionStorage.setItem("demo-user", JSON.stringify(data));
       setUser(data);
+      if (["hotels", "esim", "visa", "currency", "insurance", "skyjoy", "support"].some(slug => returnTo === `/services/${slug}`)) {
+        navigate(returnTo, { replace: true });
+        return;
+      }
       const result = await api.get("/auth/bookings");
       setBookings(result.data);
       setPage(0);
