@@ -35,6 +35,16 @@
       "file": "visa-banner.png",
       "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evisa-1716979179146.png",
       "bytes": 861812
+    },
+    {
+      "file": "currency-guide-1.jpg",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/frame-1-1766032806748.jpg",
+      "bytes": 184677
+    },
+    {
+      "file": "currency-guide-2.jpg",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/frame-2-1766032835411.jpg",
+      "bytes": 128182
     }
   ]
 }

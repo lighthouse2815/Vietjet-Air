@@ -89,3 +89,42 @@ test("eVisa saves a journey inquiry with transit details", async ({ page, reques
   await expect(page.getByRole("link", { name: "Mở trang nhà cung cấp", exact: true })).toHaveAttribute("href", /joinsherpa\.io/);
   await expect(page.locator("aside").getByText("Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.", { exact: true })).toBeVisible();
 });
+
+async function confirmedBooking(request, user) {
+  let flight;
+  for (let offset = 1; offset < 25 && !flight; offset++) {
+    const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(Date.now() + offset * 86400000));
+    const response = await request.get(`/api/flights/search?origin=SGN&destination=HAN&date=${date}&passengers=1`);
+    expect(response.ok()).toBe(true); flight = (await response.json())[0];
+  }
+  expect(flight).toBeTruthy();
+  const created = await request.post("/api/bookings", { headers: headers(user), data: {
+    segments: [{ flightId: flight.id, fareCode: "ECO", seats: [], extras: [] }],
+    passengers: [{ type: "ADULT", title: "MR", lastName: "NGUYEN", firstName: "DEMO", dateOfBirth: "1990-01-01", nationality: "Việt Nam" }],
+    contactEmail: user.email, contactPhone: "0901234567", promotionCode: "",
+  } });
+  expect(created.ok()).toBe(true); const booking = await created.json();
+  const paid = await request.post("/api/payments/demo", { headers: { "X-Booking-Token": booking.accessToken }, data: { bookingId: booking.id, outcome: "SUCCESS", requestKey: randomUUID() } });
+  expect(paid.ok()).toBe(true); return booking;
+}
+
+test("Ngoại tệ looks up an internal booking and saves currency preferences", async ({ page, request }) => {
+  const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
+  await page.goto("/services/currency");
+  await expect(page.getByRole("heading", { name: "Mua ngoại tệ cho chuyến đi", exact: true })).toBeVisible();
+  const lookup = page.locator(".lookup-form");
+  await lookup.getByLabel("Mã đặt chỗ", { exact: true }).fill(booking.code);
+  await lookup.getByLabel("Họ", { exact: true }).fill("NGUYEN");
+  await lookup.getByLabel("Tên đệm và tên", { exact: true }).fill("DEMO");
+  await lookup.getByRole("button", { name: "Tra cứu đặt chỗ", exact: true }).click();
+  await expect(page.locator(".service-booking-result")).toContainText(booking.code);
+  const form = page.locator(".service-request");
+  await form.getByLabel("Loại ngoại tệ", { exact: true }).selectOption("USD");
+  await form.getByLabel("Số tiền dự kiến", { exact: true }).fill("500");
+  await form.getByLabel("Nơi nhận mong muốn", { exact: true }).fill("TP. Hồ Chí Minh");
+  await form.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click();
+  await expect(form.getByRole("status")).toContainText("Đã gửi yêu cầu");
+  const [ticket] = await tickets(request, user);
+  expect(ticket.messages[0].body).toContain(booking.code); expect(ticket.messages[0].body).toContain("USD"); expect(ticket.messages[0].body).toContain("500");
+  await expect(page.getByText("Tỷ giá và điều kiện mua do HDBank xác nhận. Yêu cầu nội bộ chưa tạo giao dịch ngoại tệ.", { exact: true })).toBeVisible();
+});

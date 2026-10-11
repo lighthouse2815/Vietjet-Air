@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { api, errorMessage } from "../../api/client";
 import { t } from "../../i18n";
 
-export default function ServiceRequestForm({ slug, title, fields }) {
+export default function ServiceRequestForm({ slug, title, fields, bookingCode }) {
   const logged = !!sessionStorage.getItem("demo-auth");
   const storageKey = `service-inquiry-${slug}`;
   const [values, setValues] = useState(() => {
@@ -32,7 +32,7 @@ export default function ServiceRequestForm({ slug, title, fields }) {
     }
     submitting.current = true; setBusy(true); setError("");
     try {
-      const body = fields.map(field => `${t(field.label)}: ${values[field.name].trim()}`).join("\n");
+      const body = [bookingCode ? `${t("Mã đặt chỗ")}: ${bookingCode}` : "", ...fields.map(field => `${t(field.label)}: ${values[field.name].trim()}`)].filter(Boolean).join("\n");
       const { data } = await api.post("/support/tickets", { subject: `${t("Yêu cầu tư vấn")} · ${t(title)}`, category: "OTHER", body });
       setTicket(data);
       try { sessionStorage.removeItem(storageKey); } catch { /* The submitted ticket remains in the account. */ }

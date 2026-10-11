@@ -1,13 +1,25 @@
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink, MapPin, CalendarDays, MessageCircle } from "lucide-react";
 import { t } from "../i18n";
 import ServiceRequestForm from "../components/services/ServiceRequestForm";
 import StatsSection from "../components/home/StatsSection";
 import BookingForm from "../components/booking/BookingForm";
+import BookingLookupForm from "../components/booking/BookingLookupForm";
 import "../styles/services.css";
 
 const services = {
+  currency: {
+    title: "Mua ngoại tệ", heading: "Mua ngoại tệ cho chuyến đi", image: "/assets/services/currency-banner.jpg",
+    description: "Vietjet giới thiệu dịch vụ ngoại tệ cùng HDBank. Tra cứu booking nội bộ và gửi nhu cầu tư vấn cho chuyến đi của bạn.",
+    provider: "HDBank", source: "https://www.vietjetair.com/vi/currency-exchange",
+    fields: [{ name: "currency", label: "Loại ngoại tệ", options: ["USD", "EUR", "AUD", "JPY", "SGD"] },
+      { name: "amount", label: "Số tiền dự kiến", type: "number", min: 1, max: 1000000, step: 1 }, { name: "pickup", label: "Nơi nhận mong muốn" }],
+    steps: ["Tra cứu mã đặt chỗ nội bộ", "Gửi nhu cầu ngoại tệ", "Xác nhận tỷ giá và nơi nhận với HDBank"],
+    faq: [["Tôi đã mua ngoại tệ khi gửi yêu cầu chưa?", "Yêu cầu chỉ ghi nhận loại tiền, số tiền và nơi nhận mong muốn. Nhân viên trao đổi tại Trung tâm hỗ trợ; ngân hàng xác nhận điều kiện và giao dịch."],
+      ["Tôi có thể xem hướng dẫn gốc ở đâu?", "Mở trang nhà cung cấp để xem hướng dẫn và điều kiện hiện hành. Việc tra cứu booking demo không xác nhận đủ điều kiện mua ngoại tệ tại ngân hàng."]],
+  },
   visa: {
     title: "eVisa", heading: "Quy định xuất nhập cảnh", image: "/assets/services/visa-banner.png",
     description: "Chuẩn bị thông tin quốc tịch, điểm đến và các chặng quá cảnh để nhận hướng dẫn trước chuyến đi.",
@@ -45,6 +57,7 @@ const services = {
 export default function PartnerServicePage({ slug }) {
   useTranslation();
   const service = services[slug];
+  const [booking, setBooking] = useState(null);
   return <main className={`service-page service-${slug}`}>
     <section className="service-hero" aria-label={t(service.title)}>
       <img src={service.image} alt="" fetchPriority="high" />
@@ -56,8 +69,15 @@ export default function PartnerServicePage({ slug }) {
       {slug !== "hotels" && <h1>{t(service.heading)}</h1>}
       <p className="service-intro">{t(service.description)}</p>
       {slug === "visa" && <aside className="notice-panel"><h2>{t("Chú ý quan trọng")}</h2><p>{t("Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.")}</p></aside>}
+      {slug === "currency" && <><p className="notice-panel">{t("Tỷ giá và điều kiện mua do HDBank xác nhận. Yêu cầu nội bộ chưa tạo giao dịch ngoại tệ.")}</p>
+        <h2>{t("Thông tin mã đặt chỗ nội bộ")}</h2><BookingLookupForm onResult={setBooking} />
+        {booking && <p className="notice-panel service-booking-result">{t("Mã đặt chỗ")}: <strong>{booking.code}</strong> · {booking.segments.map(segment => `${segment.flight.origin.code} → ${segment.flight.destination.code}`).join(" / ")} · {t(booking.status)}</p>}
+      </>}
       <div className="service-steps">{service.steps.map((step, index) => { const Icon = [MapPin, CalendarDays, MessageCircle][index]; return <article key={step}><Icon size={30} /><span>{index + 1}</span><h2>{t(step)}</h2></article>; })}</div>
-      <ServiceRequestForm key={slug} slug={slug} title={service.title} fields={service.fields} />
+      <ServiceRequestForm key={slug} slug={slug} title={service.title} fields={service.fields} bookingCode={booking?.code} />
+      {slug === "currency" && <section className="service-guides"><h2>{t("Hướng dẫn từ nhà cung cấp")}</h2><p>{t("Ảnh hướng dẫn tham chiếu; các bước giao dịch ngân hàng được thực hiện trên kênh của đối tác.")}</p>
+        {[1, 2].map(index => <details key={index}><summary>{index === 1 ? t("Mua ngoại tệ khi đặt chuyến bay") : t("Mua ngoại tệ từ Chuyến bay của tôi")}</summary><img src={`/assets/services/currency-guide-${index}.jpg`} alt={t("Hướng dẫn mua ngoại tệ của HDBank")} loading="lazy" /></details>)}
+      </section>}
       <section className="panel service-faq"><h2>{t("Câu hỏi thường gặp")}</h2>{service.faq.map(([question, answer]) => <details key={question}><summary>{t(question)}</summary><p>{t(answer)}</p></details>)}</section>
       <section className="service-provider"><h2>{t("Dịch vụ từ nhà cung cấp")} · {service.provider}</h2><p>{t("Giá, khả năng cung cấp và giao dịch của đối tác chưa kết nối vào hệ thống nội bộ.")}</p>
         <a className="button secondary" href={service.source} target="_blank" rel="noopener noreferrer">{t("Mở trang nhà cung cấp")}<ExternalLink size={16} /></a>
