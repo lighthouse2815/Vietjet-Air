@@ -1,0 +1,628 @@
+{
+  "referenceAuditedAt": "2026-10-11T17:09:08.249Z",
+  "verifiedAt": "2026-10-11T17:24:14.706Z",
+  "referenceUrl": "https://www.vietjetair.com/vi",
+  "localUrl": "http://localhost:5173",
+  "views": [
+    {
+      "name": "desktop",
+      "width": 1920,
+      "height": 1080,
+      "layers": [
+        {
+          "selector": ".promotion-region",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 925.015625,
+              "width": 1920,
+              "height": 630
+            },
+            "background": {
+              "image": "url(\"https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topnen-1610536365157.png\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".promotion-region",
+            "rect": {
+              "y": 925,
+              "width": 1920,
+              "height": 630
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/promotion-background.png\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "no-repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "140px 0px 35px",
+            "margin": "-85px 0px 0px"
+          }
+        },
+        {
+          "selector": ".home-cloud-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 1480.015625,
+              "width": 1920,
+              "height": 2908.765625
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bgBannerHomePage.72a61446.webp\")",
+              "size": "cover",
+              "position": "100% 0%",
+              "attachment": "fixed",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".home-cloud-background",
+            "rect": {
+              "y": 1480,
+              "width": 1920,
+              "height": 2907.46875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/cloud-background.webp\")",
+              "size": "cover",
+              "position": "100% 0%",
+              "repeat": "no-repeat",
+              "attachment": "fixed",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "0px 0px 134.4px",
+            "margin": "-75px 0px 0px"
+          }
+        },
+        {
+          "selector": ".stats-section",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 4235.1875,
+              "width": 1920,
+              "height": 496.96875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bg-donate.40a2c077.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".stats-section",
+            "rect": {
+              "y": 4233.875,
+              "width": 1920,
+              "height": 535.171875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/stats-background.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "35px 0px 70px",
+            "margin": "-153.6px 0px 0px"
+          }
+        },
+        {
+          "selector": ".footer-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 4732.15625,
+              "width": 1920,
+              "height": 839.421875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/footer-pattern.dcbf3b8c.svg\"), url(\"https://www.vietjetair.com/static/media/bg_footer.2f611c1f.webp\")",
+              "size": "300px auto, cover",
+              "position": "100% 100%, 50% 0%",
+              "attachment": "scroll, scroll",
+              "repeat": "no-repeat, no-repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".footer-background",
+            "rect": {
+              "y": 4769.046875,
+              "width": 1920,
+              "height": 850.796875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/footer-pattern.svg\"), url(\"http://localhost:5173/assets/reference/footer-background.webp\")",
+              "size": "300px auto, cover",
+              "position": "100% 100%, 50% 0%",
+              "repeat": "no-repeat, no-repeat",
+              "attachment": "scroll, scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "name": "laptop",
+      "width": 1440,
+      "height": 900,
+      "layers": [
+        {
+          "selector": ".promotion-region",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 685.015625,
+              "width": 1440,
+              "height": 630
+            },
+            "background": {
+              "image": "url(\"https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topnen-1610536365157.png\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".promotion-region",
+            "rect": {
+              "y": 685,
+              "width": 1440,
+              "height": 630
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/promotion-background.png\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "no-repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "140px 0px 35px",
+            "margin": "-85px 0px 0px"
+          }
+        },
+        {
+          "selector": ".home-cloud-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 1240.015625,
+              "width": 1440,
+              "height": 2875.171875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bgBannerHomePage.72a61446.webp\")",
+              "size": "cover",
+              "position": "100% 0%",
+              "attachment": "fixed",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".home-cloud-background",
+            "rect": {
+              "y": 1240,
+              "width": 1440,
+              "height": 2873.875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/cloud-background.webp\")",
+              "size": "cover",
+              "position": "100% 0%",
+              "repeat": "no-repeat",
+              "attachment": "fixed",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "0px 0px 100.8px",
+            "margin": "-75px 0px 0px"
+          }
+        },
+        {
+          "selector": ".stats-section",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 4000,
+              "width": 1440,
+              "height": 476.96875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bg-donate.40a2c077.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".stats-section",
+            "rect": {
+              "y": 3998.6875,
+              "width": 1440,
+              "height": 535.171875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/stats-background.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "35px 0px 70px",
+            "margin": "-115.2px 0px 0px"
+          }
+        },
+        {
+          "selector": ".footer-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 4476.96875,
+              "width": 1440,
+              "height": 839.421875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/footer-pattern.dcbf3b8c.svg\"), url(\"https://www.vietjetair.com/static/media/bg_footer.2f611c1f.webp\")",
+              "size": "300px auto, cover",
+              "position": "100% 100%, 50% 0%",
+              "attachment": "scroll, scroll",
+              "repeat": "no-repeat, no-repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".footer-background",
+            "rect": {
+              "y": 4533.859375,
+              "width": 1440,
+              "height": 850.796875
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/footer-pattern.svg\"), url(\"http://localhost:5173/assets/reference/footer-background.webp\")",
+              "size": "300px auto, cover",
+              "position": "100% 100%, 50% 0%",
+              "repeat": "no-repeat, no-repeat",
+              "attachment": "scroll, scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "layers": [
+        {
+          "selector": ".promotion-region",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 1014.90625,
+              "width": 768,
+              "height": 215
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/mb_cloud_bg.9d4927e2.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat-x",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".promotion-region",
+            "rect": {
+              "y": 1159.75,
+              "width": 768,
+              "height": 290.375
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/promotion-background-mobile.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "repeat": "repeat-x",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "65px 0px 35px",
+            "margin": "-28px 0px 0px"
+          }
+        },
+        {
+          "selector": ".home-cloud-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 1149.90625,
+              "width": 768,
+              "height": 2774.765625
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bg-mb.b54724f5.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".home-cloud-background",
+            "rect": {
+              "y": 1450.125,
+              "width": 768,
+              "height": 2622.515625
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/cloud-background-mobile.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "no-repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        },
+        {
+          "selector": ".stats-section",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 3944.671875,
+              "width": 768,
+              "height": 244.296875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bay_vao_tuong_lai_bg_mb.9d307f6a.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".stats-section",
+            "rect": {
+              "y": 4072.640625,
+              "width": 768,
+              "height": 509.375
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/stats-background-mobile.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "repeat": "repeat",
+              "attachment": "scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "35px 0px 70px",
+            "margin": "0px"
+          }
+        },
+        {
+          "selector": ".footer-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 4188.96875,
+              "width": 768,
+              "height": 1027.375
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/footer-pattern.dcbf3b8c.svg\"), url(\"https://www.vietjetair.com/static/media/sky-bg.42123689.webp\")",
+              "size": "200px auto, cover",
+              "position": "100% 100%, 50% 200px",
+              "attachment": "scroll, scroll",
+              "repeat": "no-repeat, no-repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".footer-background",
+            "rect": {
+              "y": 4582.015625,
+              "width": 768,
+              "height": 902.140625
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/footer-pattern.svg\"), url(\"http://localhost:5173/assets/reference/sky-background.webp\")",
+              "size": "200px auto, cover",
+              "position": "100% 100%, 50% 200px",
+              "repeat": "no-repeat, no-repeat",
+              "attachment": "scroll, scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "layers": [
+        {
+          "selector": ".promotion-region",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 694.3125,
+              "width": 390,
+              "height": 215
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/mb_cloud_bg.9d4927e2.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat-x",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".promotion-region",
+            "rect": {
+              "y": 767.828125,
+              "width": 390,
+              "height": 219.78125
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/promotion-background-mobile.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "repeat": "repeat-x",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "42px 0px 35px",
+            "margin": "-28px 0px 0px"
+          }
+        },
+        {
+          "selector": ".home-cloud-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 829.3125,
+              "width": 390,
+              "height": 1736.5625
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bg-mb.b54724f5.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "no-repeat",
+              "color": "rgba(0, 0, 0, 0)"
+            }
+          },
+          "local": {
+            "selector": ".home-cloud-background",
+            "rect": {
+              "y": 987.609375,
+              "width": 390,
+              "height": 2268.5625
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/cloud-background-mobile.webp\")",
+              "size": "cover",
+              "position": "50% 0%",
+              "repeat": "no-repeat",
+              "attachment": "scroll",
+              "color": "rgba(0, 0, 0, 0)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        },
+        {
+          "selector": ".stats-section",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 2585.875,
+              "width": 390,
+              "height": 243.296875
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/bay_vao_tuong_lai_bg_mb.9d307f6a.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "attachment": "scroll",
+              "repeat": "repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".stats-section",
+            "rect": {
+              "y": 3256.171875,
+              "width": 390,
+              "height": 463.953125
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/stats-background-mobile.webp\")",
+              "size": "auto",
+              "position": "50% 0%",
+              "repeat": "repeat",
+              "attachment": "scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "25px 0px 45px",
+            "margin": "0px"
+          }
+        },
+        {
+          "selector": ".footer-background",
+          "reference": {
+            "rect": {
+              "x": 0,
+              "y": 2829.171875,
+              "width": 390,
+              "height": 1104.84375
+            },
+            "background": {
+              "image": "url(\"https://www.vietjetair.com/static/media/footer-pattern.dcbf3b8c.svg\"), url(\"https://www.vietjetair.com/static/media/sky-bg.42123689.webp\")",
+              "size": "200px auto, cover",
+              "position": "100% 100%, 50% 200px",
+              "attachment": "scroll, scroll",
+              "repeat": "no-repeat, no-repeat",
+              "color": "rgb(255, 255, 255)"
+            }
+          },
+          "local": {
+            "selector": ".footer-background",
+            "rect": {
+              "y": 3720.125,
+              "width": 390,
+              "height": 1073.9375
+            },
+            "background": {
+              "image": "url(\"http://localhost:5173/assets/reference/footer-pattern.svg\"), url(\"http://localhost:5173/assets/reference/sky-background.webp\")",
+              "size": "200px auto, cover",
+              "position": "100% 100%, 50% 200px",
+              "repeat": "no-repeat, no-repeat",
+              "attachment": "scroll, scroll",
+              "color": "rgb(255, 255, 255)"
+            },
+            "padding": "0px",
+            "margin": "0px"
+          }
+        }
+      ]
+    }
+  ]
+}

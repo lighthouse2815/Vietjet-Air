@@ -18,4 +18,6 @@ Hero dùng chín banner từ `content_items` (V3/V8), với bản desktop/mobile
 
 Hero fade 0,5 giây, chu kỳ 8 giây; ảnh nội dung fade 1 giây sau load. Header tự trượt thông báo mỗi 5 giây, nền mây desktop dùng background cố định, nút hỗ trợ có chu kỳ nhấp nhô 3 giây. `useReducedMotion` xử lý thay đổi cài đặt đang mở trang. `ScrollCarousel` dùng scroll-snap, ResizeObserver và API scroll có sẵn; các listener/timer/observer đều được dọn khi unmount. Bằng chứng và video nằm trong [verification/MOTION.md](verification/MOTION.md).
 
+Nền mây bao trọn nội dung từ đặt vé phụ đến FAQ. `Footer` hiển thị dải giải thưởng ở trang chủ để cùng dùng một nền với nội dung footer. Thống kê có nền desktop/mobile riêng; xem [verification/BACKGROUNDS.md](verification/BACKGROUNDS.md) để đối chiếu ảnh và cách căn.
+
 Ở viewport ≤900px, banner nằm trên form toàn chiều ngang; header rút gọn và navigation cố định bên dưới. Mobile giữ các ô hành khách/mã khuyến mại để thao tác đầy đủ trong demo. Các dãy card cuộn ngang bằng CSS scroll-snap; footer dùng `details/summary` thu gọn, mở được bằng bàn phím và tự hiển thị đầy đủ khi đổi sang desktop. Ảnh lazy có tỷ lệ/kích thước dự phòng để tránh đẩy các khối dưới khi tải.

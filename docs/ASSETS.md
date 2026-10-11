@@ -13,6 +13,6 @@ Các ảnh tạo ban đầu dưới đây được giữ cho nội dung khác v�
 
 ## Asset căn chỉnh giao diện
 
-Theo yêu cầu căn chỉnh giao diện, `frontend/public/assets/reference/` lưu bản tải của logo, chín banner desktop/mobile, nền mây, ảnh dịch vụ/điểm đến, icon, ảnh giải thưởng và font tiêu đề từ trang tham chiếu công khai `https://www.vietjetair.com/vi`. Nguồn đầy đủ 76 file nằm trong `sources.json`; chạy `node scripts/sync-home-artwork.mjs` để tải lại. Đây là asset tham chiếu của chủ sở hữu gốc, không phải ảnh AI hay asset do dự án sáng tác; không gán giấy phép mở cho các file này.
+Theo yêu cầu căn chỉnh giao diện, `frontend/public/assets/reference/` lưu bản tải của logo, chín banner desktop/mobile, nền mây, ảnh dịch vụ/điểm đến, icon, ảnh giải thưởng và font tiêu đề từ trang tham chiếu công khai `https://www.vietjetair.com/vi`. Nguồn đầy đủ 78 file nằm trong `sources.json`; chạy `node scripts/sync-home-artwork.mjs` để tải lại. Hai ảnh bổ sung ngày 12/10/2026 là nền thống kê desktop/mobile, được đối chiếu trong [verification/BACKGROUNDS.md](verification/BACKGROUNDS.md). Đây là asset tham chiếu của chủ sở hữu gốc, không phải ảnh AI hay asset do dự án sáng tác; không gán giấy phép mở cho các file này.
 
 Banner có chữ được hiển thị nguyên ảnh, kèm tiêu đề đọc được bằng trình đọc màn hình, để tránh chồng thêm chữ HTML. Các giá/chiến dịch trong artwork thuộc ảnh tham chiếu; giá và giao dịch của ứng dụng được trả từ API demo. Ảnh CMS tùy chỉnh tiếp tục hiển thị trực tiếp cùng tiêu đề HTML.

@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-11T17:00:01.903Z",
+  "verifiedAt": "2026-10-11T17:26:59.000Z",
   "url": "http://localhost:5173",
   "viewports": [
     {
@@ -9,7 +9,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 5639,
+      "documentHeight": 5620,
       "errors": []
     },
     {
@@ -19,7 +19,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 5399,
+      "documentHeight": 5385,
       "errors": []
     },
     {

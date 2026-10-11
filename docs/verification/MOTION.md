@@ -2,6 +2,8 @@
 
 Lượt bổ sung ngày 12/10/2026 đối chiếu trực tiếp `https://www.vietjetair.com/vi` trên Chromium. [reference-motion-summary.json](reference-motion-summary.json) lưu cấu hình slider và keyframe đọc từ DOM/CSS công khai. Nhịp hero khoảng 8 giây được đo từ các lần đổi slide; nội dung/cấu hình của website tham chiếu có thể đổi theo chiến dịch.
 
+Sau lượt sửa nền cùng ngày, đã chạy lại kiểm tra khung hình trên bốn viewport và ghi lại hai video bên dưới. Lượt E2E mới đạt **56 ca**; chi tiết sửa nền và bằng chứng nằm trong [BACKGROUNDS.md](BACKGROUNDS.md). Số 52 bên dưới là kết quả của lượt bổ sung animation trước đó.
+
 | Chuyển động | Triển khai local |
 |---|---|
 | Banner chính | Fade 0,5 giây; tự đổi mỗi 8 giây; dot/vuốt vẫn hoạt động |
