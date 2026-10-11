@@ -9,4 +9,5 @@ import java.util.*;
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Optional<Payment> findByRequestKey(UUID requestKey);
     Optional<Payment> findByBookingIdAndStatus(Long bookingId,String status);
+    Optional<Payment> findFirstByBookingIdOrderByCreatedAtDescIdDesc(Long bookingId);
 }

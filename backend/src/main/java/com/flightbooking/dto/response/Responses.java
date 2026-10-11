@@ -21,7 +21,7 @@ public final class Responses {
     public record BoardingPassView(Long flightId,int passengerIndex,String seatNumber,String boardingCode,Instant checkedInAt) {}
     public record BookingView(Long id,String code,UUID accessToken,String status,String contactEmail,String contactPhone,
             Instant createdAt,Instant expiresAt,List<SegmentView> segments,List<PassengerView> passengers,
-            List<ExtraView> extras,PriceView price,List<BoardingPassView> boardingPasses) {}
+            List<ExtraView> extras,PriceView price,List<BoardingPassView> boardingPasses,String paymentStatus) {}
     public record PaymentView(Long id,Long bookingId,UUID requestKey,String status,BigDecimal amount,Instant createdAt) {}
     public record AuthView(String token,Long id,String email,String name,String role) {}
 }

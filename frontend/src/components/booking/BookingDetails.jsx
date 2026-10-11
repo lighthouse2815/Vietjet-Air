@@ -13,6 +13,17 @@ export default function BookingDetails({ booking }) {
             {statusLabels[booking.status]}
           </b>
           <small>Booking demo · Không có giá trị vận chuyển</small>
+          <p className="small">
+            Thanh toán demo:{" "}
+            <strong>
+              {{
+                UNPAID: "Chưa thanh toán",
+                SUCCESS: "Thành công",
+                FAILED: "Thất bại",
+                CANCELLED: "Đã hủy",
+              }[booking.paymentStatus] || "Chưa thanh toán"}
+            </strong>
+          </p>
         </div>
         {booking.segments.map((segment) => (
           <section className="panel itinerary-panel" key={segment.flight.id}>

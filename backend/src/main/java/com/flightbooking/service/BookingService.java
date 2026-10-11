@@ -26,6 +26,7 @@ public class BookingService {
     private final AncillaryServiceRepository services;
     private final UserAccountRepository users;
     private final CheckInRepository checkIns;
+    private final PaymentRepository payments;
     private final FlightService flightService;
     private final PricingService pricing;
     @Value("${app.hold-minutes}") private int holdMinutes;
@@ -153,7 +154,8 @@ public class BookingService {
                 b.getSegments().stream().map(s->new SegmentView(s.getSegmentIndex(),flightService.view(s.getFlight()),FlightService.fareView(s.getFareClass(),s.getUnitPrice()),assigned.stream().filter(seat->seat.getFlight().getId().equals(s.getFlight().getId())).map(seat->FlightService.seatView(seat,b.getId())).toList())).toList(),
                 b.getPassengers().stream().map(p->new PassengerView(p.getPassengerIndex(),p.getType().name(),p.getTitle(),p.getLastName(),p.getFirstName(),p.getDateOfBirth(),p.getNationality())).toList(),
                 b.getAncillaries().stream().map(a->new ExtraView(a.getFlight().getId(),a.getPassengerIndex(),ContentService.view(a.getService()),a.getPrice())).toList(),PricingService.view(b),
-                checkIns.findByBookingId(b.getId()).stream().map(c->new BoardingPassView(c.getFlight().getId(),c.getPassengerIndex(),c.getSeatNumber(),c.getBoardingCode(),c.getCheckedInAt())).toList());
+                checkIns.findByBookingId(b.getId()).stream().map(c->new BoardingPassView(c.getFlight().getId(),c.getPassengerIndex(),c.getSeatNumber(),c.getBoardingCode(),c.getCheckedInAt())).toList(),
+                payments.findFirstByBookingIdOrderByCreatedAtDescIdDesc(b.getId()).map(Payment::getStatus).orElse("UNPAID"));
     }
     private String newCode() {StringBuilder code=new StringBuilder();for(int i=0;i<8;i++)code.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));return code.toString();}
 }

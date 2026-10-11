@@ -119,10 +119,12 @@ class BookingIntegrationTest {
         BookingView b=create(null);String token=b.accessToken().toString();UUID key=UUID.randomUUID();
         assertThat(payments.pay(new DemoPayment(b.id(),UUID.randomUUID(),"FAILED"),token).status()).isEqualTo("FAILED");
         assertThat(bookings.get(b.code(),token).status()).isEqualTo("PENDING");
+        assertThat(bookings.get(b.code(),token).paymentStatus()).isEqualTo("FAILED");
         PaymentView first=payments.pay(new DemoPayment(b.id(),key,"SUCCESS"),token);
         assertThat(payments.pay(new DemoPayment(b.id(),key,"SUCCESS"),token).id()).isEqualTo(first.id());
         assertThat(payments.pay(new DemoPayment(b.id(),UUID.randomUUID(),"SUCCESS"),token).id()).isEqualTo(first.id());
         assertThat(bookings.get(b.code(),token).status()).isEqualTo("CONFIRMED");
+        assertThat(bookings.get(b.code(),token).paymentStatus()).isEqualTo("SUCCESS");
         assertThatThrownBy(()->payments.pay(new DemoPayment(b.id(),key,"FAILED"),token)).isInstanceOf(BusinessException.class);
         bookings.cancel(b.id(),token);
     }

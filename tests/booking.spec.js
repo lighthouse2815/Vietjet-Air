@@ -115,6 +115,9 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
   await expect(
     page.getByText("Đã xác nhận", { exact: true }).first(),
   ).toBeVisible();
+  await expect(
+    page.getByText("Thanh toán demo: Thành công", { exact: true }),
+  ).toBeVisible();
   await checkpoint(page, testInfo, "success");
   await page.goto("/my-booking");
   await page.getByLabel("Mã đặt chỗ").fill(code);
