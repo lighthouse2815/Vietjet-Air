@@ -309,6 +309,19 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void nullArtworkCaptionDoesNotBreakPublicContent() throws Exception {
+        var hero=contentRepo.findByCategoryOrderBySortOrderAsc("HERO").getFirst();
+        var original=new LinkedHashMap<>(hero.getDetails());
+        try {
+            var changed=new LinkedHashMap<>(original);changed.put("artworkTitle",null);
+            admin.content(hero.getId(),new com.flightbooking.dto.request.AdminRequests.Content(hero.getCategory(),hero.getTitle(),hero.getDescription(),hero.getImage(),hero.getTarget(),hero.getSortOrder(),changed));
+            http.perform(get("/api/home")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[?(@.id == "+hero.getId()+")].title").value(org.hamcrest.Matchers.hasItem(hero.getTitle())))
+                .andExpect(jsonPath("$.items[?(@.id == "+hero.getId()+")].details.artwork").isEmpty());
+        } finally {hero.setDetails(original);contentRepo.save(hero);}
+    }
+
+    @Test
     void publicPagesAndRulesAreDeliveredByBackend() throws Exception {
         http.perform(get("/api/content/pages/hotels")).andExpect(status().isOk())
             .andExpect(jsonPath("$.details.heading").value("Khách sạn cho hành trình của bạn"))
@@ -317,6 +330,9 @@ class BookingIntegrationTest {
         http.perform(get("/api/commerce/rules")).andExpect(status().isOk())
             .andExpect(jsonPath("$.loyalty.redemptionStep").value(100))
             .andExpect(jsonPath("$.quantityLimit").value(10));
+        http.perform(get("/api/booking-rules")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.quoteHoldMinutes").value(15))
+            .andExpect(jsonPath("$.fares[?(@.code == 'ECO')].changeFee").value(org.hamcrest.Matchers.hasItem(100000)));
         http.perform(get("/api/site-statistics")).andExpect(status().isOk())
             .andExpect(jsonPath("$.metrics[0].value").value(airportRepo.count()));
     }

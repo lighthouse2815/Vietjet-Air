@@ -45,10 +45,10 @@ public class ContentService {
     private ContentView view(ContentItem item) {
         Map<String,Object> details=new LinkedHashMap<>(item.getDetails());
         if(details.containsKey("artwork") && (
-            details.containsKey("artworkTitle") && !details.get("artworkTitle").equals(item.getTitle()) ||
-            details.containsKey("artworkDescription") && !details.get("artworkDescription").equals(item.getDescription()) ||
-            details.containsKey("artworkSourceImage") && !details.get("artworkSourceImage").equals(item.getImage()) ||
-            details.containsKey("artworkTarget") && !details.get("artworkTarget").equals(item.getTarget()))) {
+            details.containsKey("artworkTitle") && !Objects.equals(details.get("artworkTitle"),item.getTitle()) ||
+            details.containsKey("artworkDescription") && !Objects.equals(details.get("artworkDescription"),item.getDescription()) ||
+            details.containsKey("artworkSourceImage") && !Objects.equals(details.get("artworkSourceImage"),item.getImage()) ||
+            details.containsKey("artworkTarget") && !Objects.equals(details.get("artworkTarget"),item.getTarget()))) {
             details.remove("artwork");details.remove("displayTitle");
         }
         return new ContentView(item.getId(),item.getCategory(),item.getTitle(),item.getDescription(),item.getImage(),item.getTarget(),details);
