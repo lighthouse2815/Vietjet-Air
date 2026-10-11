@@ -10,5 +10,8 @@ import org.springframework.stereotype.Service;
 public class LookupService {
     private final RateLimitService limits;
     private final BookingService bookings;
-    public BookingView lookup(Lookup input,String ip){limits.check("lookup",ip);return bookings.lookup(input);}
+    public BookingView lookup(Lookup input, String ip) {
+        limits.check("lookup", ip);
+        return bookings.lookup(input);
+    }
 }
