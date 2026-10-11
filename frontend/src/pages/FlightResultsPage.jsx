@@ -78,10 +78,11 @@ export default function FlightResultsPage() {
     cheap: params.get("cheap") === "true",
   };
   const searchKey = params.toString();
+  const sameSearch = JSON.stringify(draft.search) === JSON.stringify(search);
   const [selection, setSelection] = useState({
     key: searchKey,
-    out: null,
-    back: null,
+    out: sameSearch ? draft.segments[0] || null : null,
+    back: sameSearch ? draft.segments[1] || null : null,
   });
   const validation = flightSearchSchema.safeParse(search);
   if (!validation.success) {
@@ -103,15 +104,21 @@ export default function FlightResultsPage() {
   const count = search.adults + search.children;
   const select = (leg, value) => setSelection({ ...chosen, [leg]: value });
   function next() {
+    const segments = roundTrip ? [chosen.out, chosen.back] : [chosen.out];
+    const sameFlights =
+      sameSearch &&
+      segments.length === draft.segments.length &&
+      segments.every(
+        (segment, i) =>
+          segment.flight.id === draft.segments[i].flight.id &&
+          segment.fare.code === draft.segments[i].fare.code,
+      );
     update({
       search,
-      segments: roundTrip ? [chosen.out, chosen.back] : [chosen.out],
-      passengers:
-        JSON.stringify(draft.search) === JSON.stringify(search)
-          ? draft.passengers
-          : [],
-      extras: {},
-      seats: {},
+      segments,
+      passengers: sameSearch ? draft.passengers : [],
+      extras: sameFlights ? draft.extras : {},
+      seats: sameFlights ? draft.seats : {},
       booking: null,
       promotionCode: search.promotionCode,
     });

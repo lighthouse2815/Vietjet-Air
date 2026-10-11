@@ -46,6 +46,55 @@ test("airport search preserves text typed immediately after opening", async ({
     await expect(origin).toContainText(code);
   }
 });
+test("returning to the same flight preserves passengers, services and seats", async ({
+  page,
+}) => {
+  await page.goto(
+    `/flights?origin=SGN&destination=CXR&date=${tomorrow()}&type=ONE_WAY&adults=1`,
+  );
+  const fare = page.getByRole("button", { name: /Chọn Eco/ }).first();
+  await fare.click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByLabel("Họ", { exact: true }).fill("TEST");
+  await page.getByLabel("Tên đệm và tên").fill("GIU BAN NHAP");
+  await page.getByLabel("Ngày sinh").fill("1990-01-01");
+  await page.getByLabel("Email liên hệ").fill("draft@example.com");
+  await page.getByLabel("Số điện thoại").fill("0901234567");
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByLabel("Hành lý ký gửi 20 kg").check();
+  const seat = page
+    .locator(".seat-map .seat:not([disabled]):not(.special)")
+    .first();
+  const seatLabel = await seat.getAttribute("aria-label");
+  await seat.click();
+  await page.getByRole("link", { name: "Quay lại", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Chọn lại chuyến bay", exact: true })
+    .click();
+  await page.reload();
+  await expect(fare).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page.getByLabel("Tên đệm và tên")).toHaveValue("GIU BAN NHAP");
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page.getByLabel("Hành lý ký gửi 20 kg")).toBeChecked();
+  await expect(
+    page.getByRole("button", { name: seatLabel, exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("link", { name: "Quay lại", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Chọn lại chuyến bay", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: /Chọn Deluxe/ })
+    .first()
+    .click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await expect(page.getByLabel("Hành lý ký gửi 20 kg")).not.toBeChecked();
+  await expect(page.locator(".seat-map .seat[aria-pressed=true]")).toHaveCount(
+    0,
+  );
+});
 test("pending booking can resume demo payment after lookup", async ({
   page,
   request,
