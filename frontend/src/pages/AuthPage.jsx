@@ -13,6 +13,8 @@ export default function AuthPage() {
     }
   });
   const [bookings, setBookings] = useState([]);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const {
@@ -31,6 +33,8 @@ export default function AuthPage() {
       setUser(data);
       const result = await api.get("/auth/bookings");
       setBookings(result.data);
+      setPage(0);
+      setHasMore(result.data.length === 20);
       result.data.forEach(storeBooking);
     } catch (e) {
       setError(errorMessage(e));
@@ -38,11 +42,14 @@ export default function AuthPage() {
       setBusy(false);
     }
   }
-  async function load() {
+  async function load(nextPage = 0) {
     setBusy(true);
+    setError("");
     try {
-      const { data } = await api.get("/auth/bookings");
-      setBookings(data);
+      const { data } = await api.get(`/auth/bookings?page=${nextPage}&size=20`);
+      setBookings((current) => (nextPage === 0 ? data : [...current, ...data]));
+      setPage(nextPage);
+      setHasMore(data.length === 20);
       data.forEach(storeBooking);
     } catch (e) {
       setError(errorMessage(e));
@@ -55,6 +62,8 @@ export default function AuthPage() {
     sessionStorage.removeItem("demo-user");
     setUser(null);
     setBookings([]);
+    setPage(0);
+    setHasMore(false);
     reset();
   }
   return (
@@ -75,7 +84,11 @@ export default function AuthPage() {
           <>
             <h2>Xin chào, {user.name}</h2>
             <p>{user.email}</p>
-            <button className="button primary" onClick={load} disabled={busy}>
+            <button
+              className="button primary"
+              onClick={() => load()}
+              disabled={busy}
+            >
               Tải booking của tôi
             </button>
             <button className="button secondary" onClick={logout}>
@@ -98,6 +111,15 @@ export default function AuthPage() {
                 </span>
               </Link>
             ))}
+            {hasMore && (
+              <button
+                className="button secondary"
+                disabled={busy}
+                onClick={() => load(page + 1)}
+              >
+                Tải thêm booking
+              </button>
+            )}
           </>
         ) : (
           <form onSubmit={handleSubmit(submit)} noValidate>

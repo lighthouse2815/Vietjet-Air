@@ -3,6 +3,7 @@ package com.flightbooking.repository;
 import com.flightbooking.entity.Booking;
 import org.springframework.data.jpa.repository.*;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Pageable;
 import java.time.Instant;
 import java.util.*;
 
@@ -10,5 +11,5 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     Optional<Booking> findByCode(String code);
     @Lock(LockModeType.PESSIMISTIC_WRITE) @Query("select b from Booking b where b.id=:id") Optional<Booking> findLocked(Long id);
     @Query("select b.id from Booking b where b.status=com.flightbooking.enums.BookingStatus.PENDING and b.expiresAt<:now") List<Long> findExpiredIds(Instant now);
-    List<Booking> findByUserIdOrderByCreatedAtDesc(Long userId);
+    List<Booking> findByUserId(Long userId, Pageable pageable);
 }

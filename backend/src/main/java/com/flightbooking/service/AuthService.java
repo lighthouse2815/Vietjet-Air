@@ -7,6 +7,8 @@ import com.flightbooking.repository.*;
 import com.flightbooking.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
@@ -47,5 +49,8 @@ public class AuthService {
     @Transactional(readOnly=true)
     public AuthView me(Long id){UserAccount u=users.findById(id).orElseThrow(this::invalid);return new AuthView(null,u.getId(),u.getEmail(),u.getName(),u.getRole());}
     @Transactional(readOnly=true)
-    public List<BookingView> bookings(Long id){return bookings.findByUserIdOrderByCreatedAtDesc(id).stream().map(bookingService::view).toList();}
+    public List<BookingView> bookings(Long id,int page,int size){
+        if(page<0||size<1||size>50)throw BusinessException.badRequest("Trang không âm; kích thước trang từ 1 đến 50");
+        return bookings.findByUserId(id,PageRequest.of(page,size,Sort.by(Sort.Direction.DESC,"createdAt","id"))).stream().map(bookingService::view).toList();
+    }
 }

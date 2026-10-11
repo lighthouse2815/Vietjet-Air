@@ -46,6 +46,7 @@ class BookingIntegrationTest {
     @Autowired TransactionTemplate tx;
     @Autowired RateLimitService limits;
     @Autowired MockMvc http;
+    @Autowired AuthService auth;
     private Long flightId;
     @BeforeEach void chooseFlight(){
         flightId=flights.search("SGN","HAN",LocalDate.now(FlightService.ZONE).plusDays(1),1).getFirst().id();
@@ -61,6 +62,25 @@ class BookingIntegrationTest {
             List.of(new PassengerInput(PassengerType.ADULT,"MR","NGUYEN","VAN DEMO",LocalDate.of(1990,1,1),"Việt Nam")),"demo@example.com","0901234567",promo);
     }
     private BookingView create(String seat){return bookings.create(input(flightId,seat,""),null);}
+
+    @Test void accountBookingsRequireAuthenticationAndPaginateOnlyOwnedRecords() throws Exception {
+        var first=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("first-"+UUID.randomUUID()+"@example.com","DemoPassword123","First Demo"),"first-test");
+        var second=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("second-"+UUID.randomUUID()+"@example.com","DemoPassword123","Second Demo"),"second-test");
+        BookingView older=bookings.create(input(flightId,null,""),first.id());
+        BookingView newer=bookings.create(input(flightId,null,""),first.id());
+        try {
+            http.perform(get("/api/auth/bookings")).andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("UNAUTHORIZED"));
+            http.perform(get("/api/auth/bookings?page=0&size=1").header("Authorization","Bearer "+first.token()))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1)).andExpect(jsonPath("$[0].code").value(newer.code()));
+            http.perform(get("/api/auth/bookings?page=1&size=1").header("Authorization","Bearer "+first.token()))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(1)).andExpect(jsonPath("$[0].code").value(older.code()));
+            http.perform(get("/api/auth/bookings").header("Authorization","Bearer "+second.token()))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(0));
+            http.perform(get("/api/auth/bookings?page=-1").header("Authorization","Bearer "+first.token())).andExpect(status().isBadRequest());
+        } finally {
+            bookings.cancel(older.id(),older.accessToken().toString());bookings.cancel(newer.id(),newer.accessToken().toString());
+        }
+    }
 
     @Test void serverCalculatesPriceAndKeepsSnapshotAfterFareChanges(){
         BookingView b=bookings.create(input(flightId,"3A","DEMO10"),null);
