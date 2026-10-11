@@ -90,7 +90,7 @@ test("eVisa saves a journey inquiry with transit details", async ({ page, reques
   await expect(page.locator("aside").getByText("Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.", { exact: true })).toBeVisible();
 });
 
-async function confirmedBooking(request, user) {
+async function confirmedBooking(request, user, fareCode = "ECO") {
   let flight;
   for (let offset = 1; offset < 25 && !flight; offset++) {
     const date = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(Date.now() + offset * 86400000));
@@ -99,7 +99,7 @@ async function confirmedBooking(request, user) {
   }
   expect(flight).toBeTruthy();
   const created = await request.post("/api/bookings", { headers: headers(user), data: {
-    segments: [{ flightId: flight.id, fareCode: "ECO", seats: [], extras: [] }],
+    segments: [{ flightId: flight.id, fareCode, seats: [], extras: [] }],
     passengers: [{ type: "ADULT", title: "MR", lastName: "NGUYEN", firstName: "DEMO", dateOfBirth: "1990-01-01", nationality: "Việt Nam" }],
     contactEmail: user.email, contactPhone: "0901234567", promotionCode: "",
   } });
@@ -109,7 +109,7 @@ async function confirmedBooking(request, user) {
 }
 
 test("Ngoại tệ looks up an internal booking and saves currency preferences", async ({ page, request }) => {
-  const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
+  const user = await register(request), booking = await confirmedBooking(request, user, "BUSINESS"); await login(page, user);
   await page.goto("/services/currency");
   await expect(page.getByRole("heading", { name: "Mua ngoại tệ cho chuyến đi", exact: true })).toBeVisible();
   const lookup = page.locator(".lookup-form");
@@ -130,7 +130,7 @@ test("Ngoại tệ looks up an internal booking and saves currency preferences",
 });
 
 test("Bảo hiểm uses API pricing and completes a booking service purchase", async ({ page, request }) => {
-  const user = await register(request), booking = await confirmedBooking(request, user); await login(page, user);
+  const user = await register(request), booking = await confirmedBooking(request, user, "BUSINESS"); await login(page, user);
   const response = await request.get("/api/ancillary-services"); expect(response.ok()).toBe(true);
   const insurance = (await response.json()).find(service => service.category === "INSURANCE");
   await page.goto("/services/insurance");
@@ -160,4 +160,36 @@ test("Bảo hiểm catalog retries after a network failure and supports guest lo
   await expect(page.locator(".service-insurance-products article")).not.toHaveCount(0);
   await expect(page.locator(".lookup-form")).toBeVisible();
   await expect(catalog.getByRole("link", { name: "Mua bảo hiểm cho chuyến bay", exact: true })).toHaveCount(0);
+});
+
+test("SkyJoy presents the program and redeems real internal points", async ({ page, request }) => {
+  const user = await register(request); await confirmedBooking(request, user, "BUSINESS"); await login(page, user);
+  const walletResponse = await request.get("/api/commerce/account/wallet", { headers: headers(user) }); expect(walletResponse.ok()).toBe(true);
+  const wallet = await walletResponse.json(); expect(wallet.points).toBeGreaterThanOrEqual(100);
+  await page.goto("/services/skyjoy");
+  await expect(page.getByRole("heading", { name: "SkyJoy · Tích điểm, đổi niềm vui", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "Ví điểm của tôi", exact: true }).click();
+  await page.getByLabel("Số điểm đổi", { exact: true }).fill("100");
+  await page.getByRole("button", { name: "Đổi điểm lấy voucher", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Đã đổi điểm thành voucher.");
+  const updated = await (await request.get("/api/commerce/account/wallet", { headers: headers(user) })).json();
+  expect(updated.points).toBe(wallet.points - 100);
+  const vouchers = await (await request.get("/api/commerce/account/vouchers", { headers: headers(user) })).json();
+  expect(vouchers.some(voucher => voucher.status === "ACTIVE" && voucher.balance === 100000)).toBe(true);
+  await page.reload(); await expect(page.locator("#skyjoy-wallet")).toContainText(String(updated.points));
+});
+
+test("SkyJoy banners respect reduced motion and wallet errors can retry", async ({ page, request }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" }); await login(page, await register(request));
+  await page.route("**/api/commerce/account/wallet", route => route.abort());
+  await page.goto("/services/skyjoy");
+  await expect(page.locator(".skyjoy-carousel")).toHaveAttribute("aria-live", "polite");
+  await page.getByRole("button", { name: "Banner SkyJoy 2", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Banner SkyJoy 2", exact: true })).toHaveAttribute("aria-pressed", "true");
+  const wallet = page.locator("#skyjoy-wallet");
+  await expect(wallet.getByRole("button", { name: "Thử lại", exact: true })).toBeVisible();
+  await page.unroute("**/api/commerce/account/wallet");
+  await wallet.getByRole("button", { name: "Thử lại", exact: true }).click();
+  await expect(wallet.getByRole("heading", { name: "Lịch sử điểm", exact: true })).toBeVisible();
+  await expect(wallet.getByRole("button", { name: "Đổi điểm lấy voucher", exact: true })).toBeDisabled();
 });

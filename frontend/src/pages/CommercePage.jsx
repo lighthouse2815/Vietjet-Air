@@ -9,6 +9,8 @@ import { LoadingState, ErrorState } from "../components/common/States";
 import SkyShopStorefront from "../components/home/SkyShopStorefront";
 import StatsSection from "../components/home/StatsSection";
 import VoucherStorefront from "../components/home/VoucherStorefront";
+import LoyaltyLanding from "../components/services/LoyaltyLanding";
+import "../styles/services.css";
 export default function CommercePage({kind}) {
   useTranslation();
   const logged=!!sessionStorage.getItem("demo-auth");
@@ -34,11 +36,12 @@ export default function CommercePage({kind}) {
   async function checkout(e){e.preventDefault();const values=Object.fromEntries(new FormData(e.currentTarget));values.bookingToken=bookings.data?.find(b=>b.code===values.bookingCode)?.accessToken;values.items=Object.entries(cart).filter(([,q])=>q>0).map(([id,quantity])=>({productId:Number(id),quantity:Number(quantity)}));values.requestKey=crypto.randomUUID();const order=await send("/commerce/account/orders",values,"Đã tạo đơn và giữ hàng 15 phút.");if(order)setCart({});}
   const pay=(type,id,outcome)=>send(`/commerce/account/${type}/${id}/pay`,{requestKey:crypto.randomUUID(),outcome},outcome==="SUCCESS"?"Thanh toán demo thành công.":"Đã ghi nhận kết quả thanh toán.");
   if (kind === "voucher") return <VoucherStorefront records={records} send={send} pay={pay} logged={logged} busy={busy} error={error} message={message} />;
-  return <main className={kind === "shop" ? "skyshop-page" : "container page checkout-page"}
+  return <main className={kind === "shop" ? "skyshop-page" : kind === "loyalty" ? "skyjoy-page" : "container page checkout-page"}
     onLoadCapture={kind === "shop" ? (event) => { if (event.target.tagName === "IMG") event.target.classList.add("home-image-loaded"); } : undefined}>
     {kind === "shop" && <SkyShopStorefront products={products} bookings={bookings} cart={cart} setCart={setCart} bookingCode={bookingCode} setBookingCode={setBookingCode} logged={logged} />}
-    <div className={kind === "shop" ? "container skyshop-account" : undefined} id={kind === "shop" ? "skyshop-cart" : undefined}>
-    {kind !== "shop" && <div className="page-heading"><h1>{t(titles[kind])}</h1><p>{t("Sản phẩm, voucher và điểm chỉ có giá trị trong bản demo này.")}</p></div>}
+    {kind === "loyalty" && <LoyaltyLanding logged={logged} />}
+    <div className={kind === "shop" ? "container skyshop-account" : kind === "loyalty" ? "container skyjoy-wallet" : undefined} id={kind === "shop" ? "skyshop-cart" : kind === "loyalty" ? "skyjoy-wallet" : undefined}>
+    {kind !== "shop" && <div className="page-heading"><h2>{t(titles[kind])}</h2><p>{t("Sản phẩm, voucher và điểm chỉ có giá trị trong bản demo này.")}</p></div>}
     <div className="actions"><Link className="button secondary" to="/services/skyshop">{t("Cửa hàng")}</Link><Link className="button secondary" to="/services/voucher">{t("Voucher")}</Link><Link className="button secondary" to="/services/skyjoy">{t("Điểm thưởng")}</Link></div>
     {error&&<ErrorState message={t(error)}/>} {message&&<p role="status" className="notice-panel">{t(message)}</p>}
     {!logged&&<p className="notice-panel"><Link to="/auth">{t("Đăng nhập")}</Link>{t(" để mua hàng, nhận voucher và dùng điểm.")}</p>}

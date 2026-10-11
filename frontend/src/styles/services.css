@@ -57,3 +57,40 @@
   .service-request { padding: 18px; }
   .service-request h2 { margin: -18px -18px 18px; padding: 16px 18px; font-size: 22px; }
 }
+.skyjoy-page { background: #fff; }
+.skyjoy-nav { color: white; background: linear-gradient(110deg, #ffb000, #f21b2b 32%, #ff7900 72%, #ffa0c0); }
+.skyjoy-nav .container { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-top: 14px; padding-bottom: 14px; }
+.skyjoy-nav img { display: block; object-fit: contain; }
+.skyjoy-carousel { position: relative; }
+.skyjoy-slides { display: grid; overflow: hidden; }
+.skyjoy-slide { grid-area: 1/1; opacity: 0; visibility: hidden; transition: opacity .6s var(--ease), visibility .6s; }
+.skyjoy-slide.visible { opacity: 1; visibility: visible; }
+.skyjoy-slide img { display: block; width: 100%; height: auto; }
+.skyjoy-prev, .skyjoy-next { position: absolute; top: 46%; border: 0; background: white; color: #444; border-radius: 50%; width: 44px; height: 44px; display: grid; place-items: center; box-shadow: var(--shadow); }
+.skyjoy-prev { left: 4%; } .skyjoy-next { right: 4%; }
+.skyjoy-dots { display: flex; justify-content: center; gap: 12px; padding: 18px; }
+.skyjoy-dots button { border: 1px solid #aaa; background: white; padding: 0; width: 12px; height: 12px; border-radius: 50%; }
+.skyjoy-dots button[aria-pressed="true"] { background: var(--red); border-color: var(--red); }
+.skyjoy-program { text-align: center; padding-top: 30px; padding-bottom: 45px; }
+.skyjoy-program h1 { color: var(--red); font-size: clamp(26px, 3vw, 40px); }
+.skyjoy-benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin: 45px 0; }
+.skyjoy-benefits svg { color: #ffaa00; }
+.skyjoy-benefits h2 { font-size: 21px; }
+.skyjoy-benefits p { color: var(--muted); }
+.skyjoy-earn { max-width: 800px; margin: 0 auto; padding: 25px 0; }
+.skyjoy-earn h2 { color: var(--red); font-size: 30px; }
+.skyjoy-earn .actions { justify-content: center; }
+.skyjoy-partners { background: #fae0b1; padding: 45px 0; }
+.skyjoy-partners h2 { color: var(--red); }
+.skyjoy-wallet { padding-top: 40px; padding-bottom: 50px; }
+.skyjoy-wallet .panel { margin: 20px 0; }
+.skyjoy-page a:focus-visible, .skyjoy-page button:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+@media (max-width: 767px) {
+  .skyjoy-nav .container { gap: 12px; flex-wrap: wrap; font-size: 14px; }
+  .skyjoy-nav img { width: 100px; height: auto; }
+  .skyjoy-nav .button { padding: 8px 12px; font-size: 14px; }
+  .skyjoy-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 25px 0; }
+  .skyjoy-benefits h2 { font-size: 19px; }
+  .skyjoy-prev, .skyjoy-next { width: 32px; height: 32px; }
+}
+@media (prefers-reduced-motion: reduce) { .skyjoy-slide { transition: none; } }
