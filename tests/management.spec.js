@@ -46,6 +46,23 @@ test("airport search preserves text typed immediately after opening", async ({
     await expect(origin).toContainText(code);
   }
 });
+test("homepage booking shortcut and FAQ topic links navigate to their targets", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .locator(".quick-access")
+    .getByRole("link", { name: "Đặt chuyến bay", exact: true })
+    .click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(10);
+  await page
+    .locator(".faq-categories")
+    .getByRole("link", { name: "Hành lý", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/services\/faq#baggage$/);
+  await expect(page.locator("details#baggage")).toHaveAttribute("open", "");
+  await expect(page.locator("details#baggage p")).toBeVisible();
+});
 test("returning to the same flight preserves passengers, services and seats", async ({
   page,
 }) => {

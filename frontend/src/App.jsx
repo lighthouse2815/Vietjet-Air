@@ -16,10 +16,10 @@ const MyBookingPage = lazy(() => import("./pages/MyBookingPage"));
 const CheckInPage = lazy(() => import("./pages/CheckInPage"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 export default function App() {
-  const { pathname } = useLocation();
+  const { pathname, key, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) window.scrollTo(0, 0);
+  }, [pathname, key, hash]);
   return (
     <>
       <a className="skip-link" href="#main-content">

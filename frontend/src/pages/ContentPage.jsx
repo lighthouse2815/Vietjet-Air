@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { Plane, ArrowRight } from "lucide-react";
 import { useApi } from "../hooks/useApi";
 import { LoadingState, ErrorState } from "../components/common/States";
@@ -33,8 +34,17 @@ const titles = {
 };
 export default function ContentPage() {
   const { slug } = useParams();
+  const { hash } = useLocation();
   const { data, loading, error, retry } = useApi("/home");
   const faq = (data?.items || []).filter((i) => i.category === "FAQ");
+  useEffect(() => {
+    if (slug !== "faq" || !hash || !data) return;
+    const topic = document.getElementById(hash.slice(1));
+    if (topic instanceof HTMLDetailsElement) {
+      topic.open = true;
+      topic.scrollIntoView({ block: "start" });
+    }
+  }, [slug, hash, data]);
   return (
     <main className="container page">
       <div className="page-heading">
