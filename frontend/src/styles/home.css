@@ -159,6 +159,33 @@ body:has(.hero.campaign) .site-header.over-hero {
   position: relative;
   z-index: 2;
 }
+.scroll-carousel {
+  position: relative;
+}
+.scroll-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 36px;
+  padding: 0;
+  color: var(--red);
+  background: #ffffffdf;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px #0002;
+}
+.scroll-arrow.previous {
+  left: 0;
+}
+.scroll-arrow.next {
+  right: 0;
+}
+.scroll-arrow:disabled {
+  opacity: 0.35;
+}
 .promotion-strip > a {
   display: flex;
   align-items: center;
@@ -724,6 +751,7 @@ body:has(.hero.campaign) .site-header.over-hero {
     width: 100%;
     padding: 0 15px 12px;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 15px;
   }
   .promotion-strip > a {
     min-width: 150px;

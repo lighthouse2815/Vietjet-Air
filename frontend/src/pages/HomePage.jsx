@@ -6,6 +6,7 @@ import { useApi } from "../hooks/useApi";
 import { money, localDate } from "../api/client";
 import { LoadingState, ErrorState } from "../components/common/States";
 import HeroCarousel from "../components/home/HeroCarousel";
+import ScrollCarousel from "../components/home/ScrollCarousel";
 import BookingForm from "../components/booking/BookingForm";
 import { getContentArtwork } from "../components/home/artwork";
 const quick = [
@@ -110,7 +111,10 @@ export default function HomePage() {
     >
       <HeroCarousel banners={items("HERO")} />
       <section className="promotion-region">
-        <div className="container promotion-strip">
+        <ScrollCarousel
+          className="container promotion-strip"
+          label={t("Vé khuyến mãi")}
+        >
           {data.promotions.map((p) => (
             <Link
               key={p.destination}
@@ -131,7 +135,7 @@ export default function HomePage() {
               </span>
             </Link>
           ))}
-        </div>
+        </ScrollCarousel>
       </section>
       <div className="home-cloud-background">
         <div className="container home-content">
@@ -261,9 +265,9 @@ export default function HomePage() {
           />
         </div>
       </section>
-      <section
+      <ScrollCarousel
         className="awards container"
-        aria-label={t("Thành tựu trong giao diện tham chiếu")}
+        label={t("Thành tựu trong giao diện tham chiếu")}
       >
         {[
           t("Hàng không chi phí thấp"),
@@ -282,7 +286,7 @@ export default function HomePage() {
             <span>{t(label)}</span>
           </div>
         ))}
-      </section>
+      </ScrollCarousel>
     </main>
   );
 }
