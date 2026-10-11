@@ -65,3 +65,9 @@ Expected: đổi điểm trừ ví, tạo voucher và giữ sau reload; lỗi v�
 
 Mỗi task: npm run build; npm run check:i18n; npx playwright test tests/services.spec.js --project=laptop --grep '<dịch vụ>'.
 Cuối: npm run test:e2e; npm run verify:services; git diff --check. Maven không cần chạy lại nếu backend không đổi (31 integration tests đã pass ở phần eVoucher).
+
+## Kết quả thực hiện
+
+Đã hoàn thành sáu task và commit/push từng trang. Rà soát cuối sửa mã booking qua đăng nhập, mốc hơn một giờ khi mua bảo hiểm, chống trùng sau mất phản hồi và giữ dừng banner khi focus. Chống trùng cần migration V9 thêm cột khóa nullable và unique index; đây là bổ sung nhỏ, giữ API cũ, không tạo database mới hoặc xóa dữ liệu.
+
+Đạt 33/33 integration tests, 131/131 toàn bộ E2E và 16/16 kiểm tra bố cục bổ sung sau sửa lớp mây che nút. Giao dịch dữ liệu được kiểm tra trên laptop; bố cục/ngôn ngữ/điều hướng/motion trên bốn viewport. Fixture chờ cửa sổ mới khi bị HTTP 429 thay vì sửa giới hạn server. Chứng cứ và giới hạn tại `docs/verification/SERVICES.md`; phần đối tác tại `docs/PROVIDER_BACKLOG.md`.

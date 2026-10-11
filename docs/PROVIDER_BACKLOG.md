@@ -27,3 +27,18 @@ Nguồn khảo sát để xem lại, không phải cam kết có API công khai:
 SkyShop nội bộ dùng danh mục, giá, tồn kho và đơn hàng từ API của project. Hành lý, suất ăn, ưu tiên và bảo hiểm demo đi qua luồng mua thêm của booking đã xác nhận; bảo hiểm demo không phát hành hợp đồng. eSIM và Taxi chỉ hiển thị thông tin chờ tích hợp, không tạo đơn nhà cung cấp. Phần hàng hóa thật, phát hành bảo hiểm, eSIM và điều phối xe vẫn thuộc các mục trên.
 
 eVoucher nội bộ mua/tặng theo email, thanh toán demo để phát hành, dùng số dư cho booking và hủy theo quyền của người mua. Các thẻ Combo, chào mừng thành viên và Menas là nội dung tham chiếu; không có giá/tồn phòng xác nhận, không tự cấp quà hay tạo đơn đối tác. Email gửi thật tiếp tục nằm trong mục Email/SMS.
+
+## Sáu nút dịch vụ còn lại — cập nhật 12/10/2026
+
+| Mục | Nghiệp vụ nội bộ đã nối | Phần còn cần nhà cung cấp |
+|---|---|---|
+| Khách sạn | Form điểm đến, nhận/trả phòng, phòng/khách; kiểm tra ngày; bản nháp riêng; đăng nhập quay lại trang; tạo và theo dõi ticket hỗ trợ theo tài khoản | Agoda: danh mục, giá, tồn phòng, giữ chỗ, xác nhận, thanh toán, hủy/hoàn. Link affiliate công khai hiện trả trang 404 khi đối chiếu; cần xác minh lại link trước tích hợp. |
+| eSIM | Lưu quốc gia, thời gian, thiết bị và nhu cầu kiểm tra tương thích; nhân viên trao đổi trên ticket | SkyFi: gói data, giá/khả dụng theo quốc gia, mua gói, cấp QR, kích hoạt, theo dõi và hủy/hoàn. |
+| eVisa | Lưu quốc tịch, điểm đến, quá cảnh và ngày đi để tư vấn; không thu hộ chiếu trong form này | Sherpa/cơ quan cấp visa: dữ liệu quy định cập nhật, hồ sơ bảo mật, lệ phí, tình trạng xử lý, quyết định cấp visa. |
+| Ngoại tệ | Tra cứu booking nội bộ qua API hiện có; lưu mã booking cùng loại tiền, số tiền và nơi nhận mong muốn trong ticket | HDBank: kiểm tra PNR thật/điều kiện, tỷ giá, hạn mức, chi nhánh, xác minh hồ sơ, xác nhận giao dịch và biên nhận. |
+| Bảo hiểm | Giá từ `/ancillary-services`; chọn booking đủ điều kiện (còn hơn một giờ trước khởi hành) hoặc tra cứu bằng mã/tên; chọn trước bảo hiểm ở quản lý booking; báo giá, thanh toán, lưu dịch vụ và lịch sử | Nhà bảo hiểm: điều khoản/phạm vi chính thức, số hợp đồng, chứng nhận điện tử, hiệu lực, hủy/hoàn và bồi thường. Bảo hiểm demo không phải hợp đồng thực. |
+| SkyJoy | Landing, banner có giảm chuyển động, đăng ký/đăng nhập quay lại, số dư/hạng/lịch sử ví, đổi điểm thành voucher dùng trong thanh toán nội bộ | GalaxyJoy: liên kết tài khoản, SkyPoint thật, đồng bộ/đối soát điểm, danh mục quà và giao dịch đổi thưởng đối tác. |
+
+Form tư vấn dùng `POST /api/support/tickets` với nhóm `OTHER` và khóa yêu cầu chống trùng tùy chọn; phản hồi, bổ sung và đóng yêu cầu dùng nghiệp vụ hỗ trợ hiện có. Ticket là yêu cầu tư vấn nội bộ, chưa tạo đơn hoặc xác nhận giao dịch ở nhà cung cấp. Các bản nháp nằm trong `sessionStorage`, riêng theo từng dịch vụ; yêu cầu đã gửi được lưu trên PostgreSQL theo tài khoản.
+
+Nguồn và ảnh đối chiếu: [audit sáu dịch vụ](reference/services/audit.json), [manifest ảnh](../frontend/public/assets/services/sources.json). Không nhúng iframe/provider tracker vào bản demo; các liên kết ngoài được mở rõ ràng trên kênh nhà cung cấp.

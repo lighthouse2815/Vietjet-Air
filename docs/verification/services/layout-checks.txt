@@ -1,0 +1,31 @@
+npm notice run npx
+npm notice run 'playwright' test tests/services-layout.spec.js
+
+Running 16 tests using 1 worker
+
+(node:2010545) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/services-layout.spec.js:3:1 › Service pages translate, activate navigation and keep drafts separate (5.3s)
+  ✓   2 [desktop] › tests/services-layout.spec.js:26:1 › SkyJoy autoplay pauses on hover and responds to motion preference changes (1.7s)
+  ✓   3 [desktop] › tests/services-layout.spec.js:42:1 › SkyJoy stays paused while keyboard focus remains inside (1.3s)
+  ✓   4 [desktop] › tests/services-layout.spec.js:48:1 › Provider actions stay clickable above the statistics section (3.7s)
+(node:2011233) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [laptop] › tests/services-layout.spec.js:3:1 › Service pages translate, activate navigation and keep drafts separate (6.3s)
+  ✓   6 [laptop] › tests/services-layout.spec.js:26:1 › SkyJoy autoplay pauses on hover and responds to motion preference changes (1.6s)
+  ✓   7 [laptop] › tests/services-layout.spec.js:42:1 › SkyJoy stays paused while keyboard focus remains inside (1.1s)
+  ✓   8 [laptop] › tests/services-layout.spec.js:48:1 › Provider actions stay clickable above the statistics section (3.3s)
+(node:2012060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [tablet] › tests/services-layout.spec.js:3:1 › Service pages translate, activate navigation and keep drafts separate (5.3s)
+  ✓  10 [tablet] › tests/services-layout.spec.js:26:1 › SkyJoy autoplay pauses on hover and responds to motion preference changes (1.2s)
+  ✓  11 [tablet] › tests/services-layout.spec.js:42:1 › SkyJoy stays paused while keyboard focus remains inside (871ms)
+  ✓  12 [tablet] › tests/services-layout.spec.js:48:1 › Provider actions stay clickable above the statistics section (3.4s)
+(node:2012725) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [mobile] › tests/services-layout.spec.js:3:1 › Service pages translate, activate navigation and keep drafts separate (4.9s)
+  ✓  14 [mobile] › tests/services-layout.spec.js:26:1 › SkyJoy autoplay pauses on hover and responds to motion preference changes (867ms)
+  ✓  15 [mobile] › tests/services-layout.spec.js:42:1 › SkyJoy stays paused while keyboard focus remains inside (763ms)
+  ✓  16 [mobile] › tests/services-layout.spec.js:48:1 › Provider actions stay clickable above the statistics section (3.2s)
+
+  16 passed (48.2s)

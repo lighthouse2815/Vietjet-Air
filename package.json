@@ -11,7 +11,8 @@
     "test:e2e": "playwright test",
     "build": "npm --prefix frontend run build",
     "setup:admin": "node scripts/init-admin.mjs",
-    "check:i18n": "node scripts/check-translations.mjs"
+    "check:i18n": "node scripts/check-translations.mjs",
+    "verify:services": "node scripts/verify-services.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
