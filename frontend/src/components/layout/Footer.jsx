@@ -1,3 +1,5 @@
+import { t } from "../../i18n.js";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import {
   Plane,
@@ -73,7 +75,16 @@ const groups = [
     ],
   ],
 ];
+const footerTargets = {
+  "Vietjet e-Voucher":"/services/voucher", "Chọn chỗ ngồi ưu tiên":"/my-booking", "Mua trước hành lý":"/my-booking", "Đặt trước suất ăn":"/my-booking",
+  "Hàng miễn thuế":"/services/skyshop", "Quà lưu niệm":"/services/skyshop", "Hướng dẫn làm thủ tục chuyến bay":"/check-in",
+  "Quy trình đổi, hoàn, hủy vé":"/my-booking", "Chính sách quyền riêng tư":"/services/privacy", "Chính sách sử dụng Cookies":"/services/cookies",
+  "Tin tức và khuyến mại":"/services/promotions", "Quy định hành lý":"/services/faq#baggage", "Điều kiện vé":"/services/faq#booking",
+  "Điều lệ vận chuyển":"/services/booking", "Phí và lệ phí":"/services/faq#booking", "Thông tin nối chuyến":"/services/multi-city",
+  "Dịch vụ hàng hóa":"/services/cargo", "Giới thiệu dự án":"/services/booking", "Điều kiện bản demo":"/services/booking", "Hạng vé Business":"/", "Hạng vé SkyBoss":"/",
+};
 export default function Footer() {
+  useTranslation();
   const home = useLocation().pathname === "/";
   return (
     <>
@@ -83,14 +94,14 @@ export default function Footer() {
             <div key={title}>
               <h4>
                 <ArrowRight size={13} />
-                {title}
+                {t(title)}
               </h4>
               {items.map((item) => (
                 <Link
                   key={item}
-                  to={`/services/${item.includes("hành lý") ? "baggage" : item.includes("suất ăn") ? "meals" : item.includes("chỗ") ? "seats" : item.includes("Cookies") ? "cookies" : item.includes("riêng tư") ? "privacy" : "support"}`}
+                  to={footerTargets[item] || "/services/support"}
                 >
-                  {item}
+                  {t(item)}
                 </Link>
               ))}
             </div>
@@ -98,68 +109,61 @@ export default function Footer() {
         </div>
         <div className="container footer-bottom">
           <div>
-            <h4>Kết nối cùng hành trình</h4>
+            <h4>{t("Kết nối cùng hành trình")}</h4>
             <div className="social-links">
-              <Link aria-label="Thông tin Facebook" to="/services/social">
+              <Link aria-label={t("Thông tin Facebook")} to="/services/social">
                 <Facebook />
               </Link>
-              <Link aria-label="Thông tin Instagram" to="/services/social">
+              <Link aria-label={t("Thông tin Instagram")} to="/services/social">
                 <Instagram />
               </Link>
-              <Link aria-label="Thông tin YouTube" to="/services/social">
+              <Link aria-label={t("Thông tin YouTube")} to="/services/social">
                 <Youtube />
               </Link>
-              <Link aria-label="Liên hệ hỗ trợ" to="/services/support">
+              <Link aria-label={t("Liên hệ hỗ trợ")} to="/services/support">
                 <Mail />
               </Link>
             </div>
-            <small>Cập nhật thông tin chuyến bay demo</small>
+            <small>{t("Cập nhật thông tin chuyến bay demo")}</small>
           </div>
           <div>
-            <h4>Hướng dẫn đặt chuyến bay</h4>
-            <Link to="/services/booking">Tìm hiểu luồng đặt vé</Link>
-            <h4>Hướng dẫn thanh toán</h4>
-            <Link to="/services/payment">Thanh toán giả lập an toàn</Link>
+            <h4>{t("Hướng dẫn đặt chuyến bay")}</h4>
+            <Link to="/services/booking">{t("Tìm hiểu luồng đặt vé")}</Link>
+            <h4>{t("Hướng dẫn thanh toán")}</h4>
+            <Link to="/services/payment">{t("Thanh toán giả lập an toàn")}</Link>
           </div>
           <div className="footer-disclaimer">
-            <strong>VIETJET · BẢN MÔ PHỎNG ĐỘC LẬP</strong>
-            <p>
-              Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet
-              Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu
-              demo.
-            </p>
-            <small>
-              Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá
-              nhân thật.
-            </small>
+            <strong>{t("VIETJET · BẢN MÔ PHỎNG ĐỘC LẬP")}</strong>
+            <p>{t("Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu demo.")}</p>
+            <small>{t("Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá nhân thật.")}</small>
           </div>
         </div>
       </footer>
-      <nav className="mobile-bottom" aria-label="Điều hướng nhanh">
+      <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
         <Link to="/">
           <Ticket />
-          <span>Đặt chuyến bay</span>
+          <span>{t("Đặt chuyến bay")}</span>
         </Link>
         <Link to="/my-booking">
           <Plane />
-          <span>Chuyến bay của tôi</span>
+          <span>{t("Chuyến bay của tôi")}</span>
         </Link>
         <Link to="/my-booking">
           <ShoppingBag />
-          <span>Mua dịch vụ</span>
+          <span>{t("Mua dịch vụ")}</span>
         </Link>
         <Link to="/check-in">
           <MapPin />
-          <span>Check-in</span>
+          <span>{t("Check-in")}</span>
         </Link>
       </nav>
       {home && (
         <Link
           className="help-bubble"
           to="/services/support"
-          aria-label="Trung tâm hỗ trợ"
+          aria-label={t("Trung tâm hỗ trợ")}
         >
-          <span>Xin chào!</span>
+          <span>{t("Xin chào!")}</span>
           <Headphones />
         </Link>
       )}

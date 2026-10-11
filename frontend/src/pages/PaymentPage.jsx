@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { CheckCircle2, XCircle, Ban } from "lucide-react";
@@ -6,6 +8,7 @@ import { api, bookingHeaders, errorMessage, money } from "../api/client";
 import BookingSteps from "../components/booking/BookingSteps";
 import { useApi } from "../hooks/useApi";
 export default function PaymentPage() {
+  useTranslation();
   const { draft, update } = useBooking();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
@@ -44,56 +47,44 @@ export default function PaymentPage() {
     <main className="container page checkout-page">
       <BookingSteps active={4} />
       <div className="page-heading">
-        <span className="eyebrow">THANH TOÁN GIẢ LẬP</span>
-        <h1>Thanh toán demo</h1>
-        <p>
-          Không thu tiền thật. Không yêu cầu thông tin thẻ hoặc tài khoản ngân
-          hàng.
-        </p>
+        <span className="eyebrow">{t("THANH TOÁN GIẢ LẬP")}</span>
+        <h1>{t("Thanh toán demo")}</h1>
+        <p>{t("Không thu tiền thật. Không yêu cầu thông tin thẻ hoặc tài khoản ngân hàng.")}</p>
       </div>
       <section className="panel payment-panel">
-        <h2>Mã đặt chỗ: {booking.code}</h2>
+        <h2>{t("Mã đặt chỗ: ")}{booking.code}</h2>
         <strong className="payment-total">
           {money(booking.price.totalAmount)}
         </strong>
-        <p>
-          Giữ chỗ đến {new Date(booking.expiresAt).toLocaleString("vi-VN")}.
+        <p>{t("Giữ chỗ đến ")}{new Date(booking.expiresAt).toLocaleString("vi-VN")}.
         </p>
         {error && (
           <p className="notice-panel error" role="alert">
-            {error}
+            {t(error)}
           </p>
         )}
         <div className="payment-options">
-          {!!vouchers.data?.length && <label>Dùng voucher nội bộ<select value={voucherId} onChange={e=>setVoucherId(e.target.value)}><option value="">Thanh toán demo thông thường</option>{vouchers.data.filter(v=>v.status==="ACTIVE"&&v.balance>0&&v.recipientEmail===JSON.parse(sessionStorage.getItem("demo-user")||"{}").email).map(v=><option key={v.id} value={v.id}>{v.code} · {money(v.balance)}</option>)}</select>{voucherId&&<small>Trừ số dư voucher trước, phần còn lại thanh toán demo. Không thu tiền thật.</small>}</label>}
+          {!!vouchers.data?.length && <label>{t("Dùng voucher nội bộ")}<select value={voucherId} onChange={e=>setVoucherId(e.target.value)}><option value="">{t("Thanh toán demo thông thường")}</option>{vouchers.data.filter(v=>v.status==="ACTIVE"&&v.balance>0&&v.recipientEmail===JSON.parse(sessionStorage.getItem("demo-user")||"{}").email).map(v=><option key={v.id} value={v.id}>{v.code} · {money(v.balance)}</option>)}</select>{voucherId&&<small>{t("Trừ số dư voucher trước, phần còn lại thanh toán demo. Không thu tiền thật.")}</small>}</label>}
           <button
             className="button primary"
             disabled={busy}
             onClick={() => pay("SUCCESS")}
           >
-            <CheckCircle2 />
-            Thanh toán thành công
-          </button>
+            <CheckCircle2 />{t("Thanh toán thành công")}</button>
           <button
             className="button secondary"
             disabled={busy}
             onClick={() => pay("FAILED")}
           >
-            <XCircle />
-            Thanh toán thất bại
-          </button>
+            <XCircle />{t("Thanh toán thất bại")}</button>
           <button
             className="button secondary"
             disabled={busy}
             onClick={() => pay("CANCELLED")}
           >
-            <Ban />
-            Hủy thanh toán
-          </button>
+            <Ban />{t("Hủy thanh toán")}</button>
         </div>
-        <Link className="small muted" to="/my-booking">
-          Tra cứu và quản lý đặt chỗ
-        </Link>
+        <Link className="small muted" to="/my-booking">{t("Tra cứu và quản lý đặt chỗ")}</Link>
       </section>
     </main>
   );

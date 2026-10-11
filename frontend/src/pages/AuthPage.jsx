@@ -1,9 +1,12 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, errorMessage } from "../api/client";
 import { storeBooking } from "../utils/booking";
 export default function AuthPage() {
+  useTranslation();
   const [params] = useSearchParams();
   const [resetMessage, setResetMessage] = useState("");
   const [resetToken, setResetToken] = useState(params.get("reset") || "");
@@ -80,33 +83,29 @@ export default function AuthPage() {
   return (
     <main className="container page">
       <div className="page-heading">
-        <span className="eyebrow">TÀI KHOẢN RIÊNG CỦA BẢN DEMO</span>
+        <span className="eyebrow">{t("TÀI KHOẢN RIÊNG CỦA BẢN DEMO")}</span>
         <h1>
           {user
-            ? "Tài khoản của tôi"
+            ? t("Tài khoản của tôi")
             : mode === "login"
-              ? "Đăng nhập demo"
-              : "Đăng ký demo"}
+              ? t("Đăng nhập demo")
+              : t("Đăng ký demo")}
         </h1>
-        <p>Không sử dụng tài khoản hoặc mật khẩu Vietjet thật.</p>
+        <p>{t("Không sử dụng tài khoản hoặc mật khẩu Vietjet thật.")}</p>
       </div>
       <section className="panel auth-panel">
         {user ? (
           <>
-            <h2>Xin chào, {user.name}</h2>
+            <h2>{t("Xin chào, ")}{user.name}</h2>
             <p>{user.email}</p>
-            <p><Link to="/account">Hồ sơ và hành khách thường dùng</Link> · <Link to="/services/support">Yêu cầu hỗ trợ</Link></p>
-            {user.role === "ADMIN" && <p><Link to="/admin">Quản trị nghiệp vụ</Link></p>}
+            <p><Link to="/account">{t("Hồ sơ và hành khách thường dùng")}</Link> · <Link to="/services/support">{t("Yêu cầu hỗ trợ")}</Link></p>
+            {user.role === "ADMIN" && <p><Link to="/admin">{t("Quản trị nghiệp vụ")}</Link></p>}
             <button
               className="button primary"
               onClick={() => load()}
               disabled={busy}
-            >
-              Tải booking của tôi
-            </button>
-            <button className="button secondary" onClick={logout}>
-              Đăng xuất
-            </button>
+            >{t("Tải booking của tôi")}</button>
+            <button className="button secondary" onClick={logout}>{t("Đăng xuất")}</button>
             {bookings.map((b) => (
               <Link
                 className="account-booking"
@@ -129,78 +128,70 @@ export default function AuthPage() {
                 className="button secondary"
                 disabled={busy}
                 onClick={() => load(page + 1)}
-              >
-                Tải thêm booking
-              </button>
+              >{t("Tải thêm booking")}</button>
             )}
           </>
         ) : mode === "forgot" || resetToken ? (
-          <form onSubmit={recover}><h2>Khôi phục mật khẩu</h2>
-            <label>{resetToken ? "Mật khẩu mới" : "Email"}<input name={resetToken ? "password" : "email"} type={resetToken ? "password" : "email"} required minLength={resetToken ? 8 : undefined} maxLength={resetToken ? 72 : 255} autoComplete={resetToken ? "new-password" : "email"}/></label>
-            <button className="button primary" disabled={busy}>{resetToken ? "Lưu mật khẩu mới" : "Gửi hướng dẫn khôi phục"}</button>
-            <button type="button" className="button secondary" onClick={()=>{setMode("login");setResetToken("");}}>Về đăng nhập</button>
+          <form onSubmit={recover}><h2>{t("Khôi phục mật khẩu")}</h2>
+            <label>{resetToken ? t("Mật khẩu mới") : "Email"}<input name={resetToken ? "password" : "email"} type={resetToken ? "password" : "email"} required minLength={resetToken ? 8 : undefined} maxLength={resetToken ? 72 : 255} autoComplete={resetToken ? "new-password" : "email"}/></label>
+            <button className="button primary" disabled={busy}>{resetToken ? t("Lưu mật khẩu mới") : t("Gửi hướng dẫn khôi phục")}</button>
+            <button type="button" className="button secondary" onClick={()=>{setMode("login");setResetToken("");}}>{t("Về đăng nhập")}</button>
           </form>
         ) : (
           <form onSubmit={handleSubmit(submit)} noValidate>
             <div className="form-grid one">
               {mode === "register" && (
-                <label>
-                  Tên hiển thị
-                  <input
+                <label>{t("Tên hiển thị")}<input
                     {...register("name", {
-                      required: "Nhập tên hiển thị",
+                      required: t("Nhập tên hiển thị"),
                       maxLength: 100,
                     })}
                   />
                   {errors.name && (
-                    <small className="field-error">{errors.name.message}</small>
+                    <small className="field-error">{t(errors.name.message)}</small>
                   )}
                 </label>
               )}
-              <label>
-                Email
-                <input
+              <label>{t("Email")}<input
                   type="email"
                   {...register("email", {
-                    required: "Nhập email",
+                    required: t("Nhập email"),
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Email không hợp lệ",
+                      message: t("Email không hợp lệ"),
                     },
                   })}
                 />
                 {errors.email && (
-                  <small className="field-error">{errors.email.message}</small>
+                  <small className="field-error">{t(errors.email.message)}</small>
                 )}
               </label>
-              <label>
-                Mật khẩu
-                <input
+              <label>{t("Mật khẩu")}<input
                   type="password"
                   autoComplete={
                     mode === "login" ? "current-password" : "new-password"
                   }
                   {...register("password", {
-                    required: "Nhập mật khẩu",
-                    minLength: { value: 8, message: "Ít nhất 8 ký tự" },
+                    required: t("Nhập mật khẩu"),
+                    minLength: { value: 8, message: t("Ít nhất 8 ký tự") },
                     maxLength: 72,
                   })}
                 />
                 {errors.password && (
                   <small className="field-error">
-                    {errors.password.message}
+                    {t(errors.password.message)}
                   </small>
                 )}
               </label>
             </div>
             <button className="button primary full" disabled={busy}>
               {busy
-                ? "Đang xử lý..."
+                ? t("Đang xử lý...")
                 : mode === "login"
-                  ? "Đăng nhập"
-                  : "Tạo tài khoản demo"}
+                  ? t("Đăng nhập")
+                  : t("Tạo tài khoản demo")}
             </button>
-            <button type="button" className="auth-toggle" onClick={()=>setMode("forgot")}>Quên mật khẩu?</button>
+            <button type="button" className="auth-toggle" onClick={()=>setMode("forgot")}>{t("Quên mật khẩu?")}</button>
             <button
               type="button"
               className="auth-toggle"
@@ -211,17 +202,17 @@ export default function AuthPage() {
               }}
             >
               {mode === "login"
-                ? "Chưa có tài khoản? Đăng ký demo"
-                : "Đã có tài khoản? Đăng nhập"}
+                ? t("Chưa có tài khoản? Đăng ký demo")
+                : t("Đã có tài khoản? Đăng nhập")}
             </button>
           </form>
         )}
         {error && (
           <p role="alert" className="notice-panel error">
-            {error}
+            {t(error)}
           </p>
         )}
-        {resetMessage && <p role="status" className="notice-panel">{resetMessage}</p>}
+        {resetMessage && <p role="status" className="notice-panel">{t(resetMessage)}</p>}
       </section>
     </main>
   );

@@ -50,12 +50,12 @@ test("homepage carousel, airport keyboard navigation and passenger limits work",
     .getByRole("button", { name: "Điểm khởi hành", exact: true })
     .first();
   await origin.click();
-  await page.getByRole("combobox").fill("ha noi");
-  await expect(page.getByRole("option")).toContainText("HAN");
+  await page.locator(".airport-popup").getByRole("combobox").fill("ha noi");
+  await expect(page.locator(".airport-popup").getByRole("option")).toContainText("HAN");
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("combobox")).not.toBeVisible();
+  await expect(page.locator(".airport-popup").getByRole("combobox")).not.toBeVisible();
   await origin.click();
-  await page.getByRole("combobox").fill("ha noi");
+  await page.locator(".airport-popup").getByRole("combobox").fill("ha noi");
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await expect(origin).toContainText("HAN");

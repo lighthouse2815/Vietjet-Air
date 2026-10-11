@@ -1,3 +1,5 @@
+import { t } from "../../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ArrowUpDown, TicketPercent, Plane, LoaderCircle } from "lucide-react";
@@ -8,6 +10,7 @@ import AirportPicker from "./AirportPicker";
 import DatePicker from "./DatePicker";
 import PassengerPicker from "./PassengerPicker";
 export default function BookingForm({ initial = {}, compact = false }) {
+  useTranslation();
   const navigate = useNavigate();
   const airports = useApi("/airports");
   const [form, setForm] = useState({
@@ -60,17 +63,9 @@ export default function BookingForm({ initial = {}, compact = false }) {
     <div className={`booking-widget ${compact ? "compact" : ""}`}>
       {!compact && (
         <div className="booking-tabs">
-          <Link to="/my-booking">
-            Mua hành lý, suất ăn chọn chỗ ngồi và hơn thế nữa...
-          </Link>
-          <Link to="/services/skyjoy">
-            Đổi thưởng &amp;
-            <br /> Mua Skypoint
-          </Link>
-          <Link to="/services/cargo">
-            Gửi hàng
-            <br /> nhanh
-          </Link>
+          <Link to="/my-booking">{t("Mua hành lý, suất ăn chọn chỗ ngồi và hơn thế nữa...")}</Link>
+          <Link to="/services/skyjoy">{t("Đổi thưởng &")}<br />{t(" Mua Skypoint")}</Link>
+          <Link to="/services/cargo">{t("Gửi hàng")}<br />{t(" nhanh")}</Link>
         </div>
       )}
       <form onSubmit={submit} noValidate>
@@ -81,34 +76,28 @@ export default function BookingForm({ initial = {}, compact = false }) {
               name={`trip-${compact}`}
               checked={form.type === "ROUND_TRIP"}
               onChange={() => change({ type: "ROUND_TRIP" })}
-            />
-            Khứ hồi
-          </label>
+            />{t("Khứ hồi")}</label>
           <label>
             <input
               type="radio"
               name={`trip-${compact}`}
               checked={form.type === "ONE_WAY"}
               onChange={() => change({ type: "ONE_WAY" })}
-            />
-            Một chiều
-          </label>
-          <Link to="/services/multi-city">Nhiều chặng ↗</Link>
-          <span className="currency" title="Giao dịch demo sử dụng VND">
-            VND ⌄
-          </span>
+            />{t("Một chiều")}</label>
+          <Link to="/services/multi-city">{t("Nhiều chặng ↗")}</Link>
+          <span className="currency" title={t("Giao dịch demo sử dụng VND")}>{t("VND ⌄")}</span>
         </div>
         <div className="flight-fields">
           <div className="route-date-row">
             <AirportPicker
-              label="Điểm khởi hành"
+              label={t("Điểm khởi hành")}
               value={form.origin}
               onChange={(origin) => change({ origin })}
               airports={airports.data || []}
               exclude={form.destination}
             />
             <DatePicker
-              label="Ngày đi"
+              label={t("Ngày đi")}
               value={form.date}
               onChange={(date) =>
                 change({
@@ -126,7 +115,7 @@ export default function BookingForm({ initial = {}, compact = false }) {
           <button
             type="button"
             className="swap-button"
-            aria-label="Hoán đổi điểm đi và điểm đến"
+            aria-label={t("Hoán đổi điểm đi và điểm đến")}
             onClick={() =>
               change({ origin: form.destination, destination: form.origin })
             }
@@ -135,14 +124,14 @@ export default function BookingForm({ initial = {}, compact = false }) {
           </button>
           <div className="route-date-row">
             <AirportPicker
-              label="Điểm đến"
+              label={t("Điểm đến")}
               value={form.destination}
               onChange={(destination) => change({ destination })}
               airports={airports.data || []}
               exclude={form.origin}
             />
             <DatePicker
-              label="Ngày về"
+              label={t("Ngày về")}
               value={form.type === "ROUND_TRIP" ? form.returnDate : ""}
               onChange={(returnDate) => change({ returnDate })}
               min={form.date || localDate()}
@@ -164,8 +153,8 @@ export default function BookingForm({ initial = {}, compact = false }) {
           <label className="white-field promo-input">
             <TicketPercent size={21} />
             <input
-              aria-label="Mã khuyến mại"
-              placeholder="Mã khuyến mại"
+              aria-label={t("Mã khuyến mại")}
+              placeholder={t("Mã khuyến mại")}
               value={form.promotionCode}
               onChange={(e) =>
                 change({ promotionCode: e.target.value.toUpperCase() })
@@ -177,9 +166,7 @@ export default function BookingForm({ initial = {}, compact = false }) {
               type="checkbox"
               checked={form.cheap}
               onChange={(e) => change({ cheap: e.target.checked })}
-            />
-            Tìm vé rẻ nhất
-          </label>
+            />{t("Tìm vé rẻ nhất")}</label>
         </div>
         {(error || airports.error) && (
           <p role="alert" className="form-error">
@@ -192,14 +179,10 @@ export default function BookingForm({ initial = {}, compact = false }) {
         >
           {loading ? (
             <>
-              <LoaderCircle size={18} className="spin" />
-              Đang tìm...
-            </>
+              <LoaderCircle size={18} className="spin" />{t("Đang tìm...")}</>
           ) : (
             <>
-              <Plane size={18} />
-              Tìm chuyến bay
-            </>
+              <Plane size={18} />{t("Tìm chuyến bay")}</>
           )}
         </button>
       </form>

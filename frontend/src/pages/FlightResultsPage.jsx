@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { Plane, ArrowRight } from "lucide-react";
@@ -23,6 +25,7 @@ function SearchLeg({
   onSelect,
   cheap,
 }) {
+  useTranslation();
   const path = `/flights/search?${new URLSearchParams({ origin, destination, date, passengers: count })}`;
   const { data, loading, error, retry } = useApi(path);
   const ordered = useMemo(
@@ -36,18 +39,15 @@ function SearchLeg({
     <section className="search-leg">
       <h2>
         <Plane size={20} />
-        {label}: {origin} → {destination}
+        {t(label)}: {origin} → {destination}
         <span>{dateLabel(`${date}T12:00:00+07:00`)}</span>
       </h2>
       {loading ? (
-        <LoadingState label="Đang tìm chuyến bay phù hợp..." />
+        <LoadingState label={t("Đang tìm chuyến bay phù hợp...")} />
       ) : error ? (
-        <ErrorState message={error} retry={retry} />
+        <ErrorState message={t(error)} retry={retry} />
       ) : !ordered.length ? (
-        <EmptyState>
-          Không có chuyến bay phù hợp. Hãy chọn ngày khác; dữ liệu demo có các
-          chuyến trong 90 ngày tới.
-        </EmptyState>
+        <EmptyState>{t("Không có chuyến bay phù hợp. Hãy chọn ngày khác; dữ liệu demo có các chuyến trong 90 ngày tới.")}</EmptyState>
       ) : (
         ordered.map((flight) => (
           <FlightCard
@@ -62,6 +62,7 @@ function SearchLeg({
   );
 }
 export default function FlightResultsPage() {
+  useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { draft, update } = useBooking();
@@ -88,11 +89,9 @@ export default function FlightResultsPage() {
   if (!validation.success) {
     return (
       <main className="container page checkout-page">
-        <h1>Chọn chuyến bay</h1>
-        <ErrorState message="Thông tin tìm kiếm không hợp lệ. Hãy chọn lại sân bay, ngày bay và số hành khách." />
-        <Link to="/" className="button primary">
-          Tìm lại chuyến bay
-        </Link>
+        <h1>{t("Chọn chuyến bay")}</h1>
+        <ErrorState message={t("Thông tin tìm kiếm không hợp lệ. Hãy chọn lại sân bay, ngày bay và số hành khách.")} />
+        <Link to="/" className="button primary">{t("Tìm lại chuyến bay")}</Link>
       </main>
     );
   }
@@ -137,16 +136,14 @@ export default function FlightResultsPage() {
     <main className="container page checkout-page">
       <BookingSteps active={0} />
       <div className="page-heading">
-        <span className="eyebrow">HÀNH TRÌNH DEMO</span>
-        <h1>Chọn chuyến bay</h1>
+        <span className="eyebrow">{t("HÀNH TRÌNH DEMO")}</span>
+        <h1>{t("Chọn chuyến bay")}</h1>
         <p>
-          {count + search.infants} hành khách ·{" "}
-          {roundTrip ? "Khứ hồi" : "Một chiều"} · Giá hạng vé chưa gồm thuế/phí
-          demo.
-        </p>
+          {count + search.infants}{t(" hành khách ·")}{" "}
+          {roundTrip ? t("Khứ hồi") : t("Một chiều")}{t(" · Giá hạng vé chưa gồm thuế/phí demo.")}</p>
       </div>
       <details className="search-update panel">
-        <summary>Thay đổi tìm kiếm</summary>
+        <summary>{t("Thay đổi tìm kiếm")}</summary>
         <BookingForm key={searchKey} initial={search} />
       </details>
       <SearchLeg
@@ -154,7 +151,7 @@ export default function FlightResultsPage() {
         destination={search.destination}
         date={search.date}
         count={count}
-        label="Chuyến đi"
+        label={t("Chuyến đi")}
         selected={chosen.out}
         onSelect={(value) => select("out", value)}
         cheap={search.cheap}
@@ -165,7 +162,7 @@ export default function FlightResultsPage() {
           destination={search.origin}
           date={search.returnDate}
           count={count}
-          label="Chuyến về"
+          label={t("Chuyến về")}
           selected={chosen.back}
           onSelect={(value) => select("back", value)}
           cheap={search.cheap}
@@ -173,16 +170,15 @@ export default function FlightResultsPage() {
       )}
       <div className="selection-bar">
         <div>
-          <small>Giá vé tạm tính</small>
+          <small>{t("Giá vé tạm tính")}</small>
           <strong>{money(subtotal)}</strong>
-          <small>Thuế và dịch vụ tính ở bước xác nhận</small>
+          <small>{t("Thuế và dịch vụ tính ở bước xác nhận")}</small>
         </div>
         <button
           className="button primary"
           disabled={!chosen.out || (roundTrip && !chosen.back)}
           onClick={next}
-        >
-          Tiếp tục <ArrowRight size={18} />
+        >{t("Tiếp tục ")}<ArrowRight size={18} />
         </button>
       </div>
     </main>

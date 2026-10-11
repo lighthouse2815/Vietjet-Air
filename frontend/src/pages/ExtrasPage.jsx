@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Navigate, Link, useNavigate } from "react-router-dom";
 import { useBooking } from "../context/BookingContext";
@@ -15,6 +17,7 @@ const categories = {
   INSURANCE: "Bảo hiểm demo",
 };
 export default function ExtrasPage() {
+  useTranslation();
   const { draft, update } = useBooking();
   const navigate = useNavigate();
   const services = useApi("/ancillary-services");
@@ -64,19 +67,14 @@ export default function ExtrasPage() {
     <main className="container page checkout-page">
       <BookingSteps active={2} />
       <div className="page-heading">
-        <span className="eyebrow">BƯỚC 3</span>
-        <h1>Dịch vụ bổ sung</h1>
-        <p>
-          Chọn dịch vụ cho từng hành khách, từng chặng. Các lựa chọn đều có thể
-          bỏ qua.
-        </p>
+        <span className="eyebrow">{t("BƯỚC 3")}</span>
+        <h1>{t("Dịch vụ bổ sung")}</h1>
+        <p>{t("Chọn dịch vụ cho từng hành khách, từng chặng. Các lựa chọn đều có thể bỏ qua.")}</p>
       </div>
       <div className="checkout-grid">
         <div>
           <div className="panel extras-controls">
-            <label>
-              Chặng bay
-              <select
+            <label>{t("Chặng bay")}<select
                 value={segmentIndex}
                 onChange={(e) => setSegmentIndex(Number(e.target.value))}
               >
@@ -88,9 +86,7 @@ export default function ExtrasPage() {
                 ))}
               </select>
             </label>
-            <label>
-              Hành khách
-              <select
+            <label>{t("Hành khách")}<select
                 value={index}
                 onChange={(e) => setPassengerIndex(Number(e.target.value))}
               >
@@ -101,13 +97,10 @@ export default function ExtrasPage() {
                 ))}
               </select>
             </label>
-            <p className="small muted">
-              Hạng {segment.fare.name}: {segment.fare.benefits}. Dịch vụ bên
-              dưới là gói mua thêm.
-            </p>
+            <p className="small muted">{t("Hạng ")}{t(segment.fare.name)}: {t(segment.fare.benefits)}{t(". Dịch vụ bên dưới là gói mua thêm.")}</p>
           </div>
           <section className="panel ancillary-panel">
-            <h2>Hành lý, suất ăn và tiện ích</h2>
+            <h2>{t("Hành lý, suất ăn và tiện ích")}</h2>
             {services.loading ? (
               <LoadingState />
             ) : services.error ? (
@@ -115,7 +108,7 @@ export default function ExtrasPage() {
             ) : (
               Object.entries(categories).map(([category, label]) => (
                 <div className="ancillary-group" key={category}>
-                  <h3>{label}</h3>
+                  <h3>{t(label)}</h3>
                   {services.data
                     .filter((s) => s.category === category)
                     .map((service) => (
@@ -125,13 +118,13 @@ export default function ExtrasPage() {
                       >
                         <input
                           type="checkbox"
-                          aria-label={service.name}
+                          aria-label={t(service.name)}
                           checked={chosen.includes(service.id)}
                           onChange={() => toggle(service)}
                         />
                         <span>
-                          <strong>{service.name}</strong>
-                          <small>{service.description}</small>
+                          <strong>{t(service.name)}</strong>
+                          <small>{t(service.description)}</small>
                         </span>
                         <b>{money(service.price)}</b>
                       </label>
@@ -141,10 +134,10 @@ export default function ExtrasPage() {
             )}
           </section>
           <section className="panel seat-panel">
-            <h2>Chọn chỗ ngồi</h2>
+            <h2>{t("Chọn chỗ ngồi")}</h2>
             <p>
-              {passenger.lastName} {passenger.firstName} · Ghế{" "}
-              {draft.seats[flightId]?.[index] || "chưa chọn"}
+              {passenger.lastName} {passenger.firstName}{t(" · Ghế")}{" "}
+              {draft.seats[flightId]?.[index] || t("chưa chọn")}
             </p>
             <SeatMap
               flightId={flightId}
@@ -158,7 +151,7 @@ export default function ExtrasPage() {
         </div>
         <div>
           {quote.loading ? (
-            <LoadingState label="Đang tính giá tại máy chủ..." />
+            <LoadingState label={t("Đang tính giá tại máy chủ...")} />
           ) : quote.error ? (
             <ErrorState message={quote.error} />
           ) : (
@@ -167,15 +160,11 @@ export default function ExtrasPage() {
         </div>
       </div>
       <div className="actions justify-between">
-        <Link className="button secondary" to="/booking/passengers">
-          Quay lại
-        </Link>
+        <Link className="button secondary" to="/booking/passengers">{t("Quay lại")}</Link>
         <button
           className="button primary"
           onClick={() => navigate("/booking/review")}
-        >
-          Tiếp tục
-        </button>
+        >{t("Tiếp tục")}</button>
       </div>
     </main>
   );

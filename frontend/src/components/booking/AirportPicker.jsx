@@ -1,3 +1,5 @@
+import { t } from "../../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import { Plane, Search, Check } from "lucide-react";
 import { usePopup } from "../../hooks/usePopup";
@@ -14,6 +16,7 @@ export default function AirportPicker({
   airports,
   exclude,
 }) {
+  useTranslation();
   const { ref, open, setOpen } = usePopup();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
@@ -52,7 +55,7 @@ export default function AirportPicker({
       <button
         type="button"
         className="airport-trigger"
-        aria-label={label}
+        aria-label={t(label)}
         aria-expanded={open}
         onClick={() => {
           if (!open) {
@@ -62,12 +65,12 @@ export default function AirportPicker({
           setOpen(!open);
         }}
       >
-        <Plane size={21} className={label === "Điểm đến" ? "landing" : ""} />
+        <Plane size={21} className={label === t("Điểm đến") ? "landing" : ""} />
         <span>
           {selected ? (
             <>
-              <small>{label}</small>
-              {selected.city} <b>({selected.code})</b>
+              <small>{t(label)}</small>
+              {t(selected.city)} <b>({selected.code})</b>
             </>
           ) : (
             label
@@ -76,13 +79,13 @@ export default function AirportPicker({
       </button>
       {open && (
         <div className="popup airport-popup">
-          <div className="popup-title">{label}</div>
+          <div className="popup-title">{t(label)}</div>
           <div className="search-input">
             <Search size={18} />
             <input
               ref={input}
-              aria-label={`Tìm ${label.toLowerCase()}`}
-              placeholder="Thành phố hoặc mã sân bay"
+              aria-label={t("Tìm {{v0}}", {v0: label.toLowerCase()})}
+              placeholder={t("Thành phố hoặc mã sân bay")}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -109,9 +112,9 @@ export default function AirportPicker({
                 onClick={() => choose(a)}
               >
                 <span>
-                  <strong>{a.city}</strong>
+                  <strong>{t(a.city)}</strong>
                   <small>
-                    {a.name}, {a.country}
+                    {t(a.name)}, {a.country}
                   </small>
                 </span>
                 <b>{a.code}</b>
@@ -119,7 +122,7 @@ export default function AirportPicker({
               </button>
             ))}
             {!options.length && (
-              <p className="small muted">Không tìm thấy sân bay phù hợp.</p>
+              <p className="small muted">{t("Không tìm thấy sân bay phù hợp.")}</p>
             )}
           </div>
         </div>

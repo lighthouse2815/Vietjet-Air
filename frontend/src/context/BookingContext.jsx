@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { createContext, useContext, useState, useEffect } from "react";
 const BookingContext = createContext(null);
 const empty = {
@@ -12,6 +14,7 @@ const empty = {
   booking: null,
 };
 export function BookingProvider({ children }) {
+  useTranslation();
   const [draft, setDraft] = useState(() => {
     try {
       return {
@@ -33,7 +36,7 @@ export function BookingProvider({ children }) {
         reset: () => setDraft(empty),
       }}
     >
-      {children}
+      {t(children)}
     </BookingContext.Provider>
   );
 }

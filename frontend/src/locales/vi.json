@@ -1,0 +1,20 @@
+{
+  "PENDING": "Chờ thanh toán",
+  "CONFIRMED": "Đã xác nhận",
+  "SUCCESS": "Thành công",
+  "FAILED": "Thất bại",
+  "ACTIVE": "Đang hiệu lực",
+  "CANCELLED": "Đã hủy",
+  "EXPIRED": "Đã hết hạn",
+  "REQUESTED": "Đã yêu cầu",
+  "APPROVED": "Đã duyệt",
+  "REJECTED": "Đã từ chối",
+  "COMPLETED": "Đã hoàn tất",
+  "OPEN": "Đang mở",
+  "ANSWERED": "Đã phản hồi",
+  "CLOSED": "Đã đóng",
+  "PAID": "Đã thanh toán",
+  "FULFILLED": "Đã giao",
+  "PICKUP": "Nhận tại quầy",
+  "ON_BOARD": "Nhận theo chuyến bay"
+}

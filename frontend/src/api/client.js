@@ -1,4 +1,5 @@
 import axios from "axios";
+import i18n from "../i18n";
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
   timeout: 20000,
@@ -17,20 +18,20 @@ export const errorMessage = (error) =>
     ? "Yêu cầu mất quá nhiều thời gian. Vui lòng thử lại."
     : "Không kết nối được máy chủ. Vui lòng thử lại.");
 export const money = (value) =>
-  new Intl.NumberFormat("vi-VN", {
+  new Intl.NumberFormat(i18n.language === "en" ? "en-US" : "vi-VN", {
     style: "currency",
     currency: "VND",
     maximumFractionDigits: 0,
   }).format(value || 0);
 export const dateLabel = (date) =>
-  new Intl.DateTimeFormat("vi-VN", {
+  new Intl.DateTimeFormat(i18n.language === "en" ? "en-GB" : "vi-VN", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     timeZone: "Asia/Ho_Chi_Minh",
   }).format(new Date(date));
 export const timeLabel = (date) =>
-  new Intl.DateTimeFormat("vi-VN", {
+  new Intl.DateTimeFormat(i18n.language === "en" ? "en-GB" : "vi-VN", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 async function checkpoint(page, testInfo, name) {
   await expect
     .poll(() =>
@@ -58,14 +58,14 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
     .getByRole("button", { name: "Điểm khởi hành", exact: true })
     .first()
     .click();
-  await page.getByRole("combobox").fill("sgn");
-  await page.getByRole("option").first().click();
+  await page.locator(".airport-popup").getByRole("combobox").fill("sgn");
+  await page.locator(".airport-popup").getByRole("option").first().click();
   await page
     .getByRole("button", { name: "Điểm đến", exact: true })
     .first()
     .click();
-  await page.getByRole("combobox").fill("han");
-  await page.getByRole("option").first().click();
+  await page.locator(".airport-popup").getByRole("combobox").fill("han");
+  await page.locator(".airport-popup").getByRole("option").first().click();
   await page
     .getByRole("button", { name: "Ngày đi", exact: true })
     .first()
@@ -156,6 +156,14 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
   await page.getByLabel("Tôi đồng ý điều kiện check-in demo").check();
   await page.getByRole("button", { name: "Hoàn tất check-in" }).click();
   await expect(page.getByText("BOARDING PASS · DEMO")).toBeVisible();
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    page.getByRole("button", { name: "Tải boarding pass demo", exact: true }).first().click(),
+  ]);
+  expect(download.suggestedFilename()).toMatch(/^boarding-pass-.*\.txt$/);
+  const boardingText = await readFile(await download.path(), "utf8");
+  expect(boardingText).toContain("NGUYEN VAN DEMO");
+  expect(boardingText).toContain("DEMO");
   await checkpoint(page, testInfo, "check-in");
   expect(errors).toEqual([]);
 });

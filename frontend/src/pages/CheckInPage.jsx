@@ -1,9 +1,12 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { api, bookingHeaders, errorMessage } from "../api/client";
 import BookingLookupForm from "../components/booking/BookingLookupForm";
 import BookingDetails from "../components/booking/BookingDetails";
 import SeatMap from "../components/booking/SeatMap";
 export default function CheckInPage() {
+  useTranslation();
   const [lookup, setLookup] = useState(null);
   const [segmentIndex, setSegmentIndex] = useState(0);
   const [passengerIndex, setPassengerIndex] = useState(0);
@@ -58,12 +61,9 @@ export default function CheckInPage() {
   return (
     <main className="container page checkout-page">
       <div className="page-heading">
-        <span className="eyebrow">LÀM THỦ TỤC TRỰC TUYẾN DEMO</span>
-        <h1>Online Check-in</h1>
-        <p>
-          Chỉ cho booking đã xác nhận. Quy tắc thời gian được cấu hình riêng cho
-          bản demo.
-        </p>
+        <span className="eyebrow">{t("LÀM THỦ TỤC TRỰC TUYẾN DEMO")}</span>
+        <h1>{t("Online Check-in")}</h1>
+        <p>{t("Chỉ cho booking đã xác nhận. Quy tắc thời gian được cấu hình riêng cho bản demo.")}</p>
       </div>
       <BookingLookupForm
         checkIn
@@ -81,15 +81,10 @@ export default function CheckInPage() {
       />
       {booking && (
         <>
-          <div className="notice-panel">
-            Check-in demo mở {lookup.openHours} giờ và đóng {lookup.closeHours}{" "}
-            giờ trước khởi hành. Boarding pass không có giá trị tại sân bay.
-          </div>
+          <div className="notice-panel">{t("Check-in demo mở ")}{lookup.openHours}{t(" giờ và đóng ")}{lookup.closeHours}{" "}{t("giờ trước khởi hành. Boarding pass không có giá trị tại sân bay.")}</div>
           <section className="panel checkin-panel">
             <div className="form-grid two">
-              <label>
-                Chặng bay
-                <select
+              <label>{t("Chặng bay")}<select
                   value={segmentIndex}
                   onChange={(e) => {
                     setSegmentIndex(Number(e.target.value));
@@ -104,9 +99,7 @@ export default function CheckInPage() {
                   ))}
                 </select>
               </label>
-              <label>
-                Hành khách
-                <select
+              <label>{t("Hành khách")}<select
                   value={passenger?.passengerIndex}
                   onChange={(e) => {
                     setPassengerIndex(Number(e.target.value));
@@ -122,23 +115,17 @@ export default function CheckInPage() {
               </label>
             </div>
             {!eligible ? (
-              <p role="alert" className="notice-panel error">
-                Booking chưa thanh toán hoặc chuyến bay nằm ngoài thời gian
-                check-in demo.
-              </p>
+              <p role="alert" className="notice-panel error">{t("Booking chưa thanh toán hoặc chuyến bay nằm ngoài thời gian check-in demo.")}</p>
             ) : checked ? (
-              <p className="notice-panel">
-                Hành khách đã check-in. Boarding pass demo hiển thị bên dưới.
-              </p>
+              <p className="notice-panel">{t("Hành khách đã check-in. Boarding pass demo hiển thị bên dưới.")}</p>
             ) : (
               <>
                 {assigned ? (
-                  <p>
-                    Ghế đã mua: <strong>{assigned}</strong>
+                  <p>{t("Ghế đã mua: ")}<strong>{assigned}</strong>
                   </p>
                 ) : (
                   <>
-                    <h3>Chọn ghế tiêu chuẩn miễn phí</h3>
+                    <h3>{t("Chọn ghế tiêu chuẩn miễn phí")}</h3>
                     <SeatMap
                       flightId={segment.flight.id}
                       selected={seat}
@@ -152,25 +139,20 @@ export default function CheckInPage() {
                     type="checkbox"
                     checked={accepted}
                     onChange={(e) => setAccepted(e.target.checked)}
-                  />
-                  Tôi đồng ý điều kiện check-in demo
-                </label>
-                <p className="small muted">
-                  Tôi hiểu đây là bản mô phỏng và không sử dụng boarding pass
-                  này tại sân bay.
-                </p>
+                  />{t("Tôi đồng ý điều kiện check-in demo")}</label>
+                <p className="small muted">{t("Tôi hiểu đây là bản mô phỏng và không sử dụng boarding pass này tại sân bay.")}</p>
                 <button
                   className="button primary"
                   disabled={busy || !accepted || !(assigned || seat)}
                   onClick={complete}
                 >
-                  {busy ? "Đang check-in..." : "Hoàn tất check-in"}
+                  {busy ? t("Đang check-in...") : t("Hoàn tất check-in")}
                 </button>
               </>
             )}
             {error && (
               <p role="alert" className="notice-panel error">
-                {error}
+                {t(error)}
               </p>
             )}
           </section>

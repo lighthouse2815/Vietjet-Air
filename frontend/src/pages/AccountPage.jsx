@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { api, errorMessage } from "../api/client";
@@ -5,6 +7,7 @@ import { useApi } from "../hooks/useApi";
 import { LoadingState, ErrorState } from "../components/common/States";
 
 export default function AccountPage() {
+  useTranslation();
   const profile = useApi("/account/profile");
   const travelers = useApi("/account/travelers");
   const [message, setMessage] = useState("");
@@ -30,28 +33,28 @@ export default function AccountPage() {
     catch(e) { setError(errorMessage(e)); } finally { setBusy(false); }
   }
   return <main className="container page checkout-page">
-    <div className="page-heading"><h1>Hồ sơ và hành khách thường dùng</h1><p>Thông tin lưu riêng theo tài khoản của bạn.</p></div>
-    {error && <ErrorState message={error} />}{message && <p role="status" className="notice-panel">{message}</p>}
+    <div className="page-heading"><h1>{t("Hồ sơ và hành khách thường dùng")}</h1><p>{t("Thông tin lưu riêng theo tài khoản của bạn.")}</p></div>
+    {error && <ErrorState message={t(error)} />}{message && <p role="status" className="notice-panel">{t(message)}</p>}
     {profile.loading ? <LoadingState /> : profile.error ? <ErrorState message={profile.error} retry={profile.retry} /> : <>
-      <form className="panel" key={profile.data.name} onSubmit={e => submit(e,"/account/profile","Đã lưu hồ sơ.")}>
-        <h2>Hồ sơ</h2><div className="form-grid"><label>Tên hiển thị<input name="name" required maxLength={100} defaultValue={profile.data.name}/></label><label>Số điện thoại<input name="phone" required pattern="[+0-9 ()-]{8,20}" defaultValue={profile.data.phone || ""}/></label></div>
-        <p>{profile.data.email}</p><button className="button primary" disabled={busy}>Lưu hồ sơ</button>
+      <form className="panel" key={profile.data.name} onSubmit={e => submit(e,"/account/profile",t("Đã lưu hồ sơ."))}>
+        <h2>{t("Hồ sơ")}</h2><div className="form-grid"><label>{t("Tên hiển thị")}<input name="name" required maxLength={100} defaultValue={profile.data.name}/></label><label>{t("Số điện thoại")}<input name="phone" required pattern="[+0-9 ()-]{8,20}" defaultValue={profile.data.phone || ""}/></label></div>
+        <p>{profile.data.email}</p><button className="button primary" disabled={busy}>{t("Lưu hồ sơ")}</button>
       </form>
-      <form className="panel" onSubmit={e => submit(e,"/account/password","Đã đổi mật khẩu.")}>
-        <h2>Đổi mật khẩu</h2><div className="form-grid"><label>Mật khẩu hiện tại<input name="currentPassword" type="password" required autoComplete="current-password" maxLength={72}/></label><label>Mật khẩu mới<input name="newPassword" type="password" required autoComplete="new-password" minLength={8} maxLength={72}/></label></div>
-        <p>Đổi mật khẩu sẽ kết thúc các phiên đăng nhập hiện tại.</p><button className="button primary" disabled={busy}>Đổi mật khẩu</button>
+      <form className="panel" onSubmit={e => submit(e,"/account/password",t("Đã đổi mật khẩu."))}>
+        <h2>{t("Đổi mật khẩu")}</h2><div className="form-grid"><label>{t("Mật khẩu hiện tại")}<input name="currentPassword" type="password" required autoComplete="current-password" maxLength={72}/></label><label>{t("Mật khẩu mới")}<input name="newPassword" type="password" required autoComplete="new-password" minLength={8} maxLength={72}/></label></div>
+        <p>{t("Đổi mật khẩu sẽ kết thúc các phiên đăng nhập hiện tại.")}</p><button className="button primary" disabled={busy}>{t("Đổi mật khẩu")}</button>
       </form>
     </>}
-    <section className="panel"><h2>Hành khách thường dùng</h2>
-      {travelers.loading ? <LoadingState /> : travelers.error ? <ErrorState message={travelers.error} retry={travelers.retry}/> : travelers.data.map(t => <div className="account-booking" key={t.id}><span>{t.lastName} {t.firstName} · {t.dateOfBirth}</span><button type="button" className="button secondary" onClick={()=>setEditing(t)}>Sửa</button><button type="button" className="button secondary" disabled={busy} onClick={()=>remove(t.id)}>Xóa</button></div>)}
-      <form key={editing?.id || "new"} onSubmit={e => submit(e,`/account/travelers${editing?`/${editing.id}`:""}`,"Đã lưu hành khách.")}>
-        <h3>{editing ? "Sửa hành khách" : "Thêm hành khách"}</h3><div className="form-grid">
-          <label>Loại hành khách<select name="type" defaultValue={editing?.type || "ADULT"}><option value="ADULT">Người lớn</option><option value="CHILD">Trẻ em</option><option value="INFANT">Em bé</option></select></label>
-          <label>Danh xưng<select name="title" defaultValue={editing?.title || "MR"}>{["MR","MS","MSTR","MISS"].map(t=><option key={t}>{t}</option>)}</select></label>
-          <label>Họ<input name="lastName" required maxLength={100} defaultValue={editing?.lastName || ""}/></label><label>Tên đệm và tên<input name="firstName" required maxLength={100} defaultValue={editing?.firstName || ""}/></label>
-          <label>Ngày sinh<input name="dateOfBirth" type="date" required defaultValue={editing?.dateOfBirth || ""}/></label><label>Quốc tịch<input name="nationality" required maxLength={100} defaultValue={editing?.nationality || "Việt Nam"}/></label>
-        </div><button className="button primary" disabled={busy}>Lưu hành khách</button>{editing && <button type="button" className="button secondary" onClick={()=>setEditing(null)}>Hủy sửa</button>}
+    <section className="panel"><h2>{t("Hành khách thường dùng")}</h2>
+      {travelers.loading ? <LoadingState /> : travelers.error ? <ErrorState message={travelers.error} retry={travelers.retry}/> : travelers.data.map(traveler => <div className="account-booking" key={traveler.id}><span>{traveler.lastName} {traveler.firstName} · {traveler.dateOfBirth}</span><button type="button" className="button secondary" onClick={()=>setEditing(traveler)}>{t("Sửa")}</button><button type="button" className="button secondary" disabled={busy} onClick={()=>remove(traveler.id)}>{t("Xóa")}</button></div>)}
+      <form key={editing?.id || "new"} onSubmit={e => submit(e,`/account/travelers${editing?`/${editing.id}`:""}`,t("Đã lưu hành khách."))}>
+        <h3>{editing ? t("Sửa hành khách") : t("Thêm hành khách")}</h3><div className="form-grid">
+          <label>{t("Loại hành khách")}<select name="type" defaultValue={editing?.type || "ADULT"}><option value="ADULT">{t("Người lớn")}</option><option value="CHILD">{t("Trẻ em")}</option><option value="INFANT">{t("Em bé")}</option></select></label>
+          <label>{t("Danh xưng")}<select name="title" defaultValue={editing?.title || "MR"}>{["MR","MS","MSTR","MISS"].map(t=><option key={t}>{t}</option>)}</select></label>
+          <label>{t("Họ")}<input name="lastName" required maxLength={100} defaultValue={editing?.lastName || ""}/></label><label>{t("Tên đệm và tên")}<input name="firstName" required maxLength={100} defaultValue={editing?.firstName || ""}/></label>
+          <label>{t("Ngày sinh")}<input name="dateOfBirth" type="date" required defaultValue={editing?.dateOfBirth || ""}/></label><label>{t("Quốc tịch")}<input name="nationality" required maxLength={100} defaultValue={editing?.nationality || t("Việt Nam")}/></label>
+        </div><button className="button primary" disabled={busy}>{t("Lưu hành khách")}</button>{editing && <button type="button" className="button secondary" onClick={()=>setEditing(null)}>{t("Hủy sửa")}</button>}
       </form>
-    </section><Link to="/auth">Booking trong tài khoản</Link>
+    </section><Link to="/auth">{t("Booking trong tài khoản")}</Link>
   </main>;
 }

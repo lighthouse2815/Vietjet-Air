@@ -1,3 +1,5 @@
+import { t } from "./i18n.js";
+import { useTranslation } from "react-i18next";
 import { useEffect, lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/layout/Header";
@@ -22,18 +24,17 @@ const CommercePage = lazy(() => import("./pages/CommercePage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const JourneyPage = lazy(() => import("./pages/JourneyPage"));
 export default function App() {
+  useTranslation();
   const { pathname, key, hash } = useLocation();
   useEffect(() => {
     if (!hash) window.scrollTo(0, 0);
   }, [pathname, key, hash]);
   return (
     <>
-      <a className="skip-link" href="#main-content">
-        Đến nội dung chính
-      </a>
+      <a className="skip-link" href="#main-content">{t("Đến nội dung chính")}</a>
       <Header />
       <div id="main-content">
-        <Suspense fallback={<LoadingState label="Đang tải trang..." />}>
+        <Suspense fallback={<LoadingState label={t("Đang tải trang...")} />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/flights" element={<FlightResultsPage />} />

@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,6 +48,7 @@ function initialPassengers(search) {
   );
 }
 export default function PassengerPage() {
+  useTranslation();
   const { draft, update } = useBooking();
   const navigate = useNavigate();
   const travelers = useApi(sessionStorage.getItem("demo-auth") ? "/account/travelers" : null);
@@ -114,95 +117,79 @@ export default function PassengerPage() {
     <main className="container page checkout-page">
       <BookingSteps active={1} />
       <div className="page-heading">
-        <span className="eyebrow">BƯỚC 2</span>
-        <h1>Thông tin hành khách</h1>
-        <p>Chỉ nhập dữ liệu mẫu. Không yêu cầu giấy tờ cá nhân thật.</p>
+        <span className="eyebrow">{t("BƯỚC 2")}</span>
+        <h1>{t("Thông tin hành khách")}</h1>
+        <p>{t("Chỉ nhập dữ liệu mẫu. Không yêu cầu giấy tờ cá nhân thật.")}</p>
       </div>
       <form onSubmit={handleSubmit(submit)} noValidate>
-        <div className="notice-panel">
-          Ví dụ: NGUYEN / VAN DEMO · Ngày sinh 01/01/1990 · demo@example.com
-        </div>
+        <div className="notice-panel">{t("Ví dụ: NGUYEN / VAN DEMO · Ngày sinh 01/01/1990 · demo@example.com")}</div>
         {fields.map((field, i) => (
           <section key={field.id} className="panel passenger-form">
             <h2>
-              {typeLabels[field.type]} {i + 1}
+              {t(typeLabels[field.type])} {i + 1}
             </h2>
-            {!!travelers.data?.length && <label>Chọn hành khách đã lưu<select defaultValue="" onChange={e=>{
+            {!!travelers.data?.length && <label>{t("Chọn hành khách đã lưu")}<select defaultValue="" onChange={e=>{
               const saved = travelers.data.find(t=>t.id===Number(e.target.value));
               if (saved) for (const key of ["title","lastName","firstName","dateOfBirth","nationality"]) setValue(`passengers.${i}.${key}`,saved[key],{shouldDirty:true});
-            }}><option value="">Nhập thông tin mới</option>{travelers.data.filter(t=>t.type===field.type).map(t=><option key={t.id} value={t.id}>{t.lastName} {t.firstName}</option>)}</select></label>}
+            }}><option value="">{t("Nhập thông tin mới")}</option>{travelers.data.filter(t=>t.type===field.type).map(t=><option key={t.id} value={t.id}>{t.lastName} {t.firstName}</option>)}</select></label>}
             <div className="form-grid">
-              <label>
-                Danh xưng
-                <select {...register(`passengers.${i}.title`)}>
-                  <option value="MR">Ông</option>
-                  <option value="MS">Bà</option>
-                  <option value="MSTR">Bé trai</option>
-                  <option value="MISS">Bé gái</option>
+              <label>{t("Danh xưng")}<select {...register(`passengers.${i}.title`)}>
+                  <option value="MR">{t("Ông")}</option>
+                  <option value="MS">{t("Bà")}</option>
+                  <option value="MSTR">{t("Bé trai")}</option>
+                  <option value="MISS">{t("Bé gái")}</option>
                 </select>
               </label>
-              <label>
-                Họ
-                <input
+              <label>{t("Họ")}<input
                   {...register(`passengers.${i}.lastName`)}
                   autoComplete="off"
                 />
                 {errors.passengers?.[i]?.lastName && (
                   <small className="field-error">
-                    {errors.passengers[i].lastName.message}
+                    {t(errors.passengers[i].lastName.message)}
                   </small>
                 )}
               </label>
-              <label>
-                Tên đệm và tên
-                <input
+              <label>{t("Tên đệm và tên")}<input
                   {...register(`passengers.${i}.firstName`)}
                   autoComplete="off"
                 />
                 {errors.passengers?.[i]?.firstName && (
                   <small className="field-error">
-                    {errors.passengers[i].firstName.message}
+                    {t(errors.passengers[i].firstName.message)}
                   </small>
                 )}
               </label>
-              <label>
-                Ngày sinh
-                <input
+              <label>{t("Ngày sinh")}<input
                   type="date"
                   max={localDate()}
                   {...register(`passengers.${i}.dateOfBirth`)}
                 />
                 {errors.passengers?.[i]?.dateOfBirth && (
                   <small className="field-error">
-                    {errors.passengers[i].dateOfBirth.message}
+                    {t(errors.passengers[i].dateOfBirth.message)}
                   </small>
                 )}
               </label>
-              <label>
-                Quốc tịch
-                <input {...register(`passengers.${i}.nationality`)} />
+              <label>{t("Quốc tịch")}<input {...register(`passengers.${i}.nationality`)} />
               </label>
             </div>
           </section>
         ))}
         <section className="panel passenger-form">
-          <h2>Thông tin liên hệ</h2>
+          <h2>{t("Thông tin liên hệ")}</h2>
           <div className="form-grid two">
-            <label>
-              Email liên hệ
-              <input type="email" {...register("contactEmail")} />
+            <label>{t("Email liên hệ")}<input type="email" {...register("contactEmail")} />
               {errors.contactEmail && (
                 <small className="field-error">
-                  {errors.contactEmail.message}
+                  {t(errors.contactEmail.message)}
                 </small>
               )}
             </label>
-            <label>
-              Số điện thoại
-              <input type="tel" {...register("contactPhone")} />
+            <label>{t("Số điện thoại")}<input type="tel" {...register("contactPhone")} />
               {errors.contactPhone && (
                 <small className="field-error">
-                  {errors.contactPhone.message}
+                  {t(errors.contactPhone.message)}
                 </small>
               )}
             </label>
@@ -212,12 +199,8 @@ export default function PassengerPage() {
           <Link
             className="button secondary"
             to={draft.search?.type==="MULTI_CITY"?"/services/multi-city":draft.search?.type==="GROUP"?"/services/groups":`/flights?${new URLSearchParams(draft.search)}`}
-          >
-            Chọn lại chuyến bay
-          </Link>
-          <button className="button primary" type="submit">
-            Tiếp tục
-          </button>
+          >{t("Chọn lại chuyến bay")}</Link>
+          <button className="button primary" type="submit">{t("Tiếp tục")}</button>
         </div>
       </form>
     </main>

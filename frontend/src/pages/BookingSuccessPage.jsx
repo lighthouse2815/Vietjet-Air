@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
@@ -5,6 +7,7 @@ import { api, bookingHeaders, errorMessage } from "../api/client";
 import BookingDetails from "../components/booking/BookingDetails";
 import { LoadingState, ErrorState } from "../components/common/States";
 export default function BookingSuccessPage() {
+  useTranslation();
   const { bookingCode } = useParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
@@ -27,23 +30,18 @@ export default function BookingSuccessPage() {
     <main className="container page checkout-page">
       <div className="success-heading">
         <CheckCircle2 />
-        <span className="eyebrow">BOOKING DEMO</span>
+        <span className="eyebrow">{t("BOOKING DEMO")}</span>
         <h1>
           {data?.status === "CONFIRMED"
-            ? "Đặt vé demo thành công!"
-            : "Thông tin đặt chỗ"}
+            ? t("Đặt vé demo thành công!")
+            : t("Thông tin đặt chỗ")}
         </h1>
-        <p>
-          Lưu mã đặt chỗ và tên hành khách để tra cứu lại. Không có vé bay thật
-          được phát hành.
-        </p>
+        <p>{t("Lưu mã đặt chỗ và tên hành khách để tra cứu lại. Không có vé bay thật được phát hành.")}</p>
       </div>
       {error ? (
         <>
-          <ErrorState message={error} />
-          <Link className="button primary" to="/my-booking">
-            Tra cứu bằng thông tin hành khách
-          </Link>
+          <ErrorState message={t(error)} />
+          <Link className="button primary" to="/my-booking">{t("Tra cứu bằng thông tin hành khách")}</Link>
         </>
       ) : !data ? (
         <LoadingState />
@@ -51,15 +49,9 @@ export default function BookingSuccessPage() {
         <BookingDetails booking={data} />
       )}
       <div className="actions">
-        <Link className="button primary" to="/my-booking">
-          Chuyến bay của tôi
-        </Link>
-        <Link className="button secondary" to="/check-in">
-          Check-in demo
-        </Link>
-        <Link className="button secondary" to="/">
-          Về trang chủ
-        </Link>
+        <Link className="button primary" to="/my-booking">{t("Chuyến bay của tôi")}</Link>
+        <Link className="button secondary" to="/check-in">{t("Check-in demo")}</Link>
+        <Link className="button secondary" to="/">{t("Về trang chủ")}</Link>
       </div>
     </main>
   );

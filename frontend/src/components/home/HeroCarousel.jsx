@@ -1,6 +1,9 @@
+import { t } from "../../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState, useRef } from "react";
 import BookingForm from "../booking/BookingForm";
 export default function HeroCarousel({ banners }) {
+  useTranslation();
   const [slide, setSlide] = useState(0);
   const touch = useRef(null);
   const [paused, setPaused] = useState(false);
@@ -20,7 +23,7 @@ export default function HeroCarousel({ banners }) {
   return (
     <section
       className={`hero ${slide === 0 ? "campaign" : ""}`}
-      aria-label="Ưu đãi chuyến bay"
+      aria-label={t("Ưu đãi chuyến bay")}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={(e) => {
@@ -53,18 +56,16 @@ export default function HeroCarousel({ banners }) {
       </div>
       <div className="container hero-container">
         <div className={`hero-copy ${slide === 0 ? "campaign-copy" : ""}`}>
-          <span className="hero-brand">
-            vietjet<span>Air</span>
-            <small>.com</small>
-            <i>|</i> KHÁM PHÁ
-          </span>
+          <span className="hero-brand">{t("vietjet")}<span>{t("Air")}</span>
+            <small>{t(".com")}</small>
+            <i>|</i>{t(" KHÁM PHÁ")}</span>
           <h1>{banners[slide]?.title}</h1>
           <p>{banners[slide]?.description}</p>
         </div>
         <div className="hero-booking">
           <BookingForm />
         </div>
-        <div className="carousel-dots" role="group" aria-label="Chọn banner">
+        <div className="carousel-dots" role="group" aria-label={t("Chọn banner")}>
           {banners.map((banner, i) => (
             <button
               key={banner.id}

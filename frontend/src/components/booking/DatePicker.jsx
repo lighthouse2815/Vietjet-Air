@@ -1,3 +1,5 @@
+import { t } from "../../i18n.js";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePopup } from "../../hooks/usePopup";
@@ -14,6 +16,7 @@ export default function DatePicker({
   origin,
   destination,
 }) {
+  useTranslation();
   const { ref, open, setOpen } = usePopup();
   const [month, setMonth] = useState(
     () => new Date(`${value || min}T12:00:00`),
@@ -52,11 +55,10 @@ export default function DatePicker({
     const days = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     return (
       <div className={`calendar-month month-${offset}`} key={offset}>
-        <h4>
-          Tháng {date.getMonth() + 1} {date.getFullYear()}
+        <h4>{t("Tháng ")}{date.getMonth() + 1} {date.getFullYear()}
         </h4>
         <div className="calendar-grid">
-          {["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "CN"].map(
+          {[t("Thứ 2"), t("Thứ 3"), t("Thứ 4"), t("Thứ 5"), t("Thứ 6"), t("Thứ 7"), "CN"].map(
             (d) => (
               <small key={d}>{d}</small>
             ),
@@ -83,7 +85,7 @@ export default function DatePicker({
               >
                 {i + 1}
                 {prices[day] && (
-                  <small>{Math.round(prices[day] / 1000)}k</small>
+                  <small>{Math.round(prices[day] / 1000)}{t("k")}</small>
                 )}
               </button>
             );
@@ -98,13 +100,13 @@ export default function DatePicker({
         type="button"
         disabled={disabled}
         className="date-trigger"
-        aria-label={label}
+        aria-label={t(label)}
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
         {value ? (
           <>
-            <small>{label}</small>
+            <small>{t(label)}</small>
             {dateLabel(`${value}T12:00:00+07:00`)}
           </>
         ) : (
@@ -116,7 +118,7 @@ export default function DatePicker({
           <div className="calendar-controls">
             <button
               type="button"
-              aria-label="Tháng trước"
+              aria-label={t("Tháng trước")}
               disabled={
                 new Date(month.getFullYear(), month.getMonth(), 1) <=
                 new Date(`${min.slice(0, 7)}-01T00:00:00`)
@@ -127,13 +129,12 @@ export default function DatePicker({
             >
               <ChevronLeft size={18} />
             </button>
-            <span>
-              Chọn {label.toLowerCase()}{" "}
-              <small>Giá thấp nhất demo, chưa gồm phí</small>
+            <span>{t("Chọn ")}{label.toLowerCase()}{" "}
+              <small>{t("Giá thấp nhất demo, chưa gồm phí")}</small>
             </span>
             <button
               type="button"
-              aria-label="Tháng sau"
+              aria-label={t("Tháng sau")}
               onClick={() =>
                 setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))
               }

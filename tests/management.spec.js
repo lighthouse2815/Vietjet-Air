@@ -48,8 +48,8 @@ test("airport search preserves text typed immediately after opening", async ({
     ["CXR", "CXR"],
   ]) {
     await origin.click();
-    await page.getByRole("combobox").fill(query);
-    await page.getByRole("combobox").press("Enter");
+    await page.locator(".airport-popup").getByRole("combobox").fill(query);
+    await page.locator(".airport-popup").getByRole("combobox").press("Enter");
     await expect(origin).toContainText(code);
   }
 });
