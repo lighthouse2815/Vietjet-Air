@@ -24,3 +24,13 @@ test('switching between shop, voucher and wallet keeps each page usable', async 
   await expect(page.getByRole('heading', { name: 'Lịch sử điểm', exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('opening multi-city from group booking resets the journey form', async ({ page }) => {
+  await page.goto('/services/groups');
+  const legs = page.locator('section.panel').filter({ has: page.getByRole('heading', { name: /^Chặng / }) });
+  await expect(legs).toHaveCount(2);
+  await page.locator('footer').getByRole('link', { name: 'Thông tin nối chuyến', exact: true }).click();
+  await expect(page).toHaveURL(/services\/multi-city/);
+  await expect(legs).toHaveCount(3);
+  await expect(page.getByRole('spinbutton', { name: 'Người lớn', exact: true })).toHaveValue('1');
+});
