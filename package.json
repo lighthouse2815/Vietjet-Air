@@ -7,7 +7,8 @@
     "setup:env": "node scripts/init-env.mjs",
     "verify:home": "node scripts/verify-home.mjs",
     "test:e2e": "playwright test",
-    "build": "npm --prefix frontend run build"
+    "build": "npm --prefix frontend run build",
+    "setup:admin": "node scripts/init-admin.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
