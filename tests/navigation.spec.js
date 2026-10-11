@@ -1,6 +1,27 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
 
+test('footer links open by keyboard on mobile and remain visible after resizing', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const footer = page.locator('footer');
+  const conditions = footer.getByRole('link', {
+    name: 'Điều lệ vận chuyển',
+    exact: true,
+  });
+  await expect(conditions).not.toBeVisible();
+  await footer.getByText('Để có chuyến bay tốt đẹp', { exact: true }).click();
+  await expect(conditions).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(conditions).not.toBeVisible();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(conditions).toBeVisible();
+  await conditions.click();
+  await expect(page).toHaveURL(/services\/booking/);
+});
+
 test('switching between shop, voucher and wallet keeps each page usable', async ({ page, request }) => {
   const response = await request.post('/api/auth/register', { data: {
     email: `navigation-${randomUUID()}@example.com`, password: 'NavigationDemo123', name: 'Khách demo',

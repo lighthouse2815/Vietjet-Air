@@ -1,5 +1,33 @@
 import { test, expect } from "@playwright/test";
 
+test("homepage displays captions edited in the content catalog", async ({
+  page,
+}) => {
+  await page.route("**/api/home", async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    const banner = data.items.find((item) => item.category === "HERO");
+    banner.title = "Hành trình mới từ danh mục nội dung";
+    banner.description = "Nội dung banner đã được cập nhật";
+    const feature = data.items.find((item) => item.category === "FEATURE");
+    feature.title = "Dịch vụ được cập nhật";
+    feature.description = "Nội dung dịch vụ từ danh mục";
+    await route.fulfill({ response, json: data });
+  });
+  await page.goto("/");
+  await expect(page.locator(".hero-copy h1")).toHaveText(
+    "Hành trình mới từ danh mục nội dung",
+  );
+  const caption = await page.locator(".hero-copy").boundingBox();
+  expect(caption.height).toBeGreaterThan(20);
+  await expect(
+    page.getByRole("heading", { name: "Dịch vụ được cập nhật", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Nội dung dịch vụ từ danh mục", { exact: true }),
+  ).toBeVisible();
+});
+
 test("homepage carousel, airport keyboard navigation and passenger limits work", async ({
   page,
 }) => {
@@ -51,9 +79,13 @@ test("homepage carousel, airport keyboard navigation and passenger limits work",
     .first();
   await origin.click();
   await page.locator(".airport-popup").getByRole("combobox").fill("ha noi");
-  await expect(page.locator(".airport-popup").getByRole("option")).toContainText("HAN");
+  await expect(
+    page.locator(".airport-popup").getByRole("option"),
+  ).toContainText("HAN");
   await page.keyboard.press("Escape");
-  await expect(page.locator(".airport-popup").getByRole("combobox")).not.toBeVisible();
+  await expect(
+    page.locator(".airport-popup").getByRole("combobox"),
+  ).not.toBeVisible();
   await origin.click();
   await page.locator(".airport-popup").getByRole("combobox").fill("ha noi");
   await page.keyboard.press("ArrowDown");

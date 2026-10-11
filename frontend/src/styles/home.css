@@ -143,55 +143,43 @@ body:has(.hero.campaign) .site-header.over-hero {
     0 0/180px 140px repeat-x;
   pointer-events: none;
 }
+
 .promotion-region {
-  background: linear-gradient(180deg, #cef3ff, #f4fbff 50%, #c5ebfb);
-  min-height: 520px;
-  padding: 65px 0 35px;
   position: relative;
-  overflow: hidden;
-}
-.promotion-region::after {
-  content: "";
-  position: absolute;
-  bottom: -110px;
-  left: -5%;
-  right: -5%;
-  height: 220px;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 50%, #fff 65%, transparent 66%) 0
-    0/350px 170px repeat-x;
-  opacity: 0.75;
+  margin-top: -85px;
+  min-height: 630px;
+  padding: 140px 0 35px;
+  background: url("/assets/reference/promotion-background.png") center top /
+    cover no-repeat;
 }
 .promotion-strip {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 15px;
-  text-align: center;
-  padding: 10px 20px;
+  position: relative;
+  z-index: 2;
 }
 .promotion-strip > a {
-  font-size: 15px;
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 15px;
+  gap: 7px;
+  font-size: 16px;
+  white-space: nowrap;
 }
 .promotion-strip strong {
   color: var(--red);
+  font-weight: 600;
 }
 .fare-badge {
-  position: relative;
-  border-radius: 40px;
-  width: 130px;
-  height: 125px;
-  background: linear-gradient(172deg, #ffffdf 53%, #ffdf00 54%);
-  color: var(--red);
-  border: 1px solid #dfd680;
+  width: 120px;
+  height: 118px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 5px 14px #bcced136;
+  background: url("/assets/reference/fare-badge.svg") center / contain no-repeat;
+  color: var(--red);
   transition: transform 0.2s;
 }
 .promotion-strip a:hover .fare-badge {
@@ -199,8 +187,8 @@ body:has(.hero.campaign) .site-header.over-hero {
 }
 .fare-badge b {
   font-size: 25px;
-  font-style: italic;
   font-weight: 700;
+  font-style: italic;
   line-height: 1.2;
 }
 .fare-badge small {
@@ -210,48 +198,29 @@ body:has(.hero.campaign) .site-header.over-hero {
   font-size: 15px;
   color: #222;
 }
-.promotion-tagline {
-  text-align: center;
-  margin-top: 55px;
-  color: #1c4d70;
-}
-.promotion-tagline > span {
-  font-size: 20px;
-}
-.promotion-tagline h2 {
-  font-size: 32px;
-  letter-spacing: 2px;
-  margin: 5px;
-}
-.promotion-tagline p {
-  font-size: 16px;
-}
 .home-cloud-background {
-  background:
-    radial-gradient(ellipse at 0% 30%, #fff9 0 10%, transparent 35%),
-    radial-gradient(ellipse at 100% 70%, #fff 0 9%, transparent 30%),
-    linear-gradient(165deg, #edfbff, #c8eaff 45%, #effaff);
   position: relative;
+  margin-top: -75px;
+  background: url("/assets/reference/cloud-background.webp") right top / cover
+    no-repeat;
 }
 .home-content {
-  padding-top: 35px;
-  padding-bottom: 35px;
+  padding: 0 0 35px;
 }
 .secondary-booking {
   position: relative;
   z-index: 10;
-  margin-top: -42px;
-  margin-bottom: 75px;
+  margin-bottom: 96px;
 }
 .secondary-tabs {
   display: grid;
   grid-template-columns: 2.4fr 1fr 1.35fr 0.8fr;
+  gap: 10px;
+  padding: 7px 15px;
   background: var(--red);
   color: white;
   font-size: 14px;
   font-weight: 700;
-  padding: 7px 15px;
-  gap: 10px;
 }
 .secondary-tabs a {
   display: flex;
@@ -265,111 +234,41 @@ body:has(.hero.campaign) .site-header.over-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
-  margin-bottom: 55px;
+  margin-bottom: 60px;
 }
 .information-banners > a {
-  height: 280px;
-  position: relative;
+  display: block;
   overflow: hidden;
-  background: linear-gradient(130deg, #fff, #ebf6fd);
-  padding: 30px 30px;
-  border-radius: 5px;
-  box-shadow: 0 3px 13px #5696b329;
-}
-.information-banners > a:first-child {
-  background: linear-gradient(120deg, #fff 40%, #daeffa);
-}
-.information-banners span {
-  position: relative;
-  z-index: 2;
-  font-size: 26px;
-  font-style: italic;
-  font-weight: 700;
-  color: var(--red);
-  line-height: 1.15;
-}
-.information-banners p {
-  position: relative;
-  z-index: 2;
-  margin-top: 15px;
-  font-size: 15px;
-  max-width: 60%;
-}
-.information-banners .button {
-  font-size: 13px;
-  position: relative;
-  z-index: 2;
-}
-.information-banners svg {
-  position: absolute;
-  right: 30px;
-  bottom: 38px;
-  transform: rotate(-18deg);
-  color: var(--red);
+  border-radius: 4px;
 }
 .information-banners img {
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 45%;
-  height: 100%;
+  width: 100%;
+  aspect-ratio: 2;
   object-fit: cover;
-  mask-image: linear-gradient(90deg, transparent, #000 25%);
 }
 .quick-access {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 25px;
-  margin: 0 15px 40px;
+  gap: 24px;
+  margin: 0 0 48px;
   text-align: center;
 }
 .quick-access a {
-  font-size: 14px;
-  line-height: 1.25;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  font-size: 16px;
+  line-height: 1.3;
+}
+.quick-access strong {
+  font-weight: 600;
 }
 .quick-icon {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 115px;
-  height: 115px;
-  border-radius: 25px;
-  box-shadow: 0 10px 14px #54738724;
-  background: linear-gradient(145deg, #ff9e8d, #ff2540);
-  color: #fff;
+  width: 148px;
+  height: 148px;
+  object-fit: contain;
   transition: transform 0.2s;
-}
-.quick-icon::before {
-  content: "";
-  position: absolute;
-  top: 12px;
-  width: 60px;
-  height: 5px;
-  border-radius: 5px;
-  background: var(--yellow);
-}
-.quick-icon svg {
-  filter: drop-shadow(0 3px 2px #0002);
-  width: 55px;
-  height: 55px;
-}
-.quick-1 {
-  background: linear-gradient(145deg, #c5fa79, #62ae10);
-}
-.quick-2 {
-  background: linear-gradient(145deg, #69d4ff, #1ba7f0);
-}
-.quick-3 {
-  background: linear-gradient(145deg, #f25767, #c60c2b);
-}
-.quick-4 {
-  background: linear-gradient(145deg, #a0efff, #27bed2);
-}
-.quick-5 {
-  background: linear-gradient(145deg, #f3b1ed, #b25cd7);
 }
 .quick-access a:hover .quick-icon {
   transform: translateY(-4px);
@@ -377,15 +276,15 @@ body:has(.hero.campaign) .site-header.over-hero {
 .ribbon {
   display: table;
   position: relative;
-  margin: 0;
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 700;
-  color: #fff;
-  background: var(--red);
-  padding: 8px 30px 8px 20px;
   z-index: 2;
-  line-height: 1.15;
+  margin: 0;
+  padding: 10px 30px 10px 20px;
+  color: white;
+  background: var(--red);
+  font-family: Jambono, KoHo, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 22px;
   clip-path: polygon(0 0, 100% 0, 100% 65%, calc(100% - 16px) 100%, 0 100%);
 }
 .ribbon::after {
@@ -400,17 +299,16 @@ body:has(.hero.campaign) .site-header.over-hero {
   transform-origin: right bottom;
 }
 .feature-banner {
-  height: 240px;
   display: block;
   position: relative;
-  overflow: hidden;
-  background: linear-gradient(115deg, #fffaf1, #ffe4a6);
+  height: 240px;
   margin-bottom: 35px;
-  border-radius: 5px;
+  background: #fff4d6;
+  border-radius: 4px;
 }
 .feature-banner > .ribbon {
   position: absolute;
-  left: 0;
+  left: -8px;
   top: 0;
 }
 .feature-banner > div {
@@ -426,16 +324,12 @@ body:has(.hero.campaign) .site-header.over-hero {
 }
 .feature-banner > div > h3 {
   font-size: 29px;
-  font-weight: 700;
-  font-style: italic;
   margin: 12px 0 17px;
 }
 .feature-banner .button {
   font-size: 12px;
-  box-shadow: none;
   min-height: 32px;
   padding: 7px 18px;
-  color: var(--red);
 }
 .feature-banner img {
   position: absolute;
@@ -446,6 +340,17 @@ body:has(.hero.campaign) .site-header.over-hero {
   object-fit: cover;
   mask-image: linear-gradient(90deg, #000 60%, transparent);
 }
+.feature-banner.has-artwork img {
+  position: static;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mask-image: none;
+}
+.feature-banner.has-artwork picture {
+  display: block;
+  height: 100%;
+}
 .home-card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -454,10 +359,9 @@ body:has(.hero.campaign) .site-header.over-hero {
 .home-card {
   display: block;
   position: relative;
+  background: #ffffff60;
   border-radius: 4px;
-  overflow: hidden;
   transition: transform 0.2s;
-  background: #ffffff50;
 }
 .home-card:hover {
   transform: translateY(-3px);
@@ -465,62 +369,50 @@ body:has(.hero.campaign) .site-header.over-hero {
 .home-card > .ribbon {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -12px;
+  max-width: 98%;
   font-size: 18px;
-  max-width: 95%;
 }
 .home-card > img {
   width: 100%;
-  aspect-ratio: 1.53;
+  aspect-ratio: 380 / 260;
   object-fit: cover;
+  border-radius: 4px;
 }
 .card-description {
-  padding: 12px 16px;
-  font-size: 14px;
-  min-height: 133px;
-  background: #ffffff55;
+  padding: 20px 18px;
+  font-size: 16px;
+  min-height: 150px;
 }
 .card-description p {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-.card-description span {
-  display: flex;
+.card-description > span {
+  color: var(--red);
+  display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--red);
-  font-size: 12px;
   font-weight: 700;
 }
 .lower-content {
-  padding-top: 40px;
+  padding-top: 0;
 }
-.feature-shop {
-  background: linear-gradient(100deg, #ffe1ce, #ffd469);
-  height: 240px;
+.cards-travel {
+  margin-bottom: 35px;
 }
-.feature-shop img {
-  width: 33%;
+.cards-travel .card-description {
+  display: none;
 }
-.feature-shop > div {
-  padding-left: 37%;
-}
-.lower-content > .home-card-grid {
-  margin-bottom: 38px;
-}
-.lower-content .card-description {
-  min-height: auto;
-  padding: 12px 15px;
-  background: #f7f9fa;
+.cards-travel .home-card > img {
+  aspect-ratio: 380 / 220;
 }
 .destination-section {
   position: relative;
-  margin-top: 20px;
 }
 .destination-section > .ribbon {
   position: absolute;
   top: 0;
-  left: 0;
-  font-size: 18px;
+  left: -8px;
 }
 .destination-grid {
   display: grid;
@@ -529,151 +421,160 @@ body:has(.hero.campaign) .site-header.over-hero {
 }
 .destination-grid > a {
   position: relative;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  aspect-ratio: 1.8;
   border-radius: 4px;
-  background: #daf0fb;
 }
 .destination-grid img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.35s;
+  transition: transform 0.4s;
 }
-.destination-grid > a:hover img {
-  transform: scale(1.04);
+.destination-grid a:hover img {
+  transform: scale(1.035);
 }
 .destination-grid h3 {
   position: absolute;
-  bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, #002239a8);
-  color: white;
-  font-size: 24px;
-  font-weight: 400;
-  padding: 30px 14px 12px;
+  bottom: 0;
   margin: 0;
+  padding: 35px 18px 15px;
+  color: white;
+  background: linear-gradient(transparent, #0009);
+  font-size: 24px;
+  font-weight: 500;
 }
 .faq-section {
-  margin-top: 32px;
+  margin-top: 20px;
 }
 .faq-section > .ribbon {
-  margin-bottom: 18px;
+  margin-bottom: 28px;
 }
 .faq-categories {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 28px;
+  gap: 30px;
 }
 .faq-categories a {
-  background: linear-gradient(100deg, #ffb20e, #ffe400);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 7px;
-  font-size: 14px;
-  min-height: 95px;
+  display: block;
   transition: filter 0.2s;
 }
 .faq-categories a:hover {
   filter: brightness(1.06);
 }
-.stats-section {
-  padding: 60px 0 45px;
-  background:
-    radial-gradient(ellipse at 20% 20%, #fff 10%, transparent 36%),
-    radial-gradient(ellipse at 80% 90%, #fff 10%, transparent 40%),
-    linear-gradient(#e1f1ff, #f4f8ff);
-  border-radius: 50% 50% 0 0/40px 40px 0 0;
-  color: var(--red);
+.faq-categories img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 175 / 100;
+}
+.faq-custom {
+  display: grid;
+  place-items: center;
+  min-height: 100px;
+  border-radius: 6px;
+  padding: 15px;
+  background: linear-gradient(120deg, #ffac14, #ffdc00);
   text-align: center;
 }
-.stats-title > span {
-  display: block;
-  font-style: italic;
-  font-size: 23px;
+.stats-section {
+  position: relative;
+  padding: 35px 0 70px;
+  background: url("/assets/reference/footer-background.webp") center top / cover
+    no-repeat;
+  text-align: center;
+  color: var(--red);
 }
-.stats-title b {
-  font:
-    900 italic 37px Arial,
-    sans-serif;
-  letter-spacing: -2px;
+.stats-section::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px;
+  height: min(6vw, 115px);
+  background: url("/assets/reference/cloud-divider.webp") center bottom / 100% 100% no-repeat;
+  pointer-events: none;
 }
-.stats-title b svg {
-  display: inline;
+.stats-section > .container {
+  position: relative;
+  z-index: 1;
 }
-.stats-title h2 {
-  font-size: 24px;
-  margin: 4px 0 12px;
+.stats-title > img {
+  width: 280px;
+  height: auto;
+  aspect-ratio: 280 / 115;
+  margin: 0 auto 10px;
 }
 .stats-title small {
-  display: block;
-  color: #788692;
+  color: #6c7881;
   font-size: 11px;
 }
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 25px;
-  margin: 35px auto 15px;
+  margin: 30px auto;
   max-width: 1000px;
 }
 .stats-grid strong {
   display: block;
-  font-size: 31px;
-  font-weight: 600;
-  font-style: italic;
+  font-family: Jambono, KoHo, sans-serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: 1.1;
 }
 .stats-grid span {
   display: block;
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.2;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.3;
 }
 .fly-green {
-  font:
-    italic 64px Georgia,
-    serif;
-  color: #099751;
-}
-.fly-green span {
-  font-size: 49px;
-}
-.fly-green small {
-  display: block;
-  font:
-    13px KoHo,
-    sans-serif;
+  width: 280px;
+  height: auto;
+  aspect-ratio: 280 / 121;
+  margin: 0 auto;
 }
 .awards {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 30px;
   text-align: center;
-  padding: 45px 10px 55px;
+  padding: 40px 10px 55px;
 }
 .awards > div {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
-  font-size: 12px;
+  gap: 15px;
+  font-size: 14px;
 }
-.awards svg {
-  color: #b68b30;
-}
-.awards small {
-  font-size: 10px;
-  color: #a0a0a0;
+.awards img {
+  height: 70px;
+  width: 100px;
+  object-fit: contain;
 }
 .home-loading {
   min-height: 75vh;
   background: linear-gradient(#c2e6fd, #f2faff);
   padding-top: 180px;
+}
+.cloud-edge {
+  display: none;
+}
+.language-picker {
+  width: 100px;
+  height: 24px;
+  padding: 0 5px;
+  color: white;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.language-picker option {
+  color: #333;
+  background: white;
 }
 @media (max-width: 1200px) {
   .hero-copy {
@@ -697,31 +598,25 @@ body:has(.hero.campaign) .site-header.over-hero {
     font-size: 16px;
   }
   .quick-icon {
-    width: 100px;
-    height: 100px;
+    width: 110px;
+    height: 110px;
   }
   .quick-access {
     gap: 18px;
   }
-  .information-banners > a {
-    height: 250px;
-  }
-  .home-card-grid,
-  .destination-grid {
-    gap: 22px;
-  }
   .ribbon {
     font-size: 20px;
   }
-  .feature-banner > div > h3 {
-    font-size: 25px;
+  .home-card > .ribbon {
+    font-size: 16px;
   }
 }
 @media (max-width: 900px) {
+  .stats-section {
+    background-image: url("/assets/reference/sky-background.webp");
+  }
   .hero {
     height: auto;
-    min-height: 0;
-    max-height: none;
     padding-top: 86vw;
     background: #de1124;
   }
@@ -783,10 +678,6 @@ body:has(.hero.campaign) .site-header.over-hero {
     background: #de1124;
     box-shadow: none;
   }
-  .hero-booking .booking-tabs {
-    font-size: 15px;
-    grid-template-columns: 1.95fr 1fr 0.73fr;
-  }
   .hero-booking .booking-widget form {
     padding: 20px 19px 28px;
   }
@@ -798,70 +689,115 @@ body:has(.hero.campaign) .site-header.over-hero {
     background-size: cover;
     background-position: center;
   }
-  .hero-slide.slide-0 {
-    background-position: center;
-  }
   .carousel-dots {
     left: 50%;
     top: calc(86vw - 30px);
     bottom: auto;
   }
-  .promotion-strip {
-    gap: 15px;
-    overflow-x: auto;
-    display: flex;
-    justify-content: flex-start;
-    padding: 10px;
-  }
-  .promotion-strip > a {
-    min-width: 180px;
+  .language-picker {
+    width: 73px;
+    height: 20px;
+    font-size: 10px;
   }
   .promotion-region {
-    min-height: 450px;
+    margin-top: -28px;
+    min-height: 250px;
+    padding-top: 65px;
+    background-image: url("/assets/reference/promotion-background-mobile.webp");
+  }
+  .promotion-strip {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    width: 100%;
+    padding: 0 15px 12px;
+    scroll-snap-type: x mandatory;
+  }
+  .promotion-strip > a {
+    min-width: 150px;
+    scroll-snap-align: start;
+  }
+  .home-cloud-background {
+    margin-top: 0;
+    background-image: url("/assets/reference/cloud-background-mobile.webp");
+    background-position: center top;
+  }
+  .home-content {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  .secondary-booking {
+    margin-bottom: 40px;
   }
   .secondary-tabs {
     font-size: 11px;
   }
   .information-banners {
     gap: 20px;
-  }
-  .information-banners > a {
-    padding: 24px 20px;
-    height: 240px;
-  }
-  .information-banners span {
-    font-size: 20px;
+    margin-bottom: 30px;
   }
   .quick-access {
     grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 40px;
     gap: 25px;
   }
-  .home-card-grid,
-  .destination-grid {
-    gap: 18px;
-  }
-  .home-card > .ribbon {
+  .quick-access a {
     font-size: 14px;
   }
-  .card-description {
-    font-size: 12px;
-    padding: 10px;
+  .feature-banner {
+    height: auto;
+    aspect-ratio: 5 / 2;
+    margin-bottom: 30px;
+  }
+  .feature-banner > div {
+    padding: 55px 20px 10px 40%;
   }
   .feature-banner > div > h3 {
     font-size: 23px;
   }
+  .feature-banner.has-artwork img {
+    object-fit: contain;
+  }
+  .ribbon {
+    font-size: 18px;
+    padding: 7px 25px 7px 14px;
+  }
+  .home-card-grid {
+    gap: 20px;
+  }
+  .home-card > .ribbon {
+    font-size: 14px;
+    padding: 7px 20px 7px 12px;
+  }
+  .card-description {
+    font-size: 14px;
+    padding: 14px 10px;
+  }
+  .destination-grid {
+    gap: 20px;
+  }
+  .destination-grid h3 {
+    font-size: 20px;
+    padding: 25px 12px 10px;
+  }
   .faq-categories {
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 20px;
   }
   .stats-grid {
     gap: 16px;
+  }
+  .stats-grid strong {
+    font-size: 40px;
   }
   .stats-grid span {
     font-size: 12px;
   }
   .awards {
-    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .awards > div {
+    font-size: 11px;
   }
 }
 @media (max-width: 600px) {
@@ -870,11 +806,6 @@ body:has(.hero.campaign) .site-header.over-hero {
   }
   .hero-images {
     height: 333px;
-    bottom: auto;
-  }
-  .hero-slide {
-    background-size: cover;
-    background-position: center;
   }
   .hero-copy {
     top: 95px;
@@ -913,7 +844,6 @@ body:has(.hero.campaign) .site-header.over-hero {
   .campaign-copy h1 {
     font-size: clamp(23px, 7.2vw, 38px);
     letter-spacing: -1px;
-    margin-top: 0;
     max-width: none;
   }
   .campaign-copy p {
@@ -924,34 +854,23 @@ body:has(.hero.campaign) .site-header.over-hero {
   }
   .carousel-dots {
     top: 302px;
-    bottom: auto;
-    left: 50%;
     gap: 10px;
   }
-  .cloud-edge {
-    height: 25px;
-    background-size: 110px 50px;
-  }
   .promotion-region {
-    padding: 30px 0 25px;
-    min-height: 345px;
+    min-height: 215px;
+    padding-top: 42px;
   }
   .promotion-strip {
-    width: 100%;
     gap: 9px;
-    padding: 8px 12px;
-    scroll-snap-type: x mandatory;
+    padding: 0 12px 12px;
   }
   .promotion-strip > a {
     min-width: 116px;
     font-size: 12px;
-    gap: 10px;
-    scroll-snap-align: start;
   }
   .fare-badge {
-    width: 93px;
-    height: 94px;
-    border-radius: 28px;
+    width: 84px;
+    height: 82px;
   }
   .fare-badge b {
     font-size: 19px;
@@ -962,105 +881,53 @@ body:has(.hero.campaign) .site-header.over-hero {
   .fare-badge small {
     font-size: 10px;
   }
-  .promotion-tagline {
-    margin-top: 25px;
-  }
-  .promotion-tagline h2 {
-    font-size: 23px;
-    letter-spacing: 0.5px;
-  }
-  .promotion-tagline p {
-    font-size: 13px;
-  }
-  .promotion-tagline > span {
-    font-size: 15px;
-  }
-  .home-content {
-    padding-top: 26px;
-    padding-bottom: 25px;
-  }
-  .secondary-booking {
-    margin: 0 0 30px;
-  }
   .secondary-tabs {
     grid-template-columns: 1.8fr 1fr;
-    font-size: 12px;
     padding: 7px 10px;
+    font-size: 12px;
   }
   .secondary-tabs a:nth-child(3),
   .secondary-tabs a:nth-child(4) {
     display: none;
   }
   .information-banners {
-    gap: 12px;
-    margin-bottom: 28px;
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    margin-inline: -14px;
+    padding: 0 14px 8px;
+    scroll-snap-type: x mandatory;
   }
   .information-banners > a {
-    height: 180px;
-    padding: 17px 12px;
-  }
-  .information-banners span {
-    font-size: 16px;
-  }
-  .information-banners p {
-    font-size: 10px;
-    max-width: 95%;
-    margin-top: 10px;
-  }
-  .information-banners .button {
-    font-size: 10px;
-    padding: 6px 12px;
-    min-height: 28px;
-  }
-  .information-banners svg {
-    width: 50px;
-    height: 50px;
-    right: 9px;
-    bottom: 12px;
-    opacity: 0.4;
-  }
-  .information-banners img {
-    opacity: 0.45;
-    width: 60%;
+    flex: 0 0 82%;
+    scroll-snap-align: start;
   }
   .quick-access {
-    gap: 22px 12px;
-    margin: 0 0 30px;
+    gap: 24px 12px;
+    margin-bottom: 35px;
   }
   .quick-access a {
-    font-size: 11px;
+    font-size: 12px;
+    gap: 8px;
   }
   .quick-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 19px;
-  }
-  .quick-icon svg {
-    width: 42px;
-    height: 42px;
-  }
-  .quick-icon::before {
-    width: 40px;
-    height: 4px;
-    top: 7px;
-  }
-  .ribbon {
-    font-size: 16px;
-    padding: 8px 23px 8px 12px;
+    width: 64px;
+    height: 64px;
   }
   .feature-banner {
-    height: 190px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  .feature-banner > .ribbon {
+    left: -5px;
   }
   .feature-banner > div {
-    padding: 55px 15px 12px 34%;
-    max-width: 100%;
+    padding: 45px 15px 12px 34%;
   }
   .feature-banner > div > span {
     font-size: 11px;
   }
   .feature-banner > div > h3 {
-    font-size: 19px;
+    font-size: 17px;
     margin: 8px 0 12px;
   }
   .feature-banner .button {
@@ -1068,83 +935,62 @@ body:has(.hero.campaign) .site-header.over-hero {
     padding: 6px 10px;
     min-height: 26px;
   }
-  .feature-banner img {
-    width: 37%;
+  .ribbon {
+    font-size: 14px;
+    line-height: 18px;
+    padding: 6px 23px 6px 12px;
   }
   .home-card-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    margin-inline: -14px;
+    padding: 0 14px 8px;
+    scroll-snap-type: x mandatory;
   }
-  .home-card > img {
-    aspect-ratio: 1.9;
+  .home-card {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
   }
   .home-card > .ribbon {
-    font-size: 16px;
+    left: 0;
+    font-size: 14px;
   }
   .card-description {
-    font-size: 14px;
     min-height: 0;
-    padding: 12px 15px;
+    padding: 15px 12px;
   }
-  .lower-content {
-    padding-top: 24px;
-  }
-  .lower-content > .home-card-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+  .cards-travel {
     margin-bottom: 24px;
   }
-  .lower-content .home-card > .ribbon {
-    font-size: 10px;
-    padding: 5px 16px 5px 7px;
-  }
-  .lower-content .home-card img {
-    aspect-ratio: 1;
-  }
-  .lower-content .card-description {
-    display: none;
+  .destination-section > .ribbon {
+    left: -5px;
   }
   .destination-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
-  .destination-grid > a {
-    aspect-ratio: 1.3;
-  }
   .destination-grid h3 {
     font-size: 17px;
     padding: 25px 10px 8px;
-  }
-  .destination-section > .ribbon {
-    font-size: 14px;
   }
   .faq-section {
     margin-top: 24px;
   }
   .faq-section > .ribbon {
-    margin-bottom: 14px;
+    margin-bottom: 15px;
   }
   .faq-categories {
-    gap: 10px;
-  }
-  .faq-categories a {
-    font-size: 11px;
-    min-height: 82px;
-    padding: 12px 5px;
-  }
-  .faq-categories svg {
-    width: 21px;
+    gap: 12px;
   }
   .stats-section {
-    padding: 35px 0 30px;
+    padding: 25px 0 45px;
   }
-  .stats-title b {
-    font-size: 30px;
-  }
-  .stats-title h2 {
-    font-size: 20px;
+  .stats-title > img {
+    width: 140px;
   }
   .stats-title small {
+    display: block;
     max-width: 280px;
     margin: auto;
   }
@@ -1154,7 +1000,7 @@ body:has(.hero.campaign) .site-header.over-hero {
     margin-top: 25px;
   }
   .stats-grid strong {
-    font-size: 27px;
+    font-size: 30px;
   }
   .stats-grid span {
     font-size: 11px;
@@ -1163,41 +1009,18 @@ body:has(.hero.campaign) .site-header.over-hero {
     transform: translateX(50%);
   }
   .fly-green {
-    font-size: 48px;
-    margin-top: 20px;
-  }
-  .fly-green span {
-    font-size: 40px;
+    width: 190px;
   }
   .awards {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    gap: 20px 15px;
+    display: flex;
+    overflow-x: auto;
+    gap: 24px;
+    padding: 30px 0;
+    scroll-snap-type: x mandatory;
   }
   .awards > div {
-    font-size: 10px;
+    flex: 0 0 46%;
+    scroll-snap-align: start;
+    font-size: 12px;
   }
-  .awards svg {
-    width: 25px;
-    height: 25px;
-  }
-}
-.cloud-edge {
-  background: url("/assets/cloud-edge.svg") bottom center/100% 100% no-repeat;
-}
-
-.language-picker {
-  width: 100px;
-  height: 24px;
-  padding: 0 5px;
-  color: white;
-  background: transparent;
-  border: 1px solid white;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.language-picker option { color: #333; background: white; }
-@media (max-width: 900px) {
-  .language-picker { width: 73px; height: 20px; font-size: 10px; }
 }

@@ -47,33 +47,43 @@ export default function HeroCarousel({ banners }) {
     >
       <div className="hero-images">
         {banners.map((banner, i) => {
-          const artwork = getHeroArtwork(banner.image);
+          const artwork = getHeroArtwork(banner);
           return (
-          <div
-            key={banner.id}
-            aria-hidden={i !== slide}
-            className={`hero-slide ${i === slide ? "visible" : ""} slide-${i}`}
-            style={{
-              "--desktop-image": `url(${artwork?.[0] || banner.image})`,
-              "--mobile-image": `url(${artwork?.[1] || banner.image})`,
-              backgroundImage: "var(--hero-image)",
-            }}
-          />
+            <div
+              key={banner.id}
+              aria-hidden={i !== slide}
+              className={`hero-slide ${i === slide ? "visible" : ""} slide-${i}`}
+              style={{
+                "--desktop-image": `url(${artwork?.[0] || banner.image})`,
+                "--mobile-image": `url(${artwork?.[1] || banner.image})`,
+                backgroundImage: "var(--hero-image)",
+              }}
+            />
           );
         })}
       </div>
       <div className="container hero-container">
-        <div className={`hero-copy ${slide === 0 ? "campaign-copy" : ""} ${getHeroArtwork(banners[slide]?.image) ? "with-artwork" : ""}`}>
-          <span className="hero-brand">{t("vietjet")}<span>{t("Air")}</span>
+        <div
+          className={`hero-copy ${slide === 0 ? "campaign-copy" : ""} ${getHeroArtwork(banners[slide]) ? "with-artwork" : ""}`}
+        >
+          <span className="hero-brand">
+            {t("vietjet")}
+            <span>{t("Air")}</span>
             <small>{t(".com")}</small>
-            <i>|</i>{t(" KHÁM PHÁ")}</span>
+            <i>|</i>
+            {t(" KHÁM PHÁ")}
+          </span>
           <h1>{t(banners[slide]?.title)}</h1>
           <p>{t(banners[slide]?.description)}</p>
         </div>
         <div className="hero-booking">
           <BookingForm />
         </div>
-        <div className="carousel-dots" role="group" aria-label={t("Chọn banner")}>
+        <div
+          className="carousel-dots"
+          role="group"
+          aria-label={t("Chọn banner")}
+        >
           {banners.map((banner, i) => (
             <button
               key={banner.id}

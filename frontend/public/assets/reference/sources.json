@@ -66,5 +66,193 @@
   {
     "file": "jambono-medium.ttf",
     "url": "https://www.vietjetair.com/fonts/Jambono-Medium.ttf"
+  },
+  {
+    "file": "promotion-background.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/topnen-1610536365157.png"
+  },
+  {
+    "file": "cloud-background.webp",
+    "url": "https://www.vietjetair.com/static/media/bgBannerHomePage.72a61446.webp"
+  },
+  {
+    "file": "cloud-background-mobile.webp",
+    "url": "https://www.vietjetair.com/static/media/bg-mb.b54724f5.webp"
+  },
+  {
+    "file": "promotion-background-mobile.webp",
+    "url": "https://www.vietjetair.com/static/media/mb_cloud_bg.9d4927e2.webp"
+  },
+  {
+    "file": "footer-background.webp",
+    "url": "https://www.vietjetair.com/static/media/bg_footer.2f611c1f.webp"
+  },
+  {
+    "file": "footer-pattern.svg",
+    "url": "https://www.vietjetair.com/static/media/footer-pattern.dcbf3b8c.svg"
+  },
+  {
+    "file": "sky-background.webp",
+    "url": "https://www.vietjetair.com/static/media/sky-bg.42123689.webp"
+  },
+  {
+    "file": "cloud-divider.webp",
+    "url": "https://www.vietjetair.com/static/media/cloudBG-desktop.4a58264d.webp"
+  },
+  {
+    "file": "fare-badge.svg",
+    "url": "https://vja-ui.useleadr.com/uploads/bg-fare.svg"
+  },
+  {
+    "file": "travel-advice.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/bannerkhuyencaodichuyen1200x600op3-1766023660852.jpg"
+  },
+  {
+    "file": "group-travel.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/5-1200x600-1785731466379.jpg"
+  },
+  {
+    "file": "quick-0.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/booking-1634319183743.svg"
+  },
+  {
+    "file": "quick-1.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/buymore-1634319183745.svg"
+  },
+  {
+    "file": "quick-2.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/checkin-1634319183747.svg"
+  },
+  {
+    "file": "quick-3.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/iconduty-1698718953200.svg"
+  },
+  {
+    "file": "quick-4.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/insurance-1634319183751.svg"
+  },
+  {
+    "file": "quick-5.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evoucher-1765167638616.png"
+  },
+  {
+    "file": "skyjoy.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vietnamese-version1-1785469210297.jpg"
+  },
+  {
+    "file": "skyjoy-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1vietjetskyjoy-1785470861321.jpg"
+  },
+  {
+    "file": "insurance.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/wyjol04122020050940imagevn24-1763521355067.png"
+  },
+  {
+    "file": "cargo.webp",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/swift2471592284169014-1695094650429.webp"
+  },
+  {
+    "file": "bank.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/anhviber20240917110241588-1727233373363.jpg"
+  },
+  {
+    "file": "shopping.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/banner1200x240vn-1698743606086.jpg"
+  },
+  {
+    "file": "shopping-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/750x300vn-1698722234707.jpg"
+  },
+  {
+    "file": "hotel.webp",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/km21620415285304-1695094874937.webp"
+  },
+  {
+    "file": "holiday.webp",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/km11620415285301-1695094881913.webp"
+  },
+  {
+    "file": "low-fares.webp",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/webbanner21671769085485-1695094886938.webp"
+  },
+  {
+    "file": "destination-0.jpg",
+    "url": "https://vja-travel.useleadr.com/uploads/qbbbbb.jpg"
+  },
+  {
+    "file": "destination-1.png",
+    "url": "https://vja-travel.useleadr.com/uploads/glllll.png"
+  },
+  {
+    "file": "destination-2.webp",
+    "url": "https://vja-travel.useleadr.com/uploads/nghe-an.webp"
+  },
+  {
+    "file": "destination-3.jpg",
+    "url": "https://vja-travel.useleadr.com/uploads/DemHaNoi.jpg"
+  },
+  {
+    "file": "destination-4.png",
+    "url": "https://vja-travel.useleadr.com/uploads/shutterstock1965804106-1640951934873.png"
+  },
+  {
+    "file": "destination-5.jpg",
+    "url": "https://vja-travel.useleadr.com/uploads/depositphotos45998325xl-1724809601556.jpg"
+  },
+  {
+    "file": "faq-0.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vibooking-1662643022630.svg"
+  },
+  {
+    "file": "faq-1.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/viseat-1662643028918.svg"
+  },
+  {
+    "file": "faq-2.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vibaggage-1662643022627.svg"
+  },
+  {
+    "file": "faq-3.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vicheckin-1662643022633.svg"
+  },
+  {
+    "file": "faq-4.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/noichuyen-1679894016134.svg"
+  },
+  {
+    "file": "faq-5.svg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vimeal-1662643028915.svg"
+  },
+  {
+    "file": "stats-title.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/cungvietjetbayvaotuonglai-1592297893727.png"
+  },
+  {
+    "file": "fly-green.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/flygreenvi-1602759084211.png"
+  },
+  {
+    "file": "award-0.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai6-1592297512599.png"
+  },
+  {
+    "file": "award-1.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai5-1592297595995.png"
+  },
+  {
+    "file": "award-2.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai2-1592297520999.png"
+  },
+  {
+    "file": "award-3.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai3-1592297547966.png"
+  },
+  {
+    "file": "award-4.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai1-1592297529179.png"
+  },
+  {
+    "file": "award-5.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai4-1592297571379.png"
   }
 ]

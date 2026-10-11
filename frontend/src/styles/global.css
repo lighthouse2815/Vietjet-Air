@@ -465,20 +465,22 @@ small {
 }
 .site-footer {
   position: relative;
-  background: linear-gradient(170deg, #fff4fa, #f1faff 45%, #fff1f9);
+  background:
+    url("/assets/reference/footer-pattern.svg") right bottom / 300px auto
+      no-repeat,
+    url("/assets/reference/footer-background.webp") center top / cover no-repeat;
   padding: 55px 0 35px;
-  font-size: 14px;
-  border-radius: 50% 50% 0 0/25px 25px 0 0;
+  font-size: 16px;
   border-bottom: 10px solid var(--red);
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 1.25fr 1.45fr 1fr 1.2fr 1fr;
   gap: 25px;
 }
 .footer-grid h4 {
   line-height: 1.3;
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 13px;
   display: flex;
   gap: 4px;
@@ -488,8 +490,8 @@ small {
 }
 .footer-grid a {
   display: block;
-  font-size: 13px;
-  margin: 4px 0;
+  font-size: 16px;
+  margin: 6px 0;
 }
 .footer-grid a:hover,
 .footer-bottom a:hover {
@@ -497,10 +499,19 @@ small {
 }
 .footer-bottom {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr;
+  grid-template-columns: 1fr 1fr 2fr;
   gap: 40px;
   margin-top: 40px;
   align-items: start;
+}
+.footer-group summary {
+  list-style: none;
+}
+.footer-group summary::-webkit-details-marker {
+  display: none;
+}
+.footer-disclaimer {
+  font-size: 13px;
 }
 .footer-bottom h4 {
   margin: 0 0 10px;
@@ -596,7 +607,9 @@ small {
   .brand > img {
     width: 105px;
   }
-  .brand { transform: none; }
+  .brand {
+    transform: none;
+  }
   .header-right .primary-nav,
   .product-nav {
     display: none;
@@ -640,10 +653,41 @@ small {
     border-bottom: 1px solid var(--line);
   }
   .footer-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .footer-group {
+    padding: 12px 0;
+    border-bottom: 1px solid #c6d7e5;
+  }
+  .footer-group summary {
+    cursor: pointer;
+  }
+  .footer-group summary h4 {
+    margin: 0;
+    font-size: 16px;
+    align-items: center;
+  }
+  .footer-group summary h4::after {
+    content: "+";
+    margin-left: auto;
+    color: var(--red);
+  }
+  .footer-group[open] summary h4::after {
+    content: "−";
+  }
+  .footer-group a {
+    padding-left: 18px;
+    font-size: 14px;
   }
   .footer-bottom {
     gap: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-disclaimer {
+    grid-column: 1 / -1;
+    padding-top: 20px;
+    border-top: 1px solid #b5cbda;
   }
   .container {
     width: calc(100% - 32px);
@@ -714,7 +758,7 @@ small {
     left: 0;
     right: 0;
     border-radius: 16px 16px 0 0;
-    background: linear-gradient(160deg, #7d0000ed, #940000ee);
+    background: linear-gradient(160deg, #242424ed, #38351dee);
     backdrop-filter: blur(10px);
     color: #fff;
     z-index: 70;
@@ -756,8 +800,7 @@ small {
 }
 @media (max-width: 600px) {
   .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+    grid-template-columns: 1fr;
   }
   .footer-bottom {
     grid-template-columns: 1fr;

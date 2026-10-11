@@ -1,5 +1,6 @@
 import { t } from "../../i18n.js";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Plane,
@@ -85,17 +86,28 @@ const footerTargets = {
 };
 export default function Footer() {
   useTranslation();
+  const [compact, setCompact] = useState(
+    () => window.matchMedia("(max-width: 900px)").matches,
+  );
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 900px)");
+    const update = () => setCompact(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
   const home = useLocation().pathname === "/";
   return (
     <>
       <footer className="site-footer">
         <div className="container footer-grid">
           {groups.map(([title, items]) => (
-            <div key={title}>
-              <h4>
-                <ArrowRight size={13} />
-                {t(title)}
-              </h4>
+            <details className="footer-group" key={title} open={!compact}>
+              <summary>
+                <h4>
+                  <ArrowRight size={13} />
+                  {t(title)}
+                </h4>
+              </summary>
               {items.map((item) => (
                 <Link
                   key={item}
@@ -104,7 +116,7 @@ export default function Footer() {
                   {t(item)}
                 </Link>
               ))}
-            </div>
+            </details>
           ))}
         </div>
         <div className="container footer-bottom">
@@ -130,12 +142,22 @@ export default function Footer() {
             <h4>{t("Hướng dẫn đặt chuyến bay")}</h4>
             <Link to="/services/booking">{t("Tìm hiểu luồng đặt vé")}</Link>
             <h4>{t("Hướng dẫn thanh toán")}</h4>
-            <Link to="/services/payment">{t("Thanh toán giả lập an toàn")}</Link>
+            <Link to="/services/payment">
+              {t("Thanh toán giả lập an toàn")}
+            </Link>
           </div>
           <div className="footer-disclaimer">
             <strong>{t("VIETJET · BẢN MÔ PHỎNG ĐỘC LẬP")}</strong>
-            <p>{t("Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu demo.")}</p>
-            <small>{t("Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá nhân thật.")}</small>
+            <p>
+              {t(
+                "Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu demo.",
+              )}
+            </p>
+            <small>
+              {t(
+                "Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá nhân thật.",
+              )}
+            </small>
           </div>
         </div>
       </footer>
