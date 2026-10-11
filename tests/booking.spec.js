@@ -25,6 +25,28 @@ function tomorrow(offset = 1) {
     day: "2-digit",
   }).format(d);
 }
+async function availableRoundTrip(request) {
+  for (let offset = 1; offset < 30; offset++) {
+    const date = tomorrow(offset);
+    const returnDate = tomorrow(offset + 1);
+    const responses = await Promise.all([
+      request.get(
+        `/api/flights/search?origin=SGN&destination=DAD&date=${date}&passengers=2`,
+      ),
+      request.get(
+        `/api/flights/search?origin=DAD&destination=SGN&date=${returnDate}&passengers=2`,
+      ),
+    ]);
+    for (const response of responses) expect(response.ok()).toBeTruthy();
+    const [outbound, inbound] = await Promise.all(
+      responses.map((r) => r.json()),
+    );
+    if (outbound.length && inbound.length) return { date, returnDate };
+  }
+  throw new Error(
+    "Không có khứ hồi SGN–DAD đủ hai ghế trong 30 ngày demo tới.",
+  );
+}
 test("one-way checkout persists confirmed booking and allows lookup and check-in", async ({
   page,
 }, testInfo) => {
@@ -139,9 +161,11 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
 });
 test("round-trip search selects both segments and preserves draft on reload", async ({
   page,
+  request,
 }) => {
+  const { date, returnDate } = await availableRoundTrip(request);
   await page.goto(
-    `/flights?origin=SGN&destination=DAD&date=${tomorrow()}&returnDate=${tomorrow(2)}&type=ROUND_TRIP&adults=1&children=1&infants=0`,
+    `/flights?origin=SGN&destination=DAD&date=${date}&returnDate=${returnDate}&type=ROUND_TRIP&adults=1&children=1&infants=0`,
   );
   await page
     .getByRole("button", { name: /Chọn Deluxe/ })
