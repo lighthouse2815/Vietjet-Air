@@ -2,6 +2,7 @@ import { t } from "../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import ScrollCarousel from "../home/ScrollCarousel";
 import {
   Plane,
   ShoppingBag,
@@ -98,69 +99,98 @@ export default function Footer() {
   const home = useLocation().pathname === "/";
   return (
     <>
-      <footer className="site-footer">
-        <div className="container footer-grid">
-          {groups.map(([title, items]) => (
-            <details className="footer-group" key={title} open={!compact}>
-              <summary>
-                <h4>
-                  <ArrowRight size={13} />
-                  {t(title)}
-                </h4>
-              </summary>
-              {items.map((item) => (
-                <Link
-                  key={item}
-                  to={footerTargets[item] || "/services/support"}
-                >
-                  {t(item)}
+      <div className={`footer-background ${home ? "home-footer-background" : ""}`}>
+        {home && (
+          <ScrollCarousel
+            className="awards container"
+            label={t("Thành tựu trong giao diện tham chiếu")}
+          >
+            {[
+              t("Hàng không chi phí thấp"),
+              t("Doanh nghiệp ngành hàng không"),
+              t("Top công ty niêm yết"),
+              t("Thương hiệu Châu Á"),
+              t("Môi trường làm việc"),
+              t("Phát triển bền vững"),
+            ].map((label, i) => (
+              <div key={label}>
+                <img
+                  src={`/assets/reference/award-${i}.png`}
+                  alt=""
+                  loading="lazy"
+                  onLoad={(event) =>
+                    event.currentTarget.classList.add("home-image-loaded")
+                  }
+                />
+                <span>{t(label)}</span>
+              </div>
+            ))}
+          </ScrollCarousel>
+        )}
+        <footer className="site-footer">
+          <div className="container footer-grid">
+            {groups.map(([title, items]) => (
+              <details className="footer-group" key={title} open={!compact}>
+                <summary>
+                  <h4>
+                    <ArrowRight size={13} />
+                    {t(title)}
+                  </h4>
+                </summary>
+                {items.map((item) => (
+                  <Link
+                    key={item}
+                    to={footerTargets[item] || "/services/support"}
+                  >
+                    {t(item)}
+                  </Link>
+                ))}
+              </details>
+            ))}
+          </div>
+          <div className="container footer-bottom">
+            <div>
+              <h4>{t("Kết nối cùng hành trình")}</h4>
+              <div className="social-links">
+                <Link aria-label={t("Thông tin Facebook")} to="/services/social">
+                  <Facebook />
                 </Link>
-              ))}
-            </details>
-          ))}
-        </div>
-        <div className="container footer-bottom">
-          <div>
-            <h4>{t("Kết nối cùng hành trình")}</h4>
-            <div className="social-links">
-              <Link aria-label={t("Thông tin Facebook")} to="/services/social">
-                <Facebook />
-              </Link>
-              <Link aria-label={t("Thông tin Instagram")} to="/services/social">
-                <Instagram />
-              </Link>
-              <Link aria-label={t("Thông tin YouTube")} to="/services/social">
-                <Youtube />
-              </Link>
-              <Link aria-label={t("Liên hệ hỗ trợ")} to="/services/support">
-                <Mail />
+                <Link aria-label={t("Thông tin Instagram")} to="/services/social">
+                  <Instagram />
+                </Link>
+                <Link aria-label={t("Thông tin YouTube")} to="/services/social">
+                  <Youtube />
+                </Link>
+                <Link aria-label={t("Liên hệ hỗ trợ")} to="/services/support">
+                  <Mail />
+                </Link>
+              </div>
+              <small>{t("Cập nhật thông tin chuyến bay demo")}</small>
+            </div>
+            <div>
+              <h4>{t("Hướng dẫn đặt chuyến bay")}</h4>
+              <Link to="/services/booking">{t("Tìm hiểu luồng đặt vé")}</Link>
+              <h4>{t("Hướng dẫn thanh toán")}</h4>
+              <Link to="/services/payment">
+                {t("Thanh toán giả lập an toàn")}
               </Link>
             </div>
-            <small>{t("Cập nhật thông tin chuyến bay demo")}</small>
+            <div className="footer-disclaimer">
+              <strong>{t("VIETJET · BẢN MÔ PHỎNG ĐỘC LẬP")}</strong>
+              <p>
+                {t(
+                  "Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu demo.",
+                )}
+              </p>
+              <small>
+                {t(
+                  "Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá nhân thật.",
+                )}
+              </small>
+            </div>
           </div>
-          <div>
-            <h4>{t("Hướng dẫn đặt chuyến bay")}</h4>
-            <Link to="/services/booking">{t("Tìm hiểu luồng đặt vé")}</Link>
-            <h4>{t("Hướng dẫn thanh toán")}</h4>
-            <Link to="/services/payment">
-              {t("Thanh toán giả lập an toàn")}
-            </Link>
-          </div>
-          <div className="footer-disclaimer">
-            <strong>{t("VIETJET · BẢN MÔ PHỎNG ĐỘC LẬP")}</strong>
-            <p>
-              {t(
-                "Dự án học tập full-stack, không liên kết hay đại diện cho Vietjet Air. Mọi chuyến bay, giá và giao dịch trên website là dữ liệu demo.",
-              )}
-            </p>
-            <small>
-              {t(
-                "Không sử dụng tài khoản Vietjet, thông tin thẻ hoặc giấy tờ cá nhân thật.",
-              )}
-            </small>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
       <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
         <Link to="/">
           <Ticket />

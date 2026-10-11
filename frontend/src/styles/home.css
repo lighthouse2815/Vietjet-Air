@@ -228,11 +228,13 @@ body:has(.hero.campaign) .site-header.over-hero {
 .home-cloud-background {
   position: relative;
   margin-top: -75px;
+  padding-bottom: 7vw;
   background: url("/assets/reference/cloud-background.webp") right top / cover
     no-repeat;
   background-attachment: fixed;
 }
-.home .home-image-loaded {
+.home .home-image-loaded,
+.home-footer-background .home-image-loaded {
   animation: home-image-in 1s ease-out both;
 }
 @keyframes home-image-in {
@@ -519,9 +521,9 @@ body:has(.hero.campaign) .site-header.over-hero {
 }
 .stats-section {
   position: relative;
+  margin-top: -8vw;
   padding: 35px 0 70px;
-  background: url("/assets/reference/footer-background.webp") center top / cover
-    no-repeat;
+  background: url("/assets/reference/stats-background.webp") center top / cover;
   text-align: center;
   color: var(--red);
 }
@@ -529,8 +531,8 @@ body:has(.hero.campaign) .site-header.over-hero {
   content: "";
   position: absolute;
   inset: auto 0 -2px;
-  height: min(6vw, 115px);
-  background: url("/assets/reference/cloud-divider.webp") center bottom / 100% 100% no-repeat;
+  height: 6vw;
+  background: url("/assets/reference/cloud-divider.webp") center top / 102% auto no-repeat;
   pointer-events: none;
 }
 .stats-section > .container {
@@ -652,7 +654,11 @@ body:has(.hero.campaign) .site-header.over-hero {
 }
 @media (max-width: 900px) {
   .stats-section {
-    background-image: url("/assets/reference/sky-background.webp");
+    margin-top: 0;
+    background: white url("/assets/reference/stats-background-mobile.webp") center top;
+  }
+  .stats-section::after {
+    display: none;
   }
   .hero {
     height: auto;
@@ -743,6 +749,8 @@ body:has(.hero.campaign) .site-header.over-hero {
     min-height: 250px;
     padding-top: 65px;
     background-image: url("/assets/reference/promotion-background-mobile.webp");
+    background-size: auto;
+    background-repeat: repeat-x;
   }
   .promotion-strip {
     display: flex;
@@ -759,6 +767,7 @@ body:has(.hero.campaign) .site-header.over-hero {
   }
   .home-cloud-background {
     margin-top: 0;
+    padding-bottom: 0;
     background-image: url("/assets/reference/cloud-background-mobile.webp");
     background-position: center top;
     background-attachment: scroll;
@@ -845,7 +854,8 @@ body:has(.hero.campaign) .site-header.over-hero {
   .home-cloud-background {
     background-attachment: scroll;
   }
-  .home .home-image-loaded {
+  .home .home-image-loaded,
+  .home-footer-background .home-image-loaded {
     animation: none;
   }
 }

@@ -188,46 +188,46 @@ export default function HomePage() {
           {feature("FEATURE")}
           {cards("SERVICE")}
         </div>
-      </div>
-      <div className="container home-content lower-content">
-        {feature("SHOP")}
-        {cards("TRAVEL")}
-        <section className="destination-section">
-          <h2 className="ribbon">{t("Điểm đến hấp dẫn")}</h2>
-          <div className="destination-grid">
-            {items("DESTINATION").map((item) => (
-              <Link
-                key={item.id}
-                to={`/flights?${new URLSearchParams({ origin: item.target === "SGN" ? "HAN" : "SGN", destination: item.target, date: localDate(1), type: "ONE_WAY", adults: 1, children: 0, infants: 0 })}`}
-              >
-                <img
-                  src={getContentArtwork(item)?.[0] || item.image}
-                  alt={t(item.title)}
-                  loading="lazy"
-                />
-                <h3>{t(item.title)}</h3>
-              </Link>
-            ))}
-          </div>
-        </section>
-        <section className="faq-section">
-          <h2 className="ribbon">{t("Câu hỏi thường gặp")}</h2>
-          <div className="faq-categories">
-            {items("FAQ").map((item) => (
-              <Link key={item.id} to={`/services/faq#${item.target}`}>
-                {faqArtwork[item.target]?.[0] === item.title ? (
+        <div className="container home-content lower-content">
+          {feature("SHOP")}
+          {cards("TRAVEL")}
+          <section className="destination-section">
+            <h2 className="ribbon">{t("Điểm đến hấp dẫn")}</h2>
+            <div className="destination-grid">
+              {items("DESTINATION").map((item) => (
+                <Link
+                  key={item.id}
+                  to={`/flights?${new URLSearchParams({ origin: item.target === "SGN" ? "HAN" : "SGN", destination: item.target, date: localDate(1), type: "ONE_WAY", adults: 1, children: 0, infants: 0 })}`}
+                >
                   <img
-                    src={`/assets/reference/faq-${faqArtwork[item.target][1]}.svg`}
+                    src={getContentArtwork(item)?.[0] || item.image}
                     alt={t(item.title)}
                     loading="lazy"
                   />
-                ) : (
-                  <span className="faq-custom">{t(item.title)}</span>
-                )}
-              </Link>
-            ))}
-          </div>
-        </section>
+                  <h3>{t(item.title)}</h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+          <section className="faq-section">
+            <h2 className="ribbon">{t("Câu hỏi thường gặp")}</h2>
+            <div className="faq-categories">
+              {items("FAQ").map((item) => (
+                <Link key={item.id} to={`/services/faq#${item.target}`}>
+                  {faqArtwork[item.target]?.[0] === item.title ? (
+                    <img
+                      src={`/assets/reference/faq-${faqArtwork[item.target][1]}.svg`}
+                      alt={t(item.title)}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="faq-custom">{t(item.title)}</span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
       <section className="stats-section">
         <div className="container">
@@ -265,28 +265,6 @@ export default function HomePage() {
           />
         </div>
       </section>
-      <ScrollCarousel
-        className="awards container"
-        label={t("Thành tựu trong giao diện tham chiếu")}
-      >
-        {[
-          t("Hàng không chi phí thấp"),
-          t("Doanh nghiệp ngành hàng không"),
-          t("Top công ty niêm yết"),
-          t("Thương hiệu Châu Á"),
-          t("Môi trường làm việc"),
-          t("Phát triển bền vững"),
-        ].map((label, i) => (
-          <div key={label}>
-            <img
-              src={`/assets/reference/award-${i}.png`}
-              alt=""
-              loading="lazy"
-            />
-            <span>{t(label)}</span>
-          </div>
-        ))}
-      </ScrollCarousel>
     </main>
   );
 }

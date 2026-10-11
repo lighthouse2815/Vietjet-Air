@@ -475,12 +475,15 @@ small {
 .mobile-bottom {
   display: none;
 }
-.site-footer {
+.footer-background {
   position: relative;
   background:
     url("/assets/reference/footer-pattern.svg") right bottom / 300px auto
       no-repeat,
-    url("/assets/reference/footer-background.webp") center top / cover no-repeat;
+    #fff url("/assets/reference/footer-background.webp") center top / cover no-repeat;
+}
+.site-footer {
+  position: relative;
   padding: 55px 0 35px;
   font-size: 16px;
   border-bottom: 10px solid var(--red);
@@ -606,6 +609,11 @@ small {
   }
 }
 @media (max-width: 900px) {
+  .home-footer-background {
+    background:
+      url("/assets/reference/footer-pattern.svg") right bottom / 200px auto no-repeat,
+      #fff url("/assets/reference/sky-background.webp") center 200px / cover no-repeat;
+  }
   .site-header {
     height: 70px;
   }

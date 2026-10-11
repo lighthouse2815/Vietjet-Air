@@ -1,5 +1,39 @@
 import { test, expect } from "@playwright/test";
 
+test("homepage paints continuous scenery beneath lower content and the footer", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".destination-section")).toBeVisible();
+  const scenery = await page.evaluate(() => {
+    const scene = (element) => {
+      for (let node = element; node; node = node.parentElement)
+        if (getComputedStyle(node).backgroundImage.includes("url(")) return node;
+      return null;
+    };
+    const cloud = scene(document.querySelector(".cards-service"));
+    const footer = scene(document.querySelector(".site-footer"));
+    const stats = document.querySelector(".stats-section");
+    return {
+      lowerContentSharesCloud: [".feature-shop", ".cards-travel", ".destination-section", ".faq-section"]
+        .every((selector) => scene(document.querySelector(selector)) === cloud),
+      awardsShareFooterScene: !!footer && scene(document.querySelector(".awards")) === footer,
+      cloudOverlap: cloud.getBoundingClientRect().bottom - stats.getBoundingClientRect().top,
+      statsImage: getComputedStyle(stats).backgroundImage,
+      mobilePromotionSize: getComputedStyle(document.querySelector(".promotion-region")).backgroundSize,
+      footerImage: footer && getComputedStyle(footer).backgroundImage,
+    };
+  });
+  expect(scenery.lowerContentSharesCloud).toBe(true);
+  expect(scenery.awardsShareFooterScene).toBe(true);
+  expect(scenery.cloudOverlap).toBeCloseTo(page.viewportSize().width > 900
+    ? page.viewportSize().width * 0.08 : 0, 0);
+  expect(scenery.statsImage).toContain(page.viewportSize().width > 900
+    ? "stats-background.webp" : "stats-background-mobile.webp");
+  if (page.viewportSize().width <= 900) {
+    expect(scenery.mobilePromotionSize).toBe("auto");
+    expect(scenery.footerImage).toContain("sky-background.webp");
+  }
+});
+
 test("homepage displays captions edited in the content catalog", async ({
   page,
 }) => {
