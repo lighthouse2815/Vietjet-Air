@@ -21,14 +21,14 @@ public class VoucherService {
     private final BookingService bookings;
     private final PaymentService payments;
     private final LoyaltyService loyalty;
-    public record VoucherView(Long id,UUID code,String recipientEmail,String status,BigDecimal value,BigDecimal balance,Instant expiresAt,boolean reward) {}
+    public record VoucherView(Long id,UUID code,String recipientEmail,String status,BigDecimal value,BigDecimal balance,Instant expiresAt,boolean reward,boolean purchased) {}
     @Transactional(readOnly=true)
-    public List<VoucherView> list(Long id) {UserAccount u=users.findById(id).orElseThrow();return vouchers.list(id,u.getEmail()).stream().map(this::view).toList();}
+    public List<VoucherView> list(Long id) {UserAccount u=users.findById(id).orElseThrow();return vouchers.list(id,u.getEmail()).stream().map(v->view(v,id)).toList();}
     @Transactional
     public VoucherView buy(Long id,BuyVoucher input) {
         UserAccount buyer=users.findLocked(id).orElseThrow();var previous=vouchers.findByRequestKey(input.requestKey());
-        if(previous.isPresent()) {GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||v.getValue().compareTo(BigDecimal.valueOf(input.value()))!=0||!v.getRecipientEmail().equalsIgnoreCase(input.recipientEmail().trim()))throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v);}
-        return view(issue(buyer,input.value(),input.recipientEmail().trim().toLowerCase(Locale.ROOT),input.requestKey(),false));
+        if(previous.isPresent()) {GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||v.getValue().compareTo(BigDecimal.valueOf(input.value()))!=0||!v.getRecipientEmail().equalsIgnoreCase(input.recipientEmail().trim()))throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v,id);}
+        return view(issue(buyer,input.value(),input.recipientEmail().trim().toLowerCase(Locale.ROOT),input.requestKey(),false),id);
     }
     private GiftVoucher issue(UserAccount buyer,long value,String email,UUID key,boolean reward) {
         GiftVoucher v=new GiftVoucher();v.setCode(UUID.randomUUID());v.setBuyer(buyer);v.setRecipientEmail(email);v.setValue(BigDecimal.valueOf(value));
@@ -37,24 +37,24 @@ public class VoucherService {
     @Transactional
     public VoucherView redeem(Long id,Redeem input) {
         UserAccount u=users.findLocked(id).orElseThrow();var previous=vouchers.findByRequestKey(input.requestKey());
-        if(previous.isPresent()){GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||!v.isReward()||v.getValue().compareTo(BigDecimal.valueOf(input.points()*1000))!=0)throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v);}
-        loyalty.spend(u,input.points(),"REDEEM:"+input.requestKey());return view(issue(u,input.points()*1000,u.getEmail(),input.requestKey(),true));
+        if(previous.isPresent()){GiftVoucher v=previous.get();if(!v.getBuyer().getId().equals(id)||!v.isReward()||v.getValue().compareTo(BigDecimal.valueOf(input.points()*1000))!=0)throw BusinessException.conflict("Mã yêu cầu đã dùng");return view(v,id);}
+        loyalty.spend(u,input.points(),"REDEEM:"+input.requestKey());return view(issue(u,input.points()*1000,u.getEmail(),input.requestKey(),true),id);
     }
     @Transactional
     public VoucherView pay(Long userId,Long id,Pay input) {
         GiftVoucher v=ownedBuyer(userId,id);
-        if(replayed("VOUCHER",id,input))return view(v);
-        if(v.getStatus().equals("ACTIVE")&&input.outcome().equals("SUCCESS"))return view(v);
+        if(replayed("VOUCHER",id,input))return view(v,userId);
+        if(v.getStatus().equals("ACTIVE")&&input.outcome().equals("SUCCESS"))return view(v,userId);
         if(!List.of("PENDING","FAILED").contains(v.getStatus()) || v.getCreatedAt().plusSeconds(900).isBefore(Instant.now()))throw BusinessException.conflict("Đơn voucher đã hết hạn hoặc đã xử lý");
         if(input.outcome().equals("SUCCESS")){v.setStatus("ACTIVE");v.setBalance(v.getValue());v.setExpiresAt(Instant.now().plusSeconds(365*86400L));}
         else v.setStatus(input.outcome().equals("CANCELLED")?"CANCELLED":"FAILED");
-        receipt("VOUCHER",id,input,v.getValue());return view(v);
+        receipt("VOUCHER",id,input,v.getValue());return view(v,userId);
     }
     @Transactional
     public VoucherView cancel(Long userId,Long id) {
-        GiftVoucher v=ownedBuyer(userId,id);if(v.getStatus().equals("CANCELLED"))return view(v);
+        GiftVoucher v=ownedBuyer(userId,id);if(v.getStatus().equals("CANCELLED"))return view(v,userId);
         if(v.isReward()||v.getStatus().equals("ACTIVE")&&v.getBalance().compareTo(v.getValue())!=0)throw BusinessException.conflict("Không hủy voucher thưởng hoặc voucher đã sử dụng");
-        v.setStatus("CANCELLED");v.setBalance(BigDecimal.ZERO);return view(v);
+        v.setStatus("CANCELLED");v.setBalance(BigDecimal.ZERO);return view(v,userId);
     }
     @Transactional
     public com.flightbooking.dto.response.Responses.PaymentView payBooking(Long userId,VoucherPay input,String token) {
@@ -85,5 +85,5 @@ public class VoucherService {
         if(!old.get().getKind().equals(kind)||!old.get().getPurchaseId().equals(id)||!old.get().getOutcome().equals(input.outcome()))throw BusinessException.conflict("Mã giao dịch đã dùng cho yêu cầu khác");return true;
     }
     public void receipt(String kind,Long id,Pay input,BigDecimal amount) {CommercePayment p=new CommercePayment();p.setKind(kind);p.setPurchaseId(id);p.setRequestKey(input.requestKey());p.setOutcome(input.outcome());p.setAmount(amount);p.setCreatedAt(Instant.now());receipts.save(p);}
-    private VoucherView view(GiftVoucher v) {String status=v.getStatus();if(status.equals("ACTIVE")&&!v.getExpiresAt().isAfter(Instant.now())||List.of("PENDING","FAILED").contains(status)&&!v.getCreatedAt().plusSeconds(900).isAfter(Instant.now()))status="EXPIRED";return new VoucherView(v.getId(),v.getCode(),v.getRecipientEmail(),status,v.getValue(),v.getBalance(),v.getExpiresAt(),v.isReward());}
+    private VoucherView view(GiftVoucher v,Long userId) {String status=v.getStatus();if(status.equals("ACTIVE")&&!v.getExpiresAt().isAfter(Instant.now())||List.of("PENDING","FAILED").contains(status)&&!v.getCreatedAt().plusSeconds(900).isAfter(Instant.now()))status="EXPIRED";return new VoucherView(v.getId(),v.getCode(),v.getRecipientEmail(),status,v.getValue(),v.getBalance(),v.getExpiresAt(),v.isReward(),v.getBuyer().getId().equals(userId));}
 }

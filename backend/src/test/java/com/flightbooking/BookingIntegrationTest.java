@@ -158,6 +158,21 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void voucherListsIdentifyBuyerAndRecipient() throws Exception {
+        var buyer=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-buyer-"+UUID.randomUUID()+"@example.com","Original123","Buyer"),UUID.randomUUID().toString());
+        var recipient=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-recipient-"+UUID.randomUUID()+"@example.com","Original123","Recipient"),UUID.randomUUID().toString());
+        var voucher=vouchers.buy(buyer.id(),new com.flightbooking.dto.request.CommerceRequests.BuyVoucher(500000L,recipient.email(),UUID.randomUUID()));
+        http.perform(get("/api/commerce/account/vouchers").header("Authorization","Bearer "+buyer.token()))
+            .andExpect(status().isOk()).andExpect(jsonPath("$[0].purchased").value(true));
+        http.perform(get("/api/commerce/account/vouchers").header("Authorization","Bearer "+recipient.token()))
+            .andExpect(status().isOk()).andExpect(jsonPath("$[0].purchased").value(false));
+        http.perform(post("/api/commerce/account/vouchers/"+voucher.id()+"/cancel").header("Authorization","Bearer "+recipient.token()))
+            .andExpect(status().isForbidden());
+        http.perform(post("/api/commerce/account/vouchers/"+voucher.id()+"/cancel").header("Authorization","Bearer "+buyer.token()))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.status").value("CANCELLED"));
+    }
+
+    @Test
     void vouchersPayOnlyForRecipientAndRestoreBalanceOnRefund() {
         var a=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-"+UUID.randomUUID()+"@example.com","Original123","Account"),UUID.randomUUID().toString());
         var other=auth.register(new com.flightbooking.dto.request.AuthRequests.Register("voucher-other-"+UUID.randomUUID()+"@example.com","Original123","Other"),UUID.randomUUID().toString());
