@@ -200,6 +200,32 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void onboardOrderCannotBePaidOrDeliveredDuringRefundReview() {
+        var user = auth.register(new com.flightbooking.dto.request.AuthRequests.Register(
+            "onboard-" + UUID.randomUUID() + "@example.com", "Original123", "Account"), UUID.randomUUID().toString());
+        var booking = bookings.create(input(flightId, null, ""), user.id());
+        String token = booking.accessToken().toString();
+        payments.pay(new DemoPayment(booking.id(), UUID.randomUUID(), "SUCCESS"), token);
+        var product = shop.products().getFirst();
+        var order = shop.create(user.id(), new com.flightbooking.dto.request.CommerceRequests.CreateOrder(
+            List.of(new com.flightbooking.dto.request.CommerceRequests.OrderItem(product.id(), 1)),
+            "ON_BOARD", booking.code(), token, UUID.randomUUID()));
+        var refund = changes.requestRefund(booking.id(), token,
+            new com.flightbooking.dto.request.ChangeRequests.Refund("Đang xem xét"));
+        assertThatThrownBy(() -> shop.pay(user.id(), order.id(),
+            new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(), "SUCCESS")))
+            .isInstanceOf(BusinessException.class);
+        changes.decide(refund.id(), new com.flightbooking.dto.request.ChangeRequests.RefundDecision("REJECT", "Giữ vé"));
+        shop.pay(user.id(), order.id(), new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(), "SUCCESS"));
+        changes.requestRefund(booking.id(), token, new com.flightbooking.dto.request.ChangeRequests.Refund("Xem xét lại"));
+        assertThatThrownBy(() -> shop.fulfill(order.id())).isInstanceOf(BusinessException.class);
+        shop.cancel(user.id(), order.id());
+        changes.decide(refund.id(), new com.flightbooking.dto.request.ChangeRequests.RefundDecision("REJECT", "Giữ vé"));
+        bookings.cancel(booking.id(), token);
+        assertThat(shop.products().getFirst().stock()).isEqualTo(product.stock());
+    }
+
+    @Test
     void paidChangesAreAtomicKeepSeatsAndRejectStaleQuotes() {
         BookingView b=create("8B");String token=b.accessToken().toString();
         payments.pay(new DemoPayment(b.id(),UUID.randomUUID(),"SUCCESS"),token);

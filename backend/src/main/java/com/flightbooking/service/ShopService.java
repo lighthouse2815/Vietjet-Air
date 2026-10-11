@@ -59,6 +59,7 @@ public class ShopService {
         if(o.getStatus().equals("PAID")&&input.outcome().equals("SUCCESS"))return view(o);
         if(!List.of("PENDING","FAILED").contains(o.getStatus())||!o.getExpiresAt().isAfter(Instant.now()))throw BusinessException.conflict("Đơn đã hết hạn hoặc đã xử lý");
         if(o.getBooking()!=null && o.getBooking().getStatus()!=BookingStatus.CONFIRMED)throw BusinessException.conflict("Booking nhận hàng không còn được xác nhận");
+        if(o.getBooking()!=null)bookings.noPendingRefund(o.getBooking());
         if(input.outcome().equals("SUCCESS")){o.setStatus("PAID");loyalty.award(userId,"SHOP:"+id,o.getTotal(),"Mua hàng nội bộ #"+id);}
         else if(input.outcome().equals("CANCELLED")){restock(o);o.setStatus("CANCELLED");}else o.setStatus("FAILED");
         vouchers.receipt("SHOP",id,input,o.getTotal());return view(o);
@@ -76,6 +77,7 @@ public class ShopService {
         if(o.getStatus().equals("FULFILLED"))return view(o);
         if(!o.getStatus().equals("PAID"))throw BusinessException.conflict("Chỉ giao đơn đã thanh toán");
         if(o.getBooking()!=null && o.getBooking().getStatus()!=BookingStatus.CONFIRMED)throw BusinessException.conflict("Booking nhận hàng đã hủy");
+        if(o.getBooking()!=null)bookings.noPendingRefund(o.getBooking());
         o.setStatus("FULFILLED");return view(o);
     }
     @Scheduled(fixedDelay=60000) @Transactional
