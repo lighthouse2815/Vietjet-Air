@@ -23,6 +23,7 @@ export default function PassengerPicker({ value, onChange }) {
       <button
         type="button"
         className="white-field passenger-trigger"
+        aria-label={`Hành khách: ${value.adults} người lớn, ${value.children} trẻ em, ${value.infants} em bé`}
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >

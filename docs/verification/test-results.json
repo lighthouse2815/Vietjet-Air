@@ -1,0 +1,22 @@
+{
+  "backend": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "backendCommand": "./backend/mvnw -f backend/pom.xml verify",
+  "frontendBuild": "passed",
+  "playwright": {
+    "passed": 19,
+    "failed": 0,
+    "backend": "packaged JAR",
+    "frontend": "Vite preview production build",
+    "viewports": [
+      "1920x1080",
+      "1440x900",
+      "768x1024",
+      "390x844"
+    ]
+  }
+}

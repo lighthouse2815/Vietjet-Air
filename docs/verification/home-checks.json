@@ -1,34 +1,46 @@
-[
-  {
-    "name": "desktop",
-    "width": 1920,
-    "height": 1080,
-    "errors": [],
-    "overflow": false,
-    "brokenImages": []
-  },
-  {
-    "name": "laptop",
-    "width": 1440,
-    "height": 900,
-    "errors": [],
-    "overflow": false,
-    "brokenImages": []
-  },
-  {
-    "name": "tablet",
-    "width": 768,
-    "height": 1024,
-    "errors": [],
-    "overflow": false,
-    "brokenImages": []
-  },
-  {
-    "name": "mobile",
-    "width": 390,
-    "height": 844,
-    "errors": [],
-    "overflow": false,
-    "brokenImages": []
-  }
-]
+{
+  "verifiedAt": "2026-10-11T10:17:14.993Z",
+  "url": "http://localhost:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1920,
+      "height": 1080,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "documentHeight": 5471,
+      "errors": []
+    },
+    {
+      "name": "laptop",
+      "width": 1440,
+      "height": 900,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "documentHeight": 5241,
+      "errors": []
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "documentHeight": 5454,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "horizontalOverflow": false,
+      "brokenImages": [],
+      "brokenLinks": 0,
+      "documentHeight": 6163,
+      "errors": []
+    }
+  ]
+}

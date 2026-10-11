@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-10-11T10:19:07.652Z",
+  "bookingCode": "XB75XVU9",
+  "survivesBackendRestart": true,
+  "priceSnapshotUnchanged": true,
+  "passengersUnchanged": true,
+  "extrasUnchanged": true,
+  "seatAndBoardingPassUnchanged": true,
+  "lookupAfterRestart": true,
+  "paymentStatusFromDatabase": "SUCCESS"
+}
