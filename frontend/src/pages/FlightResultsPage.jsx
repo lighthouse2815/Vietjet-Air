@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { Plane, ArrowRight } from "lucide-react";
 import { useApi } from "../hooks/useApi";
 import { useBooking } from "../context/BookingContext";
 import { localDate, dateLabel, money } from "../api/client";
+import { flightSearchSchema } from "../utils/flightSearch";
 import BookingForm from "../components/booking/BookingForm";
 import BookingSteps from "../components/booking/BookingSteps";
 import FlightCard from "../components/flights/FlightCard";
@@ -82,6 +83,18 @@ export default function FlightResultsPage() {
     out: null,
     back: null,
   });
+  const validation = flightSearchSchema.safeParse(search);
+  if (!validation.success) {
+    return (
+      <main className="container page checkout-page">
+        <h1>Chọn chuyến bay</h1>
+        <ErrorState message="Thông tin tìm kiếm không hợp lệ. Hãy chọn lại sân bay, ngày bay và số hành khách." />
+        <Link to="/" className="button primary">
+          Tìm lại chuyến bay
+        </Link>
+      </main>
+    );
+  }
   const chosen =
     selection.key === searchKey
       ? selection

@@ -1,4 +1,27 @@
 import { test, expect } from "@playwright/test";
+test("invalid search URLs show recoverable validation errors without crashing", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  for (const query of [
+    "origin=SGN&destination=HAN&date=wrong",
+    "origin=SGN&destination=HAN&date=2026-02-30",
+    `origin=SGN&destination=HAN&date=${tomorrow()}&adults=0`,
+    `origin=SGN&destination=HAN&date=${tomorrow()}&adults=1&infants=2`,
+    `origin=SGN&destination=HAN&date=${tomorrow()}&adults=1&children=20`,
+    `origin=SGN&destination=HAN&date=${tomorrow()}&type=ROUND_TRIP&returnDate=2000-01-01`,
+  ]) {
+    await page.goto(`/flights?${query}`);
+    await expect(page.getByRole("alert")).toContainText(
+      "Thông tin tìm kiếm không hợp lệ",
+    );
+    await expect(
+      page.getByRole("link", { name: "Tìm lại chuyến bay", exact: true }),
+    ).toBeVisible();
+  }
+  expect(errors).toEqual([]);
+});
 function tomorrow() {
   const d = new Date();
   d.setDate(d.getDate() + 1);

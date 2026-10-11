@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ArrowUpDown, TicketPercent, Plane, LoaderCircle } from "lucide-react";
 import { useApi } from "../../hooks/useApi";
 import { localDate, api, errorMessage } from "../../api/client";
+import { flightSearchSchema } from "../../utils/flightSearch";
 import AirportPicker from "./AirportPicker";
 import DatePicker from "./DatePicker";
 import PassengerPicker from "./PassengerPicker";
@@ -30,17 +31,9 @@ export default function BookingForm({ initial = {}, compact = false }) {
   };
   async function submit(event) {
     event.preventDefault();
-    if (!form.origin || !form.destination || form.origin === form.destination) {
-      setError("Chọn hai sân bay khác nhau để tìm chuyến bay.");
-      return;
-    }
-    if (
-      !form.date ||
-      form.date < localDate() ||
-      (form.type === "ROUND_TRIP" &&
-        (!form.returnDate || form.returnDate < form.date))
-    ) {
-      setError("Chọn ngày đi và ngày về hợp lệ.");
+    const validation = flightSearchSchema.safeParse(form);
+    if (!validation.success) {
+      setError(validation.error.issues[0].message);
       return;
     }
     setLoading(true);
