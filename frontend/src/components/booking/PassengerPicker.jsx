@@ -1,8 +1,82 @@
-import {UserRound,ChevronDown,Minus,Plus} from 'lucide-react';
-import {usePopup} from '../../hooks/usePopup';
-export default function PassengerPicker({value,onChange}) {
-  const {ref,open,setOpen}=usePopup();const total=value.adults+value.children;
-  const types=[['adults','Người lớn','12 tuổi trở lên'],['children','Trẻ em','2–11 tuổi'],['infants','Em bé','Dưới 2 tuổi']];
-  function allowed(key,delta){const next={...value,[key]:value[key]+delta};return next.adults>=1&&next.children>=0&&next.infants>=0&&next.infants<=next.adults&&next.adults+next.children+next.infants<=9;}
-  return <div ref={ref} className="passenger-picker"><button type="button" className="white-field passenger-trigger" aria-expanded={open} onClick={()=>setOpen(!open)}><UserRound size={21}/><span><small>Hành khách</small>{value.adults} người lớn{value.children>0&&`, ${value.children} trẻ em`}{value.infants>0&&`, ${value.infants} em bé`}</span><ChevronDown size={18}/></button>{open&&<div className="popup passenger-popup"><div className="popup-title">Hành khách <small>Tối đa 9 người</small></div>{types.map(([key,label,hint])=><div className="passenger-row" key={key}><span><strong>{label}</strong><small>{hint}</small></span><button type="button" aria-label={`Giảm ${label.toLowerCase()}`} disabled={!allowed(key,-1)} onClick={()=>onChange({...value,[key]:value[key]-1})}><Minus size={16}/></button><b>{value[key]}</b><button type="button" aria-label={`Tăng ${label.toLowerCase()}`} disabled={!allowed(key,1)} onClick={()=>onChange({...value,[key]:value[key]+1})}><Plus size={16}/></button></div>)}<p className="small muted">{total} ghế · Em bé đi cùng người lớn, không có ghế riêng.</p><button type="button" className="button primary full" onClick={()=>setOpen(false)}>Xong</button></div>}</div>;
+import { UserRound, ChevronDown, Minus, Plus } from "lucide-react";
+import { usePopup } from "../../hooks/usePopup";
+export default function PassengerPicker({ value, onChange }) {
+  const { ref, open, setOpen } = usePopup();
+  const total = value.adults + value.children;
+  const types = [
+    ["adults", "Người lớn", "12 tuổi trở lên"],
+    ["children", "Trẻ em", "2–11 tuổi"],
+    ["infants", "Em bé", "Dưới 2 tuổi"],
+  ];
+  function allowed(key, delta) {
+    const next = { ...value, [key]: value[key] + delta };
+    return (
+      next.adults >= 1 &&
+      next.children >= 0 &&
+      next.infants >= 0 &&
+      next.infants <= next.adults &&
+      next.adults + next.children + next.infants <= 9
+    );
+  }
+  return (
+    <div ref={ref} className="passenger-picker">
+      <button
+        type="button"
+        className="white-field passenger-trigger"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        <UserRound size={21} />
+        <span>
+          <small>Hành khách</small>
+          {value.adults} người lớn
+          {value.children > 0 && `, ${value.children} trẻ em`}
+          {value.infants > 0 && `, ${value.infants} em bé`}
+        </span>
+        <ChevronDown size={18} />
+      </button>
+      {open && (
+        <div className="popup passenger-popup">
+          <div className="popup-title">
+            Hành khách <small>Tối đa 9 người</small>
+          </div>
+          {types.map(([key, label, hint]) => (
+            <div className="passenger-row" key={key}>
+              <span>
+                <strong>{label}</strong>
+                <small>{hint}</small>
+              </span>
+              <button
+                type="button"
+                aria-label={`Giảm ${label.toLowerCase()}`}
+                disabled={!allowed(key, -1)}
+                onClick={() => onChange({ ...value, [key]: value[key] - 1 })}
+              >
+                <Minus size={16} />
+              </button>
+              <b>{value[key]}</b>
+              <button
+                type="button"
+                aria-label={`Tăng ${label.toLowerCase()}`}
+                disabled={!allowed(key, 1)}
+                onClick={() => onChange({ ...value, [key]: value[key] + 1 })}
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          ))}
+          <p className="small muted">
+            {total} ghế · Em bé đi cùng người lớn, không có ghế riêng.
+          </p>
+          <button
+            type="button"
+            className="button primary full"
+            onClick={() => setOpen(false)}
+          >
+            Xong
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
