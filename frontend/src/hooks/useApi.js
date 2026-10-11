@@ -4,17 +4,21 @@ export function useApi(path, bookingToken) {
   const [state, setState] = useState({ data: null, loading: true, error: "" });
   const [retryKey, setRetryKey] = useState(0);
   useEffect(() => {
-    if (!path) { setState({ data: [], loading: false, error: "" }); return; }
+    if (!path) return;
     const controller = new AbortController();
-    setState({ data: null, loading: true, error: "" });
+    const request = { path, bookingToken };
+    setState({ ...request, data: null, loading: true, error: "" });
     api
       .get(path, { signal: controller.signal, headers: bookingToken ? {"X-Booking-Token": bookingToken} : undefined })
-      .then(({ data }) => setState({ data, loading: false, error: "" }))
+      .then(({ data }) => setState({ ...request, data, loading: false, error: "" }))
       .catch((error) => {
         if (error.code !== "ERR_CANCELED")
-          setState({ data: null, loading: false, error: errorMessage(error) });
+          setState({ ...request, data: null, loading: false, error: errorMessage(error) });
       });
     return () => controller.abort();
   }, [path, retryKey, bookingToken]);
-  return { ...state, retry: () => setRetryKey((k) => k + 1) };
+  const result = !path ? { data: [], loading: false, error: "" }
+    : state.path === path && state.bookingToken === bookingToken ? state
+    : { data: null, loading: true, error: "" };
+  return { ...result, retry: () => setRetryKey((k) => k + 1) };
 }
