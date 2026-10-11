@@ -19,6 +19,7 @@ public class BookingChangeService {
     private final BookingService bookings;
     private final BookingChangeRepository changes;
     private final ChangePaymentRepository payments;
+    private final PaymentRepository bookingPayments;
     private final RefundRequestRepository refunds;
     private final CheckInRepository checkIns;
     private final ObjectMapper json;
@@ -80,6 +81,7 @@ public class BookingChangeService {
     public RefundView requestRefund(Long id,String token,Refund input) {
         Booking b=bookings.locked(id,token);
         if(!List.of(BookingStatus.CONFIRMED,BookingStatus.CANCELLED).contains(b.getStatus()) ||
+            bookingPayments.findByBookingIdAndStatus(id,"SUCCESS").isEmpty() ||
             !checkIns.findByBookingId(id).isEmpty() || b.getSegments().stream().anyMatch(s->!s.getFlight().getDepartureTime().isAfter(Instant.now().plusSeconds(3600))))
             throw BusinessException.conflict("Chỉ hoàn vé đã thanh toán, chưa check-in và trước khởi hành ít nhất một giờ");
         RefundRequest r=refunds.findByBookingId(id).orElseGet(RefundRequest::new);

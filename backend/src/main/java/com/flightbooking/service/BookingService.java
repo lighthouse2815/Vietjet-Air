@@ -150,7 +150,19 @@ public class BookingService {
             }
         }
         validateJourney(booking);
-        pricing.calculate(booking, seatAmount, input.promotionCode());
+        if (existing == null) {
+            pricing.calculate(booking, seatAmount, input.promotionCode());
+        } else {
+            if (input.promotionCode() != null && !input.promotionCode().isBlank()
+                && !input.promotionCode().equalsIgnoreCase(existing.getPromotionCode()))
+                throw BusinessException.badRequest("Không thay mã khuyến mại trên booking đã thanh toán");
+            pricing.calculate(booking, seatAmount, null);
+            // Keep the original monetary benefit even if the campaign later changes or expires.
+            BigDecimal discount = existing.getDiscountAmount().min(booking.getBaseAmount());
+            booking.setPromotionCode(existing.getPromotionCode());
+            booking.setDiscountAmount(discount);
+            booking.setTotalAmount(booking.getTotalAmount().subtract(discount));
+        }
         return new Prepared(booking, selected);
     }
     private void validatePassengers(CreateBooking input) {

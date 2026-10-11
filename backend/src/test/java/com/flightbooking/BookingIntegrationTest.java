@@ -106,6 +106,33 @@ class BookingIntegrationTest {
     }
 
     @Test
+    void cancelledUnpaidBookingCannotRequestRefund() {
+        var booking = create(null);
+        String token = booking.accessToken().toString();
+        bookings.cancel(booking.id(), token);
+        assertThatThrownBy(() -> changes.requestRefund(booking.id(), token,
+            new com.flightbooking.dto.request.ChangeRequests.Refund("Chưa thanh toán")))
+            .isInstanceOf(BusinessException.class);
+    }
+
+    @Test
+    void contactChangePreservesTheDiscountAlreadyPaid() {
+        var booking = bookings.create(input(flightId, null, "DEMO10"), null);
+        String token = booking.accessToken().toString();
+        payments.pay(new DemoPayment(booking.id(), UUID.randomUUID(), "SUCCESS"), token);
+        var original = input(flightId, null, "");
+        var target = new CreateBooking(original.segments(), original.passengers(),
+            "changed@example.com", original.contactPhone(), "");
+        var quote = changes.create(booking.id(), token, target);
+        assertThat(quote.amount()).isZero();
+        changes.pay(booking.id(), quote.id(), token,
+            new com.flightbooking.dto.request.ChangeRequests.Pay(UUID.randomUUID(), "SUCCESS"));
+        assertThat(bookings.get(booking.code(), token).price().discountAmount())
+            .isEqualByComparingTo(booking.price().discountAmount());
+        bookings.cancel(booking.id(), token);
+    }
+
+    @Test
     void multiCityAcceptsConnectedLegsAndGroupsRespectTheirLimit() {
         Long second=flights.search("HAN","DAD",LocalDate.now(FlightService.ZONE).plusDays(2),1).getFirst().id();
         var first=input(flightId,null,"");
