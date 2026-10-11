@@ -7,6 +7,24 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   reporter: "list",
+  projects: [
+    {
+      name: "desktop",
+      testMatch: "booking.spec.js",
+      use: { viewport: { width: 1920, height: 1080 } },
+    },
+    { name: "laptop", use: { viewport: { width: 1440, height: 900 } } },
+    {
+      name: "tablet",
+      testMatch: "booking.spec.js",
+      use: { viewport: { width: 768, height: 1024 } },
+    },
+    {
+      name: "mobile",
+      testMatch: "booking.spec.js",
+      use: { viewport: { width: 390, height: 844 } },
+    },
+  ],
   use: {
     baseURL: "http://localhost:5173",
     viewport: { width: 1440, height: 900 },

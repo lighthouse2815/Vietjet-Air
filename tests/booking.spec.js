@@ -1,4 +1,20 @@
 import { test, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+async function checkpoint(page, testInfo, name) {
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+    )
+    .toBe(true);
+  if (process.env.CAPTURE_E2E === "1") {
+    await mkdir("docs/verification/checkout", { recursive: true });
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({
+      path: `docs/verification/checkout/${testInfo.project.name}-${name}.png`,
+      fullPage: true,
+    });
+  }
+}
 function tomorrow(offset = 1) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
@@ -11,7 +27,7 @@ function tomorrow(offset = 1) {
 }
 test("one-way checkout persists confirmed booking and allows lookup and check-in", async ({
   page,
-}) => {
+}, testInfo) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
@@ -46,11 +62,13 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
     .getByRole("button", { name: /Chọn Eco/ })
     .first()
     .click();
+  await checkpoint(page, testInfo, "flights");
   await page.getByRole("button", { name: "Tiếp tục" }).click();
   await expect(page).toHaveURL(/booking\/passengers/);
   await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
   await page.getByLabel("Tên đệm và tên").fill("VAN DEMO");
   await page.getByLabel("Ngày sinh").fill("1990-01-01");
+  await checkpoint(page, testInfo, "passengers");
   await page.getByLabel("Email liên hệ").fill("demo@example.com");
   await page.getByLabel("Số điện thoại").fill("0901234567");
   await page
@@ -69,6 +87,8 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
     .locator(".seat-map .seat:not([disabled]):not(.special)")
     .first()
     .click();
+  await expect(page.locator(".price-summary .total")).toBeVisible();
+  await checkpoint(page, testInfo, "extras");
   await page.getByRole("button", { name: "Tiếp tục" }).click();
   await expect(page).toHaveURL(/booking\/review/);
   await expect(
@@ -77,10 +97,16 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
   await expect(
     page.getByText("Hành lý ký gửi 20 kg", { exact: true }),
   ).toBeVisible();
+  await expect(page.locator(".price-summary .total")).toBeVisible();
+  await checkpoint(page, testInfo, "review");
   await page
     .getByRole("button", { name: "Đặt chỗ và thanh toán demo" })
     .click();
   await expect(page).toHaveURL(/booking\/payment/);
+  await expect(
+    page.getByRole("heading", { name: "Thanh toán demo", exact: true }),
+  ).toBeVisible();
+  await checkpoint(page, testInfo, "payment");
   await page.getByRole("button", { name: "Thanh toán thành công" }).click();
   await expect(page).toHaveURL(/booking\/success/);
   const code = await page.getByTestId("booking-code").innerText();
@@ -89,12 +115,14 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
   await expect(
     page.getByText("Đã xác nhận", { exact: true }).first(),
   ).toBeVisible();
+  await checkpoint(page, testInfo, "success");
   await page.goto("/my-booking");
   await page.getByLabel("Mã đặt chỗ").fill(code);
   await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
   await page.getByLabel("Tên đệm và tên").fill("VAN DEMO");
   await page.getByRole("button", { name: "Tra cứu đặt chỗ" }).click();
   await expect(page.getByTestId("booking-code")).toHaveText(code);
+  await checkpoint(page, testInfo, "my-booking");
   await page.goto("/check-in");
   await page.getByLabel("Mã đặt chỗ").fill(code);
   await page.getByLabel("Họ", { exact: true }).fill("NGUYEN");
@@ -103,6 +131,7 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
   await page.getByLabel("Tôi đồng ý điều kiện check-in demo").check();
   await page.getByRole("button", { name: "Hoàn tất check-in" }).click();
   await expect(page.getByText("BOARDING PASS · DEMO")).toBeVisible();
+  await checkpoint(page, testInfo, "check-in");
   expect(errors).toEqual([]);
 });
 test("round-trip search selects both segments and preserves draft on reload", async ({

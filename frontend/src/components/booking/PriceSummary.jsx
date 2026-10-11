@@ -28,7 +28,7 @@ export default function PriceSummary({ price, children }) {
             <strong>{money(price.totalAmount)}</strong>
           </div>
           <small className="muted">
-            Giá được tính tại backend · VND · Thanh toán giả lập
+            Giá đã gồm thuế/phí demo · VND · Thanh toán giả lập
           </small>
         </>
       ) : (

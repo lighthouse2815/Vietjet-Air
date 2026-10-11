@@ -34,7 +34,7 @@ export default function MyBookingPage() {
       <div className="page-heading">
         <span className="eyebrow">QUẢN LÝ HÀNH TRÌNH</span>
         <h1>Chuyến bay của tôi</h1>
-        <p>Tra cứu booking demo đã lưu trong PostgreSQL.</p>
+        <p>Tra cứu hành trình và dịch vụ của booking demo.</p>
       </div>
       <BookingLookupForm
         onResult={(data) => {

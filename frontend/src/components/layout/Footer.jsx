@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Plane,
   ShoppingBag,
@@ -74,6 +74,7 @@ const groups = [
   ],
 ];
 export default function Footer() {
+  const home = useLocation().pathname === "/";
   return (
     <>
       <footer className="site-footer">
@@ -152,14 +153,16 @@ export default function Footer() {
           <span>Check-in</span>
         </Link>
       </nav>
-      <Link
-        className="help-bubble"
-        to="/services/support"
-        aria-label="Trung tâm hỗ trợ"
-      >
-        <span>Xin chào!</span>
-        <Headphones />
-      </Link>
+      {home && (
+        <Link
+          className="help-bubble"
+          to="/services/support"
+          aria-label="Trung tâm hỗ trợ"
+        >
+          <span>Xin chào!</span>
+          <Headphones />
+        </Link>
+      )}
     </>
   );
 }
