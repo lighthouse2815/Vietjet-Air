@@ -47,9 +47,27 @@ async function availableRoundTrip(request) {
     "Không có khứ hồi SGN–DAD đủ hai ghế trong 30 ngày demo tới.",
   );
 }
+async function availableOneWayDate(request) {
+  for (let offset = 1; offset < 30; offset++) {
+    const date = tomorrow(offset);
+    const response = await request.get(
+      `/api/flights/search?origin=SGN&destination=HAN&date=${date}&passengers=1`,
+    );
+    expect(response.ok()).toBeTruthy();
+    const flights = await response.json();
+    if (!flights.length) continue;
+    const seatResponse = await request.get(`/api/flights/${flights[0].id}/seats`);
+    expect(seatResponse.ok()).toBeTruthy();
+    const seats = await seatResponse.json();
+    if (seats.some(seat => seat.status === "AVAILABLE" && !seat.extraLegroom)) return date;
+  }
+  throw new Error("Không có chuyến SGN–HAN còn ghế thường trong 30 ngày demo tới.");
+}
 test("one-way checkout persists confirmed booking and allows lookup and check-in", async ({
   page,
+  request,
 }, testInfo) => {
+  const date = await availableOneWayDate(request);
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
@@ -71,7 +89,7 @@ test("one-way checkout persists confirmed booking and allows lookup and check-in
     .first()
     .click();
   await page
-    .getByRole("button", { name: `Ngày đi ${tomorrow()}`, exact: true })
+    .getByRole("button", { name: `Ngày đi ${date}`, exact: true })
     .click();
   await page
     .getByRole("button", { name: "Tìm chuyến bay", exact: true })
