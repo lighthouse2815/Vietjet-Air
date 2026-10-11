@@ -41,7 +41,7 @@ Booking và hai test trang chủ chạy ở 1920×1080, 1440×900, 768×1024, 39
 
 ## Sai lệch và giới hạn
 
-Đối chiếu header/hero/widget/container/section/footer với snapshot reference đã thu thập, đã sửa kích thước tab, menu và breakpoint. Hero đã có ba ảnh riêng, chiến dịch 12h dùng bố cục người/món ăn bên trái và tiêu đề ở giữa; tablet xếp form dưới banner theo screenshot tham chiếu. Ảnh tạo mới, logo chữ, font tiêu đề thay thế, số slide, section khuyến mại/achievement minh họa và nội dung demo vẫn khác reference. Chưa có metric chứng minh pixel-perfect; không công bố độ giống 100%.
+Lượt căn chỉnh mới dùng logo/font/banner/nền/icon và ảnh dịch vụ/điểm đến tham chiếu, đủ chín slide. Header, khung đặt vé và các khối chính được đối chiếu số đo desktop; bốn viewport có ảnh full/top mới. Kết quả kiểm chứng mới nằm trong [HOMEPAGE.md](verification/HOMEPAGE.md); bảng và ảnh checkout phía trên là kết quả lịch sử. Nội dung giao dịch, nhãn demo, chatbot và footer vẫn có khác biệt; không công bố độ giống 100%.
 
 Một số trang/interaction reference chưa xác minh do lazy loading và popup; không vượt hạn chế truy cập. Nghiệp vụ nội bộ nhiều chặng/nhóm, đổi/mua thêm/hoàn vé, quản trị và thương mại đã được bổ sung; kết quả mới ở [INTERNAL_VERIFICATION.md](INTERNAL_VERIFICATION.md). Dịch vụ đối tác, email và vé/boarding pass thật còn trong backlog nhà cung cấp. Chỉ kiểm thử môi trường local; chưa triển khai hay kiểm chứng production hosting, load test, refund thật hoặc accessibility audit đầy đủ.
 
@@ -56,4 +56,4 @@ npm run test:e2e
 npm run verify:home
 ```
 
-Xem README để khởi động database/backend/frontend và cài Chromium. Kết quả lần chạy sau có thể thay đổi khi môi trường, ngày hoặc dữ liệu mẫu thay đổi; các test chọn ghế còn trống thay vì cố định một ghế đã được dùng. Test khứ hồi chọn ngày đủ hai ghế từ API; test một chiều chạy SGN–HAN ngày mai, chọn ghế tiêu chuẩn còn trống. Nếu đã dùng hết các chuyến/ghế tiêu chuẩn của hành trình đó, cần chọn ngày khác cho fixture hoặc dùng môi trường demo riêng.
+Xem README để khởi động database/backend/frontend và cài Chromium. Kết quả lần chạy sau có thể thay đổi khi môi trường, ngày hoặc dữ liệu mẫu thay đổi. Test khứ hồi chọn ngày đủ hai ghế từ API; test một chiều tìm ngày còn ghế thường trên chuyến SGN–HAN đầu tiên, trong 30 ngày tới. Không xóa/reset dữ liệu local khi chạy lại.

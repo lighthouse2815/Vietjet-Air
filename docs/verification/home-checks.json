@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-11T11:27:38.501Z",
+  "verifiedAt": "2026-10-11T16:23:44.132Z",
   "url": "http://localhost:5173",
   "viewports": [
     {
@@ -9,7 +9,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 5471,
+      "documentHeight": 5639,
       "errors": []
     },
     {
@@ -19,7 +19,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 5241,
+      "documentHeight": 5399,
       "errors": []
     },
     {
@@ -29,7 +29,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 5876,
+      "documentHeight": 5484,
       "errors": []
     },
     {
@@ -39,7 +39,7 @@
       "horizontalOverflow": false,
       "brokenImages": [],
       "brokenLinks": 0,
-      "documentHeight": 6163,
+      "documentHeight": 4794,
       "errors": []
     }
   ]

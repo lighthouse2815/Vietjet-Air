@@ -1,9 +1,31 @@
-# Kiểm chứng trang chủ
+# Kiểm chứng trang chủ sau căn chỉnh
 
-Ngày 11/10/2026, Playwright Chromium truy cập `http://localhost:5173`, backend thật tại 8085 và PostgreSQL Docker tại 5438.
+Ngày 11/10/2026, Chromium kiểm tra Vite preview tại `http://localhost:5173`, Spring Boot tại 8085 và PostgreSQL local tại 5438. Kết quả mới nằm trong [home-alignment-results.json](home-alignment-results.json) và [home-checks.json](home-checks.json).
 
-Đã chụp toàn chiều dài và vùng đầu ở 1920×1080, 1440×900, 768×1024, 390×844. `home-checks.json` ghi nhận từng viewport: không pageerror, không tràn ngang, không ảnh hỏng. Đã thao tác sân bay SGN/HAN và lịch hai tháng, 61 ngày của tháng 10/11. Đã build Vite thành công.
+Trang chủ hiện dùng logo/font tiêu đề, chín banner với ảnh desktop/mobile, nền mây, ảnh khuyến mãi, sáu icon tiện ích, banner SkyJoy/mua sắm, ảnh dịch vụ/điểm đến, FAQ và giải thưởng từ bản tham chiếu. Nguồn 76 file nằm trong [sources.json](../../frontend/public/assets/reference/sources.json); asset được phục vụ từ local. V8 thêm sáu bản ghi HERO vào bảng nội dung hiện có, vẫn chỉnh được trong ADMIN.
 
-`desktop-comparison.png`: reference bên trái, local bên phải, cùng viewport. Đối chiếu trực quan đã dẫn tới sửa chiều cao tab form từ 69px xuống 52px, tăng icon/kích thước menu, giữ form rộng 380px và vị trí theo breakpoint desktop. Container 1200px và thứ tự section bám khảo sát.
+Các lệnh xác minh:
 
-Khác biệt còn lại: banner tạo mới, logo chữ/font Jambono thay thế, nền mây/section khuyến mại không dùng ảnh độc quyền của hãng, nội dung demo, ba banner thay vì chín, footer giới thiệu demo. Mobile giữ bộ chọn hành khách/mã khuyến mại để hoàn tất nghiệp vụ dù snapshot tham chiếu thu gọn các trường này. Không tuyên bố pixel-perfect tuyệt đối hoặc độ giống 100%.
+- `./backend/mvnw -f backend/pom.xml verify`: 30 test, không lỗi/thất bại/bỏ qua; migration V8 chạy trên PostgreSQL Testcontainers độc lập.
+- `npm run build`: đạt. `npm run check:i18n`: 522 vị trí dịch, 692 bản dịch tiếng Anh. Không thêm dependency của ứng dụng.
+- `npm run test:e2e`: 42 ca đạt trong một lượt hoàn chỉnh, gồm chín banner/vuốt từ banner cuối về đầu, caption CMS tùy chỉnh, footer mobile qua bàn phím và resize, đặt vé/check-in, quản lý, tài khoản, thương mại và quản trị.
+- `npm run verify:home`: desktop 1920×1080, laptop 1440×900, tablet 768×1024, mobile 390×844 đều không ảnh hỏng, link rỗng, lỗi console/pageerror hay tràn ngang. Ảnh được chụp sau khi cuộn và tải xong ảnh lazy.
+
+Đối chiếu tọa độ Y tại viewport 1920px, theo `docs/reference/audit.json` và số đo DOM local; đơn vị px:
+
+| Khối | Tham chiếu | Local |
+|---|---:|---:|
+| Khung đặt vé | 334 | 334 |
+| Đặt vé ngang | 1480,016 | 1480 |
+| Banner thông tin | 1719,016 | 1718,484 |
+| Icon tiện ích | 2070,531 | 2070,984 |
+| SkyJoy | 2321,531 | 2320,578 |
+| Mua sắm | 3040,844 | 3040,578 |
+| Điểm đến | 3570,875 | 3570,578 |
+| Các ô FAQ | 4118,375 | 4118,078 |
+
+Container rộng 1200px, khung đặt vé rộng 380px. Sai lệch dưới 1px trong bảng là tọa độ của các khối đã đo, không phải phần trăm giống ảnh của toàn trang.
+
+Ảnh mới: [desktop đầy đủ](home-desktop-full.png), [laptop đầy đủ](home-laptop-full.png), [tablet đầy đủ](home-tablet-full.png), [mobile đầy đủ](home-mobile-full.png); các file `home-*-top.png` ghi vùng đầu trang. `desktop-comparison.png` và ảnh checkout cũ là bằng chứng của lượt triển khai trước.
+
+Khác biệt còn lại: nhãn mô phỏng, giá/nội dung giao dịch từ API demo, chú thích số liệu, nội dung footer và nút hỗ trợ nội bộ thay chatbot hãng. Mobile giữ hành khách/mã khuyến mại để dùng đủ nghiệp vụ. Chữ bên trong poster tham chiếu vẫn là tiếng Việt khi chuyển giao diện sang tiếng Anh. Không công bố độ giống 100% hoặc xác minh hosting production.

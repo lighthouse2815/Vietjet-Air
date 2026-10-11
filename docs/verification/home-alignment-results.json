@@ -1,0 +1,165 @@
+{
+  "verifiedAt": "2026-10-11T16:23:44.132Z",
+  "backend": {
+    "command": "./backend/mvnw -f backend/pom.xml verify",
+    "tests": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "migration": "V8 applied in PostgreSQL Testcontainers and local database"
+  },
+  "frontend": {
+    "build": "passed",
+    "translationCallSites": 522,
+    "englishTranslations": 692,
+    "dependencyChanges": 0
+  },
+  "playwright": {
+    "command": "npm run test:e2e",
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "visual": {
+    "heroBanners": 9,
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "sections": {
+      ".brand img": {
+        "x": 360,
+        "y": 70.453125,
+        "width": 265,
+        "height": 46.078125
+      },
+      ".hero-booking": {
+        "x": 1180,
+        "y": 334,
+        "width": 380,
+        "height": 464.28125
+      },
+      ".secondary-booking": {
+        "x": 360,
+        "y": 1480,
+        "width": 1200,
+        "height": 142.484375
+      },
+      ".information-banners": {
+        "x": 360,
+        "y": 1718.484375,
+        "width": 1200,
+        "height": 292.5
+      },
+      ".quick-access": {
+        "x": 360,
+        "y": 2070.984375,
+        "width": 1200,
+        "height": 201.59375
+      },
+      ".feature-feature": {
+        "x": 360,
+        "y": 2320.578125,
+        "width": 1200,
+        "height": 240
+      },
+      ".cards-service": {
+        "x": 360,
+        "y": 2595.578125,
+        "width": 1200,
+        "height": 410
+      },
+      ".feature-shop": {
+        "x": 360,
+        "y": 3040.578125,
+        "width": 1200,
+        "height": 240
+      },
+      ".cards-travel": {
+        "x": 360,
+        "y": 3315.578125,
+        "width": 1200,
+        "height": 220
+      },
+      ".destination-grid": {
+        "x": 360,
+        "y": 3570.578125,
+        "width": 1200,
+        "height": 457.5
+      },
+      ".faq-categories": {
+        "x": 360,
+        "y": 4118.078125,
+        "width": 1200,
+        "height": 100
+      },
+      ".stats-section": {
+        "x": 0,
+        "y": 4253.078125,
+        "width": 1920,
+        "height": 535.171875
+      },
+      ".awards": {
+        "x": 360,
+        "y": 4788.25,
+        "width": 1200,
+        "height": 220.59375
+      },
+      ".site-footer": {
+        "x": 0,
+        "y": 5008.84375,
+        "width": 1920,
+        "height": 630.203125
+      }
+    },
+    "checks": [
+      {
+        "name": "desktop",
+        "width": 1920,
+        "height": 1080,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenLinks": 0,
+        "documentHeight": 5639,
+        "errors": []
+      },
+      {
+        "name": "laptop",
+        "width": 1440,
+        "height": 900,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenLinks": 0,
+        "documentHeight": 5399,
+        "errors": []
+      },
+      {
+        "name": "tablet",
+        "width": 768,
+        "height": 1024,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenLinks": 0,
+        "documentHeight": 5484,
+        "errors": []
+      },
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844,
+        "horizontalOverflow": false,
+        "brokenImages": [],
+        "brokenLinks": 0,
+        "documentHeight": 4794,
+        "errors": []
+      }
+    ]
+  },
+  "limits": [
+    "Demo notice, prices and transactional content differ from reference",
+    "Support link replaces the official chatbot",
+    "Vietnamese text inside campaign artwork is not translated by language selector",
+    "No pixel similarity percentage or production deployment verification"
+  ]
+}

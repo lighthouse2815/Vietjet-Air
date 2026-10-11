@@ -126,7 +126,7 @@ Cửa hàng giữ hàng 15 phút; đơn hủy/hết hạn trả tồn kho. Nhậ
 
 ## Giới hạn và khác biệt với reference
 
-- Banner/card được tạo mới; KoHo có giấy phép OFL, font tiêu đề và logo chữ thay thế. Không có quyền sử dụng asset độc quyền của hãng nên không sao chép chúng. Demo có ba ảnh banner riêng cho chiến dịch 12h, kết nối bầu trời và du lịch gia đình; reference tại mốc khảo sát có chín slide. Không tuyên bố giống 100%.
+- Trang chủ dùng logo, chín banner có ảnh desktop/mobile, nền mây, icon, ảnh dịch vụ/điểm đến và font tiêu đề từ bản tham chiếu. Nguồn từng file ở [ASSETS](docs/ASSETS.md); ảnh được tải từ local. Nhãn mô phỏng, giá/giao dịch demo và nút hỗ trợ nội bộ vẫn có khác biệt. Xem [kiểm chứng giao diện](docs/verification/HOMEPAGE.md).
 - Nội dung khuyến mại, giá, quyền lợi, sơ đồ 72 ghế (71 ghế bán), số liệu/giải thưởng minh họa và thời gian check-in là dữ liệu demo; không phải quy định hãng thật.
 - Hỗ trợ một chiều, khứ hồi, nhiều chặng (2–6), đặt nhóm (tối đa 30 hành khách), VND và chuyển Việt/Anh. Nội dung do quản trị viên nhập được giữ nguyên nếu chưa có bản dịch tương ứng.
 - Khách sạn, eSIM, eVisa, ngoại tệ, xuất vé/thu tiền/hoàn tiền thật, email/SMS và đồng bộ SkyJoy/Skyshop thật còn chờ nhà cung cấp; xem [backlog tích hợp](docs/PROVIDER_BACKLOG.md). Voucher, cửa hàng và hội viên hiện có nghiệp vụ nội bộ với dữ liệu riêng.

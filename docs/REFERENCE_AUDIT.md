@@ -33,7 +33,7 @@ Viewport: desktop 1920×1080; laptop 1440×900; tablet 768×1024; mobile 390×84
 - Font nội dung: `KoHo`, sans-serif; tiêu đề/nút quảng cáo: `JambonoMedium`/`jambono-medium`.
 - Nội dung thường 16px, tiêu đề card 18px, tiêu đề banner 24px. Tiêu đề banner ribbon cao 42px tại desktop.
 - Container 1200px; ba cột dịch vụ có bước x≈410px, gap khoảng 30px. Sáu điểm đến có nhịp tương ứng.
-- Màu chủ đạo: đỏ, vàng, trắng, nền trời xanh. Màu computed chi tiết nằm trong JSON. Sản phẩm sẽ dùng biến CSS và KoHo (Google Fonts, SIL OFL), font thay thế cho Jambono chưa có giấy phép.
+- Màu chủ đạo: đỏ, vàng, trắng, nền trời xanh. Màu computed chi tiết nằm trong JSON. Sản phẩm dùng biến CSS, KoHo (Google Fonts, SIL OFL) và font Jambono tải từ bản tham chiếu; nguồn ghi trong `ASSETS.md`.
 - Chuyển slide được quan sát tự động. Không đo chắc chắn easing/duration nội bộ, không khẳng định autoplay pause-on-hover đã xác minh.
 
 ## Responsive và tương tác
@@ -49,7 +49,7 @@ Viewport: desktop 1920×1080; laptop 1440×900; tablet 768×1024; mobile 390×84
 - Lazy loading không ổn định: một số lượt chụp laptop chỉ tải được vùng đầu trong thời gian chờ; desktop-full có nội dung đầy đủ là mốc cấu trúc chính. Không xem vùng trắng trong ảnh lỗi tải là layout cần sao chép.
 - Một số click bằng label bị input intercept hoặc popup trước đó còn mở. Lỗi giữ nguyên trong JSON; không khẳng định mọi menu, bàn phím, lịch giá, sticky behavior hay trang sau thanh toán của hãng đã được kiểm tra.
 - Không thực hiện giao dịch thật, không thử đăng nhập hãng và không vượt reCAPTCHA.
-- Chưa xác minh quyền tái sử dụng banner, ảnh, mascot và Jambono của hãng. Không đưa chúng vào frontend. Banner sẽ là ảnh tạo mới theo cùng bố cục; card dùng ảnh có giấy phép hoặc asset tạo mới. Logo là chữ dựng bằng CSS kèm nhãn mô phỏng, không dùng SVG gốc.
+- Quyết định ban đầu dùng ảnh tạo mới đã được thay đổi theo yêu cầu căn chỉnh giao diện. Frontend dùng bản tải local của logo, banner, icon, nền, ảnh dịch vụ/điểm đến và font tiêu đề tham chiếu; không gán giấy phép mở cho asset của chủ sở hữu gốc. Nguồn từng file nằm trong `frontend/public/assets/reference/sources.json`. Nhãn mô phỏng vẫn hiển thị; nút hỗ trợ dẫn vào nghiệp vụ nội bộ.
 - Bản demo giữ bố cục và thứ tự quan sát được, nhưng nội dung khuyến mại, giá, quy tắc check-in và quyền lợi hạng vé đều là dữ liệu demo. Nhãn độc lập hiển thị thường xuyên.
 - Chỉ VND cho giao dịch demo; ngôn ngữ và sản phẩm ngoài phạm vi có trang thông tin rõ ràng. Nhiều chặng được đánh dấu chưa hỗ trợ trong demo, không tạo luồng giả.
 
