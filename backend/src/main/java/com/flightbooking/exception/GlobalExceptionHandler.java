@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,7 +24,7 @@ public class GlobalExceptionHandler {
                 .map(f -> f.getField()+": "+f.getDefaultMessage()).findFirst().orElse("Dữ liệu không hợp lệ");
         return error(HttpStatus.BAD_REQUEST,"VALIDATION_ERROR",message);
     }
-    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class, ConstraintViolationException.class})
+    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentTypeMismatchException.class, ConstraintViolationException.class, MissingServletRequestParameterException.class})
     ResponseEntity<ApiError> malformed(Exception e) {
         return error(HttpStatus.BAD_REQUEST,"INVALID_REQUEST","Dữ liệu hoặc định dạng không hợp lệ");
     }
