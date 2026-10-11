@@ -99,9 +99,10 @@ export default function Footer() {
   const { pathname } = useLocation();
   const home = pathname === "/";
   const shop = pathname === "/services/skyshop";
+  const voucher = pathname === "/services/voucher";
   return (
     <>
-      <div className={`footer-background ${home ? "home-footer-background" : ""}`}>
+      <div className={`footer-background ${home ? "home-footer-background" : ""} ${voucher ? "voucher-footer-background" : ""}`}>
         {(home || shop) && (
           <ScrollCarousel
             className="awards container"
@@ -193,7 +194,7 @@ export default function Footer() {
           </div>
         </footer>
       </div>
-      {!shop && <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
+      {!shop && !voucher && <nav className="mobile-bottom" aria-label={t("Điều hướng nhanh")}>
         <Link to="/">
           <Ticket />
           <span>{t("Đặt chuyến bay")}</span>

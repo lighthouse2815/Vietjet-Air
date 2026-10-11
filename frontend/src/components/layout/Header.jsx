@@ -29,11 +29,18 @@ const notices = [
   "Khám phá hành trình demo · Dùng mã DEMO10 giảm 10%, tối đa 200.000 đ.",
   "Check-in demo mở 30 ngày và đóng 1 giờ trước khởi hành.",
 ];
+const voucherLinks = [
+  ["Điều kiện và Điều khoản", "#evoucher-terms"],
+  ["Mua e-Voucher", "#evoucher-values"],
+  ["Nhận e-Voucher", "#evoucher-records"],
+  ["Sử dụng e-Voucher", "#evoucher-terms"],
+];
 export default function Header() {
   useTranslation();
   const { pathname } = useLocation();
   const home = pathname === "/";
   const shop = pathname === "/services/skyshop";
+  const voucher = pathname === "/services/voucher";
   const [notice, setNotice] = useState(true);
   const [menu, setMenu] = useState(false);
   const [slide, setSlide] = useState(0);
@@ -91,11 +98,11 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`site-header ${home || shop ? "over-hero" : ""} ${shop ? "skyshop-header" : ""} ${!notice ? "no-notice" : ""}`}
+        className={`site-header ${home || shop ? "over-hero" : ""} ${shop ? "skyshop-header" : ""} ${voucher ? "voucher-header" : ""} ${!notice ? "no-notice" : ""}`}
       >
         <div className="container header-main">
           <Link className="brand" to="/" onClick={() => setMenu(false)}>
-            <img src="/assets/reference/logo.svg" alt="vietjetAir.com" width="265" height="46" />
+            <img src={voucher ? "/assets/evoucher/logo.svg" : "/assets/reference/logo.svg"} alt="vietjetAir.com" width="265" height="46" />
             <em>{t("MÔ PHỎNG ĐỘC LẬP")}</em>
           </Link>
           <div className="header-right">
@@ -139,6 +146,7 @@ export default function Header() {
             {menu ? <X /> : <Menu />}
           </button>
         </div>
+        {voucher && <nav className="voucher-nav container" aria-label={t("Menu e-Voucher")}>{voucherLinks.map(([label, target]) => <a href={target} key={label}>{t(label)}</a>)}</nav>}
         <nav className="product-nav" aria-label={t("Dịch vụ")}>
           <div className="container">
             {products.map(([label, path], i) => (
@@ -151,7 +159,7 @@ export default function Header() {
         </nav>
         {menu && (
           <nav className="mobile-drawer" aria-label={t("Menu di động")}>
-            {[
+            {voucher ? voucherLinks.map(([label, target]) => <a href={target} key={label} onClick={() => setMenu(false)}>{t(label)}<ChevronRight size={17} /></a>) : [
               [t("Chuyến bay của tôi"), "/my-booking"],
               ["Online Check-in", "/check-in"],
               ...products.map(([label, path]) => [label, path]),

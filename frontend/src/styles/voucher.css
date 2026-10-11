@@ -1,0 +1,88 @@
+.site-header.voucher-header { height: 96px; background: #c30e13; }
+.voucher-header .container { max-width: 1296px; width: calc(100% - 48px); }
+.voucher-header .header-main { height: 56px; }
+.voucher-header .brand { transform: translateY(24px); }
+.voucher-header .primary-nav, .voucher-header .product-nav, .voucher-header .utility-nav > a:first-child { display: none; }
+.voucher-header .utility-nav { font-size: 14px; }
+.voucher-header .utility-nav a { font-weight: 500; }
+.voucher-header .brand em { font-size: 7px; }
+.voucher-nav { height: 40px; display: flex; align-items: center; justify-content: flex-end; gap: 20px; font-size: 16px; font-weight: 500; }
+.evoucher-page { background: #f3fbff; padding: 0 0 95px; font-weight: 500; font-size: 14px; }
+.evoucher-catalog { background: url("/assets/evoucher/background.png") left top / cover no-repeat; padding: 60px 0 95px; }
+.evoucher-container { width: calc(100% - 48px); max-width: 1272px; margin: auto; }
+.evoucher-title { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.evoucher-banner { position: relative; overflow: hidden; border-radius: 10px; }
+.evoucher-banner-track { display: flex; transition: transform .3s ease; }
+.evoucher-banner-track > a { flex: 0 0 100%; min-width: 0; }
+.evoucher-banner-track img { display: block; width: 100%; height: auto; aspect-ratio: 3; object-fit: cover; }
+.evoucher-dots { position: absolute; bottom: 5px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; }
+.evoucher-dots button { width: 10px; height: 10px; border-radius: 50%; padding: 0; background: #fff8; }
+.evoucher-dots button[aria-pressed="true"] { background: #ff3847; }
+.evoucher-section { margin: 80px 0 0; scroll-margin-top: 20px; }
+.evoucher-denominations { margin-top: 0; }
+.evoucher-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.evoucher-section-heading h2 { font-size: 24px; line-height: 1.3; margin: 0; }
+.evoucher-section-heading > a { background: #e1ebeecc; border-radius: 30px; padding: 8px 14px; white-space: nowrap; font-size: 14px; }
+.evoucher-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
+.evoucher-card { background: #fff; border: 1px solid #f1f1f1; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+.evoucher-card > img { width: 100%; height: auto; aspect-ratio: 25 / 16; object-fit: cover; border-radius: 10px; }
+.evoucher-card h3 { font-size: 18px; line-height: 24px; margin: 16px 12px 10px; min-height: 48px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.evoucher-price-note { margin: auto 10px 0; padding: 16px 12px; background: linear-gradient(91deg,#fff0f0,#ffdddd00); color: #c30e13; font-weight: 700; }
+.evoucher-gift { margin: 0 12px 12px; display: flex; align-items: center; gap: 6px; }
+.evoucher-gift svg { color: #e61936; }
+.evoucher-card-actions { display: flex; gap: 6px; padding: 0 10px 10px; }
+.evoucher-card-actions > button { border-radius: 6px; padding: 11px 6px; flex: 1; font-size: 14px; background: linear-gradient(265deg,#f1f1f1,#dfdfdf); }
+.evoucher-card-actions > button:last-child { background: linear-gradient(0deg,#f9a51a,#ffdd00); }
+.evoucher-art { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; aspect-ratio: 25 / 16; background: linear-gradient(135deg,#ffdd00,#fff2b2); color: #c30e13; font-size: 22px; }
+.evoucher-art > strong { font-family: Jambono, sans-serif; }
+.evoucher-buy, .evoucher-records, .evoucher-terms { margin-top: 50px; scroll-margin-top: 20px; }
+.evoucher-page .panel { background: #fffffff2; }
+.evoucher-record { padding: 20px 0; border-top: 1px solid var(--line); margin-top: 20px; }
+.evoucher-record h3 { overflow-wrap: anywhere; font-size: 18px; margin: 0; }
+.evoucher-record p { overflow-wrap: anywhere; }
+.evoucher-dialog { border: 0; border-radius: 10px; padding: 30px; width: min(650px,calc(100% - 30px)); max-height: calc(100% - 40px); }
+.evoucher-dialog::backdrop { background: #172d4988; }
+.evoucher-dialog h2 { margin: 0 35px 20px 0; font-size: 22px; }
+.evoucher-dialog > img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 8px; }
+.evoucher-dialog-close { position: absolute; right: 12px; top: 12px; padding: 4px; }
+.evoucher-detail-value { display: block; font-size: 32px; color: #c30e13; }
+.evoucher-image-loaded { animation: home-image-in 1s ease-out both; }
+.voucher-footer-background { background: url("/assets/evoucher/footer.png") center top / cover no-repeat; }
+.voucher-footer-background::before { content: ""; position: absolute; top: -95px; height: 95px; width: 100%; background: url("/assets/evoucher/cloud-edge.png") 48px top repeat-x; pointer-events: none; }
+.voucher-footer-background::after { content: ""; position: absolute; right: 0; bottom: 0; width: 236px; height: 180px; background: url("/assets/evoucher/footer-corner.png") right bottom / contain no-repeat; pointer-events: none; }
+.voucher-footer-background .footer-grid { display: none; }
+.voucher-footer-background .container { width: calc(100% - 48px); max-width: 1296px; }
+.voucher-footer-background .site-footer { padding: 60px 0 20px; }
+.voucher-footer-background .footer-bottom { margin: 0 auto; border: 0; padding: 0; }
+@media (max-width: 1200px) {
+  .evoucher-container, .voucher-header .container { max-width: 912px; }
+  .evoucher-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+@media (max-width: 900px) {
+  .site-header.voucher-header, .voucher-header .header-main { height: 50px; }
+  .voucher-header .brand { transform: none; }
+  .voucher-header .brand > img { width: 134px; }
+  .voucher-header .brand em { font-size: 6px; }
+  .voucher-header .utility-nav a, .voucher-header .voucher-nav { display: none; }
+  .voucher-header .header-main { gap: 12px; }
+  .voucher-header .container { width: calc(100% - 24px); }
+  .voucher-header .language-picker { max-width: 94px; font-size: 12px; }
+  .voucher-header .mobile-drawer { top: 100%; }
+  .evoucher-catalog { padding-top: 30px; }
+  .evoucher-container { max-width: 672px; }
+  .evoucher-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .evoucher-section { margin-top: 55px; }
+  .evoucher-section-heading h2 { font-size: 20px; }
+  .voucher-footer-background .site-footer { padding: 35px 0 70px; }
+}
+@media (max-width: 600px) {
+  .evoucher-grid { grid-template-columns: minmax(0,1fr); }
+  .evoucher-card > img { aspect-ratio: 275 / 160; }
+  .evoucher-section-heading { gap: 20px; }
+  .evoucher-section-heading > a { white-space: normal; min-width: 85px; text-align: center; }
+  .evoucher-card h3 { margin-top: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .evoucher-banner-track { transition: none; }
+  .evoucher-image-loaded { animation: none; }
+}
