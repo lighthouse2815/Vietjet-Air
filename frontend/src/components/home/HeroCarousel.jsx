@@ -3,24 +3,26 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState, useRef } from "react";
 import BookingForm from "../booking/BookingForm";
 import { getHeroArtwork } from "./artwork";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 export default function HeroCarousel({ banners }) {
   useTranslation();
   const [slide, setSlide] = useState(0);
   const touch = useRef(null);
   const [paused, setPaused] = useState(false);
+  const reducedMotion = useReducedMotion();
   useEffect(() => {
     if (
       paused ||
       banners.length < 2 ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      reducedMotion
     )
       return;
     const timer = setInterval(
       () => setSlide((i) => (i + 1) % banners.length),
-      6000,
+      8000,
     );
     return () => clearInterval(timer);
-  }, [banners.length, paused]);
+  }, [banners.length, paused, reducedMotion]);
   return (
     <section
       className={`hero ${slide === 0 ? "campaign" : ""}`}
@@ -65,6 +67,8 @@ export default function HeroCarousel({ banners }) {
       <div className="container hero-container">
         <div
           className={`hero-copy ${slide === 0 ? "campaign-copy" : ""} ${getHeroArtwork(banners[slide]) ? "with-artwork" : ""}`}
+          aria-live={paused || reducedMotion ? "polite" : "off"}
+          aria-atomic="true"
         >
           <span className="hero-brand">
             {t("vietjet")}

@@ -16,7 +16,7 @@
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transition: opacity 0.7s var(--ease);
+  transition: opacity 0.5s ease;
 }
 .hero-copy.with-artwork {
   position: absolute;
@@ -203,6 +203,18 @@ body:has(.hero.campaign) .site-header.over-hero {
   margin-top: -75px;
   background: url("/assets/reference/cloud-background.webp") right top / cover
     no-repeat;
+  background-attachment: fixed;
+}
+.home .home-image-loaded {
+  animation: home-image-in 1s ease-out both;
+}
+@keyframes home-image-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .home-content {
   padding: 0 0 35px;
@@ -721,6 +733,7 @@ body:has(.hero.campaign) .site-header.over-hero {
     margin-top: 0;
     background-image: url("/assets/reference/cloud-background-mobile.webp");
     background-position: center top;
+    background-attachment: scroll;
   }
   .home-content {
     padding-top: 25px;
@@ -798,6 +811,14 @@ body:has(.hero.campaign) .site-header.over-hero {
   }
   .awards > div {
     font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-cloud-background {
+    background-attachment: scroll;
+  }
+  .home .home-image-loaded {
+    animation: none;
   }
 }
 @media (max-width: 600px) {

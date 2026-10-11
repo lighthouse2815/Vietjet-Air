@@ -101,7 +101,13 @@ export default function HomePage() {
       );
     });
   return (
-    <main className="home">
+    <main
+      className="home"
+      onLoadCapture={(event) => {
+        if (event.target.tagName === "IMG")
+          event.target.classList.add("home-image-loaded");
+      }}
+    >
       <HeroCarousel banners={items("HERO")} />
       <section className="promotion-region">
         <div className="container promotion-strip">

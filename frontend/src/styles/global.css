@@ -267,12 +267,24 @@ small {
 .announcement svg:first-child {
   color: var(--red);
 }
-.announcement span {
+.announcement-viewport {
   flex: 1;
+  min-width: 0;
+  display: grid;
+  overflow: hidden;
+}
+.announcement-message {
+  grid-area: 1 / 1;
+  min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 18px;
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.announcement-message[aria-hidden="false"] {
+  opacity: 1;
 }
 .announcement button {
   padding: 2px;
@@ -547,6 +559,16 @@ small {
   gap: 10px;
   align-items: center;
   filter: drop-shadow(0 3px 5px #0002);
+  animation: support-float 3s ease-in-out infinite;
+}
+@keyframes support-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
 }
 .help-bubble span {
   padding: 8px 14px;
@@ -701,7 +723,7 @@ small {
     width: calc(100% - 10px);
     gap: 10px;
   }
-  .announcement span {
+  .announcement-message {
     font-size: 14px;
   }
   .site-header {
@@ -823,6 +845,9 @@ small {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .help-bubble {
+    animation: none;
+  }
   *,
   *::before,
   *::after {

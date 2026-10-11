@@ -1,8 +1,9 @@
 import { t } from "../../i18n.js";
 import i18n from "../../i18n.js";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   Bell,
   ChevronLeft,
@@ -23,23 +24,53 @@ const products = [
   ["Bảo hiểm", "/services/insurance"],
   ["SkyJoy", "/services/skyjoy"],
 ];
+const notices = [
+  "[BẢN MÔ PHỎNG ĐỘC LẬP] Đặt vé và thanh toán demo — không phải website chính thức của Vietjet.",
+  "Khám phá hành trình demo · Dùng mã DEMO10 giảm 10%, tối đa 200.000 đ.",
+  "Check-in demo mở 30 ngày và đóng 1 giờ trước khởi hành.",
+];
 export default function Header() {
   useTranslation();
   const home = useLocation().pathname === "/";
   const [notice, setNotice] = useState(true);
   const [menu, setMenu] = useState(false);
   const [slide, setSlide] = useState(0);
-  const notices = [
-    "[BẢN MÔ PHỎNG ĐỘC LẬP] Đặt vé và thanh toán demo — không phải website chính thức của Vietjet.",
-    "Khám phá hành trình demo · Dùng mã DEMO10 giảm 10%, tối đa 200.000 đ.",
-    "Check-in demo mở 30 ngày và đóng 1 giờ trước khởi hành.",
-  ];
+  const [paused, setPaused] = useState(false);
+  const reducedMotion = useReducedMotion();
+  useEffect(() => {
+    if (!notice || paused || reducedMotion) return;
+    const timer = setInterval(
+      () => setSlide((i) => (i + 1) % notices.length),
+      5000,
+    );
+    return () => clearInterval(timer);
+  }, [notice, paused, reducedMotion]);
   return (
     <>
-      <div className="announcement" style={{ display: notice ? "" : "none" }}>
+      <div
+        className="announcement"
+        style={{ display: notice ? "" : "none" }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
         <div className="container">
           <Bell size={21} />
-          <span>{t(notices[slide])}</span>
+          <div
+            className="announcement-viewport"
+            aria-live={paused || reducedMotion ? "polite" : "off"}
+            aria-atomic="true"
+          >
+            {notices.map((message, i) => (
+              <span
+                className="announcement-message"
+                key={message}
+                aria-hidden={i !== slide}
+                style={{ transform: `translateX(${i === slide ? 0 : i === (slide + 2) % 3 ? -100 : 100}%)` }}
+              >
+                {t(message)}
+              </span>
+            ))}
+          </div>
           <button
             aria-label={t("Thông báo trước")}
             onClick={() => setSlide((slide + 2) % 3)}

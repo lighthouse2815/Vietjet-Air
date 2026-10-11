@@ -146,3 +146,64 @@ test("homepage reports a real network failure and retry recovers", async ({
   await expect(page.locator(".hero-copy h1")).toBeVisible();
   await expect(page.getByRole("alert")).not.toBeVisible();
 });
+
+test("homepage autoplay follows the reference rhythm and responds to reduced motion", async ({ page }) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.goto("/");
+  await expect(page.locator(".hero-copy h1")).toBeVisible();
+  await page.mouse.move(0, 0);
+  const active = page.locator('.carousel-dots button[aria-pressed="true"]');
+  await page.clock.fastForward(7999);
+  await expect(active).toHaveAttribute("aria-label", "Banner 1");
+  await page.clock.fastForward(1);
+  await expect(active).toHaveAttribute("aria-label", "Banner 2");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".hero-copy")).toHaveAttribute("aria-live", "polite");
+  await page.clock.fastForward(24000);
+  await expect(active).toHaveAttribute("aria-label", "Banner 2");
+  await page.getByRole("button", { name: "Banner 3", exact: true }).click();
+  await expect(active).toHaveAttribute("aria-label", "Banner 3");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.mouse.move(0, 0);
+  await expect(page.locator(".hero-copy")).toHaveAttribute("aria-live", "off");
+  await page.clock.fastForward(8000);
+  await expect(active).toHaveAttribute("aria-label", "Banner 4");
+
+  await page.mouse.move(40, 260);
+  await page.clock.fastForward(16000);
+  await expect(active).toHaveAttribute("aria-label", "Banner 4");
+  await page.mouse.move(0, 0);
+  await page.clock.fastForward(8000);
+  await expect(active).toHaveAttribute("aria-label", "Banner 5");
+});
+
+test("announcements rotate, pause during interaction and remain manually controllable", async ({ page }) => {
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
+  await page.goto("/");
+  const message = page.locator('.announcement-message[aria-hidden="false"]');
+  await expect(message).toContainText("BẢN MÔ PHỎNG ĐỘC LẬP");
+  await page.mouse.move(0, 80);
+  await page.clock.fastForward(5000);
+  await expect(message).toContainText("DEMO10");
+  await page.locator(".announcement").hover();
+  await page.clock.fastForward(10000);
+  await expect(message).toContainText("DEMO10");
+  await page.getByRole("button", { name: "Thông báo tiếp", exact: true }).click();
+  await expect(message).toContainText("Check-in demo");
+  await page.getByRole("button", { name: "Thông báo tiếp", exact: true }).click();
+  await expect(message).toContainText("BẢN MÔ PHỎNG ĐỘC LẬP");
+  await page.mouse.move(0, 80);
+  await expect(page.locator(".announcement-viewport")).toHaveAttribute("aria-live", "off");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".announcement-viewport")).toHaveAttribute("aria-live", "polite");
+  await page.clock.fastForward(10000);
+  await expect(message).toContainText("BẢN MÔ PHỎNG ĐỘC LẬP");
+  await page.getByRole("button", { name: "Thông báo trước", exact: true }).click();
+  await expect(message).toContainText("Check-in demo");
+  await page.getByRole("button", { name: "Đóng thông báo", exact: true }).click();
+  await page.clock.fastForward(10000);
+  await expect(page.locator(".announcement")).not.toBeVisible();
+});
