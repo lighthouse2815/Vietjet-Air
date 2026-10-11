@@ -26,6 +26,12 @@
 .service-provider { border: 1px solid var(--line); border-radius: 12px; padding: 24px; background: #fff9e7; }
 .service-provider .button { margin: 8px 10px 0 0; }
 .service-content .lookup-form { margin-bottom: 24px; }
+.service-flight-search { position: relative; margin-top: -35px; z-index: 3; }
+.service-page:not(.service-hotels) .service-hero > img { min-height: 330px; object-fit: cover; }
+@media (max-width: 767px) {
+  .service-flight-search { margin-top: 0; padding-top: 12px; }
+  .service-page:not(.service-hotels) .service-hero > img { min-height: 0; }
+}
 .service-page a:focus-visible, .service-page summary:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
 @media (max-width: 767px) {
   .service-hero > img { min-height: 160px; }

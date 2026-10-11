@@ -41,6 +41,7 @@ export default function Header() {
   const home = pathname === "/";
   const shop = pathname === "/services/skyshop";
   const voucher = pathname === "/services/voucher";
+  const serviceHero = ["esim", "visa", "currency", "insurance"].some(slug => pathname === `/services/${slug}`);
   const [notice, setNotice] = useState(true);
   const [menu, setMenu] = useState(false);
   const [slide, setSlide] = useState(0);
@@ -98,7 +99,7 @@ export default function Header() {
         </div>
       </div>
       <header
-        className={`site-header ${home || shop ? "over-hero" : ""} ${shop ? "skyshop-header" : ""} ${voucher ? "voucher-header" : ""} ${!notice ? "no-notice" : ""}`}
+        className={`site-header ${home || shop || serviceHero ? "over-hero" : ""} ${shop ? "skyshop-header" : ""} ${voucher ? "voucher-header" : ""} ${!notice ? "no-notice" : ""}`}
       >
         <div className="container header-main">
           <Link className="brand" to="/" onClick={() => setMenu(false)}>

@@ -4,9 +4,21 @@ import { ExternalLink, MapPin, CalendarDays, MessageCircle } from "lucide-react"
 import { t } from "../i18n";
 import ServiceRequestForm from "../components/services/ServiceRequestForm";
 import StatsSection from "../components/home/StatsSection";
+import BookingForm from "../components/booking/BookingForm";
 import "../styles/services.css";
 
 const services = {
+  esim: {
+    title: "eSIM", heading: "Bay khắp thế giới với eSIM", image: "/assets/services/esim-banner.jpg",
+    description: "Chọn quốc gia, thời gian sử dụng và kiểm tra thiết bị trước chuyến đi. Gửi nhu cầu để nhận tư vấn trong tài khoản của bạn.",
+    provider: "SkyFi", source: "https://agent.skyfi.vn/buy-esim/nations?language=vi",
+    fields: [{ name: "country", label: "Quốc gia sử dụng" }, { name: "days", label: "Số ngày sử dụng", type: "number", min: 1, max: 180, defaultValue: "7" },
+      { name: "device", label: "Thiết bị sử dụng" }, { name: "compatible", label: "Thiết bị hỗ trợ eSIM", options: ["Đã kiểm tra", "Cần được hướng dẫn"] }],
+    steps: ["Kiểm tra thiết bị và quốc gia", "Chọn nhu cầu dữ liệu và thời gian", "Nhận hướng dẫn kích hoạt từ SkyFi"],
+    faq: [["Làm sao kiểm tra thiết bị hỗ trợ eSIM?", "Kiểm tra phần SIM trong cài đặt điện thoại và tài liệu của hãng. Thiết bị cần hỗ trợ eSIM và không bị khóa mạng."],
+      ["Tôi nhận mã QR ở đâu?", "Nhà cung cấp cấp mã QR sau khi hoàn tất mua gói. Hệ thống nội bộ hiện nhận yêu cầu tư vấn; chưa bán gói hoặc cấp mã kích hoạt."],
+      ["Bản nháp eSIM có bị lẫn với khách sạn không?", "Mỗi dịch vụ lưu bản nháp riêng trong phiên trình duyệt. Yêu cầu đã gửi được lưu trong tài khoản và có thể theo dõi tại Trung tâm hỗ trợ."]],
+  },
   hotels: {
     title: "Khách sạn", heading: "Khách sạn cho hành trình của bạn", image: "/assets/reference/hotel.webp",
     description: "Lên kế hoạch nghỉ dưỡng, chọn điểm đến và gửi nhu cầu lưu trú cho đội ngũ hỗ trợ.",
@@ -27,6 +39,7 @@ export default function PartnerServicePage({ slug }) {
       <img src={service.image} alt="" fetchPriority="high" />
       {slug === "hotels" && <div className="container service-hero-copy"><span>{t("Khám phá điểm dừng chân")}</span><h1>{t(service.heading)}</h1><a className="button primary" href="#service-request">{t("Lên kế hoạch lưu trú")}</a></div>}
     </section>
+    {slug !== "hotels" && <div className="container service-flight-search"><BookingForm compact /></div>}
     <div className="container service-content">
       <nav className="service-breadcrumb" aria-label={t("Đường dẫn trang")}><Link to="/">{t("Trang chủ")}</Link><span>›</span><span>{t(service.title)}</span></nav>
       {slug !== "hotels" && <h1>{t(service.heading)}</h1>}

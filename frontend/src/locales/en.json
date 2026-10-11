@@ -798,5 +798,22 @@
   "Dịch vụ từ nhà cung cấp": "Provider services",
   "Giá, khả năng cung cấp và giao dịch của đối tác chưa kết nối vào hệ thống nội bộ.": "Provider prices, availability and transactions are awaiting integration with this system.",
   "Mở trang nhà cung cấp": "Open provider website",
-  "Trang chủ": "Home"
+  "Trang chủ": "Home",
+  "Bay khắp thế giới với eSIM": "Travel the world with eSIM",
+  "Chọn quốc gia, thời gian sử dụng và kiểm tra thiết bị trước chuyến đi. Gửi nhu cầu để nhận tư vấn trong tài khoản của bạn.": "Choose your destination, usage period and device before your trip. Submit your preferences for advice in your account.",
+  "Quốc gia sử dụng": "Country of use",
+  "Số ngày sử dụng": "Days of use",
+  "Thiết bị sử dụng": "Device",
+  "Thiết bị hỗ trợ eSIM": "eSIM compatibility",
+  "Đã kiểm tra": "Checked",
+  "Cần được hướng dẫn": "Need guidance",
+  "Kiểm tra thiết bị và quốc gia": "Check your device and destination",
+  "Chọn nhu cầu dữ liệu và thời gian": "Choose your data needs and duration",
+  "Nhận hướng dẫn kích hoạt từ SkyFi": "Get activation instructions from SkyFi",
+  "Làm sao kiểm tra thiết bị hỗ trợ eSIM?": "How do I check eSIM compatibility?",
+  "Kiểm tra phần SIM trong cài đặt điện thoại và tài liệu của hãng. Thiết bị cần hỗ trợ eSIM và không bị khóa mạng.": "Check your phone SIM settings and manufacturer documentation. Your device must support eSIM and be unlocked.",
+  "Tôi nhận mã QR ở đâu?": "Where do I get the QR code?",
+  "Nhà cung cấp cấp mã QR sau khi hoàn tất mua gói. Hệ thống nội bộ hiện nhận yêu cầu tư vấn; chưa bán gói hoặc cấp mã kích hoạt.": "The provider issues a QR code after a plan purchase. This system currently accepts consultation requests; plan sales and activation codes await integration.",
+  "Bản nháp eSIM có bị lẫn với khách sạn không?": "Are eSIM and hotel drafts separate?",
+  "Mỗi dịch vụ lưu bản nháp riêng trong phiên trình duyệt. Yêu cầu đã gửi được lưu trong tài khoản và có thể theo dõi tại Trung tâm hỗ trợ.": "Each service keeps a separate draft in your browser session. Submitted requests are saved in your account and tracked in the Support center."
 }

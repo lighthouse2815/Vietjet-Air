@@ -54,3 +54,21 @@ test("Khách sạn keeps a guest draft through login and only returns internally
   await expect(page).toHaveURL(/\/services\/hotels$/);
   await expect(page.getByLabel("Điểm đến", { exact: true })).toHaveValue("Phú Quốc");
 });
+
+test("eSIM sends destination and device preferences without a provider order", async ({ page, request }) => {
+  const user = await register(request); await login(page, user);
+  await page.goto("/services/esim");
+  await expect(page.getByRole("heading", { name: "Bay khắp thế giới với eSIM", exact: true })).toBeVisible();
+  await page.getByLabel("Quốc gia sử dụng", { exact: true }).fill("Nhật Bản");
+  await page.getByLabel("Số ngày sử dụng", { exact: true }).fill("7");
+  await page.getByLabel("Thiết bị sử dụng", { exact: true }).fill("iPhone 15");
+  await page.getByLabel("Thiết bị hỗ trợ eSIM", { exact: true }).selectOption("Đã kiểm tra");
+  await page.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Đã gửi yêu cầu");
+  const [ticket] = await tickets(request, user);
+  expect(ticket.subject).toContain("eSIM");
+  expect(ticket.messages[0].body).toContain("Nhật Bản");
+  expect(ticket.messages[0].body).toContain("iPhone 15");
+  await expect(page.getByRole("link", { name: "Mở trang nhà cung cấp", exact: true })).toHaveAttribute("href", /agent\.skyfi\.vn/);
+  await expect(page.getByRole("button", { name: /Thanh toán|Mua ngay/ })).toHaveCount(0);
+});
