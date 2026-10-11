@@ -11,27 +11,17 @@ import {
   Headphones,
   UserCircle,
   Menu,
-  Plane,
-  ShoppingBag,
-  Hotel,
-  Ticket,
-  Wifi,
-  Globe,
-  Wallet,
-  ShieldCheck,
-  Gift,
-  ChevronDown,
 } from "lucide-react";
 const products = [
-  ["Đặt vé", "/", Plane],
-  ["Skyshop", "/services/skyshop", ShoppingBag],
-  ["Khách sạn", "/services/hotels", Hotel],
-  ["E-Voucher", "/services/voucher", Ticket],
-  ["E-Sim", "/services/esim", Wifi],
-  ["E-Visa", "/services/visa", Globe],
-  ["Mua ngoại tệ", "/services/currency", Wallet],
-  ["Bảo hiểm", "/services/insurance", ShieldCheck],
-  ["SkyJoy", "/services/skyjoy", Gift],
+  ["Đặt vé", "/"],
+  ["Skyshop", "/services/skyshop"],
+  ["Khách sạn", "/services/hotels"],
+  ["E-Voucher", "/services/voucher"],
+  ["E-Sim", "/services/esim"],
+  ["E-Visa", "/services/visa"],
+  ["Mua ngoại tệ", "/services/currency"],
+  ["Bảo hiểm", "/services/insurance"],
+  ["SkyJoy", "/services/skyjoy"],
 ];
 export default function Header() {
   useTranslation();
@@ -71,8 +61,8 @@ export default function Header() {
         className={`site-header ${home ? "over-hero" : ""} ${!notice ? "no-notice" : ""}`}
       >
         <div className="container header-main">
-          <Link className="brand" to="/" onClick={() => setMenu(false)}>{t("vietjet")}<span>{t("Air")}</span>
-            <small>{t(".com")}</small>
+          <Link className="brand" to="/" onClick={() => setMenu(false)}>
+            <img src="/assets/reference/logo.svg" alt="vietjetAir.com" width="265" height="46" />
             <em>{t("MÔ PHỎNG ĐỘC LẬP")}</em>
           </Link>
           <div className="header-right">
@@ -81,6 +71,7 @@ export default function Header() {
                 <Headphones size={18} />{t("Hỗ trợ")}</Link>
               <Link to="/auth">
                 <UserCircle size={20} />{t("Đăng ký | Đăng nhập")}</Link>
+              <select className="language-picker" aria-label={t("Ngôn ngữ")} value={i18n.language} onChange={e=>i18n.changeLanguage(e.target.value)}><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
             </div>
             <nav className="primary-nav" aria-label={t("Menu chính")}>
               <Link to="/my-booking">{t("CHUYẾN BAY CỦA TÔI")}</Link>
@@ -106,7 +97,6 @@ export default function Header() {
               </div>
             </nav>
           </div>
-          <select className="language-picker" aria-label={t("Ngôn ngữ")} value={i18n.language} onChange={e=>i18n.changeLanguage(e.target.value)}><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
           <button
             className="mobile-menu-button"
             aria-label={menu ? t("Đóng menu") : t("Mở menu")}
@@ -118,9 +108,9 @@ export default function Header() {
         </div>
         <nav className="product-nav" aria-label={t("Dịch vụ")}>
           <div className="container">
-            {products.map(([label, path, Icon], i) => (
+            {products.map(([label, path], i) => (
               <Link className={i === 0 ? "current" : ""} key={label} to={path}>
-                <Icon size={19} />
+                <img src={`/assets/reference/product-${i}.png`} alt="" width="25" height="25" />
                 {t(label)}
               </Link>
             ))}

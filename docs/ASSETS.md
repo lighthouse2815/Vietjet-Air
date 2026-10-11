@@ -6,7 +6,11 @@
 - `cabin`, `family`, `cargo`, `shopping`, `resort`, `japan`, `quang-binh`, `gia-lai`, `nghe-an`, `ha-noi`, `ho-chi-minh`, `phu-quoc`: 12 ảnh tạo mới trong một contact sheet, tách ô và chuyển WebP. Các địa điểm là hình minh họa được tạo, không phải ảnh tư liệu xác minh địa lý.
 - KoHo: Google Fonts, giấy phép SIL Open Font License trong `frontend/public/assets/fonts/OFL.txt`. Font lưu tại repo, không cần kết nối Google khi chạy ứng dụng.
 - Favicon và viền mây: SVG đơn giản tự tạo. Icons từ Lucide React (ISC).
-- Chữ logo dựng bằng CSS để tham chiếu giao diện, luôn kèm nhãn mô phỏng độc lập; không dùng SVG logo gốc.
+- Header hiện dùng SVG logo tham chiếu, luôn kèm nhãn mô phỏng độc lập.
 - Screenshot reference chỉ ở `docs/reference`; frontend không sử dụng chúng.
 
-Không có ảnh/banner/font độc quyền của hãng được đưa vào asset sản phẩm. Ảnh tạo mới và font tiêu đề thay thế là khác biệt đã biết so với reference.
+## Asset căn chỉnh giao diện
+
+Theo yêu cầu căn chỉnh giao diện, `frontend/public/assets/reference/` lưu bản tải của logo, banner desktop/mobile, icon và font tiêu đề từ trang tham chiếu công khai `https://www.vietjetair.com/vi`. Nguồn đầy đủ từng file nằm trong `sources.json`; chạy `node scripts/sync-home-artwork.mjs` để tải lại. Đây là asset tham chiếu của chủ sở hữu gốc, không phải ảnh AI hay asset do dự án sáng tác; không gán giấy phép mở cho các file này.
+
+Banner có chữ được hiển thị nguyên ảnh, kèm tiêu đề đọc được bằng trình đọc màn hình, để tránh chồng thêm chữ HTML. Các giá/chiến dịch trong artwork thuộc ảnh tham chiếu; giá và giao dịch của ứng dụng được trả từ API demo. Ảnh CMS tùy chỉnh tiếp tục hiển thị trực tiếp cùng tiêu đề HTML.

@@ -1,4 +1,10 @@
 @font-face {
+  font-family: Jambono;
+  src: url("/assets/reference/jambono-medium.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
   font-family: KoHo;
   src: url("/assets/fonts/koho-400.ttf") format("truetype");
   font-weight: 400;
@@ -305,6 +311,7 @@ small {
   gap: 24px;
 }
 .brand {
+  transform: translateY(10px);
   position: relative;
   font-family: Arial, sans-serif;
   color: #ed192b;
@@ -314,6 +321,10 @@ small {
   letter-spacing: -3px;
   white-space: nowrap;
   line-height: 1;
+}
+.brand > img {
+  width: 265px;
+  height: auto;
 }
 .brand span {
   font-size: 43px;
@@ -337,6 +348,7 @@ small {
   flex-direction: column;
   align-items: flex-end;
   gap: 16px;
+  margin-left: auto;
 }
 .utility-nav,
 .primary-nav {
@@ -430,6 +442,11 @@ small {
 }
 .product-nav a svg {
   color: var(--red);
+}
+.product-nav a img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
 }
 .product-nav .current {
   color: var(--yellow);
@@ -576,6 +593,10 @@ small {
     font-size: 7px;
     letter-spacing: 0.8px;
   }
+  .brand > img {
+    width: 105px;
+  }
+  .brand { transform: none; }
   .header-right .primary-nav,
   .product-nav {
     display: none;

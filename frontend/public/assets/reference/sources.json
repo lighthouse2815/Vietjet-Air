@@ -1,0 +1,70 @@
+[
+  {
+    "file": "logo.svg",
+    "url": "https://www.vietjetair.com/static/media/vj-logo.0f71c68b.svg"
+  },
+  {
+    "file": "hero-campaign.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1topbannerpc-1764123437477.jpg"
+  },
+  {
+    "file": "hero-campaign-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2topbannermb-1764123432519.jpg"
+  },
+  {
+    "file": "hero-bay.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1vntopbannerpc-1790041633909.jpg"
+  },
+  {
+    "file": "hero-bay-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2vntopbannermb-1790041605339.jpg"
+  },
+  {
+    "file": "hero-family.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1-top-banner-pc-1789786610395.jpg"
+  },
+  {
+    "file": "hero-family-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2-top-banner-mb-1790133377712.jpg"
+  },
+  {
+    "file": "product-0.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/buytickethover1762935250929-1763046950285.png"
+  },
+  {
+    "file": "product-1.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/skyshopred1760499927217-1761233676428.png"
+  },
+  {
+    "file": "product-2.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/h3-1765437024097.png"
+  },
+  {
+    "file": "product-3.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/ev2-1765437300915.png"
+  },
+  {
+    "file": "product-4.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1334-1765437523765.png"
+  },
+  {
+    "file": "product-5.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/visa1746697221046-1761233937690.png"
+  },
+  {
+    "file": "product-6.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/nt4-1765437670000.png"
+  },
+  {
+    "file": "product-7.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/is1-1765764968442.png"
+  },
+  {
+    "file": "product-8.png",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/skyjoy1746698152841-1765437799448.png"
+  },
+  {
+    "file": "jambono-medium.ttf",
+    "url": "https://www.vietjetair.com/fonts/Jambono-Medium.ttf"
+  }
+]
