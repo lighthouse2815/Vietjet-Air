@@ -26,10 +26,8 @@ public class FlightService {
         validateRoute(origin, destination);
         if (date.isBefore(LocalDate.now(ZONE)) || passengers < 1 || passengers > 9)
             throw BusinessException.badRequest("Ngày bay hoặc số hành khách không hợp lệ");
-        return routeFlights(origin, destination, date, date.plusDays(1))
+        return views(routeFlights(origin, destination, date, date.plusDays(1)))
             .stream()
-            .filter(f -> f.getDepartureTime().isAfter(Instant.now()))
-            .map(this::view)
             .filter(f -> f.remainingSeats() >= passengers)
             .toList();
     }
@@ -41,13 +39,13 @@ public class FlightService {
             || start.isAfter(LocalDate.now(ZONE).plusMonths(12)))
             throw BusinessException.badRequest("Tháng ngoài phạm vi tìm kiếm");
         Map<LocalDate, BigDecimal> result = new TreeMap<>();
-        for (Flight f : routeFlights(origin, destination, start, end)) {
-            if (f.getDepartureTime().isBefore(Instant.now()) || remaining(f) <= 0)
+        for (FlightView f : views(routeFlights(origin, destination, start, end))) {
+            if (f.remainingSeats() <= 0)
                 continue;
-            List<FareView> prices = fareViews(f.getId());
+            List<FareView> prices = f.fares();
             if (!prices.isEmpty())
-                result.merge(f.getDepartureTime().atZone(ZONE).toLocalDate(), prices.getFirst().price(),
-                    BigDecimal::min);
+                result.merge(
+                    f.departureTime().atZone(ZONE).toLocalDate(), prices.getFirst().price(), BigDecimal::min);
         }
         return result.entrySet().stream().map(e -> new CalendarPrice(e.getKey(), e.getValue())).toList();
     }
@@ -72,10 +70,36 @@ public class FlightService {
         return Math.max(0, f.getCapacity() - (int) segments.reservedCount(f.getId(), Instant.now()));
     }
     public FlightView view(Flight f) {
+        return view(f, remaining(f), fareViews(f.getId()));
+    }
+    private FlightView view(Flight f, int remainingSeats, List<FareView> prices) {
         return new FlightView(f.getId(), f.getFlightNumber(), AirportService.view(f.getOrigin()),
             AirportService.view(f.getDestination()), f.getDepartureTime(), f.getArrivalTime(),
             Duration.between(f.getDepartureTime(), f.getArrivalTime()).toMinutes(), f.getAircraft(),
-            remaining(f), fareViews(f.getId()));
+            remainingSeats, prices);
+    }
+    private List<FlightView> views(List<Flight> routeFlights) {
+        Instant now = Instant.now();
+        List<Flight> futureFlights =
+            routeFlights.stream().filter(f -> f.getDepartureTime().isAfter(now)).toList();
+        if (futureFlights.isEmpty())
+            return List.of();
+
+        List<Long> ids = futureFlights.stream().map(Flight::getId).toList();
+        Map<Long, List<FareView>> prices = new HashMap<>();
+        for (FlightFare fare : fares.findByFlightIdInOrderByFlightIdAscPriceAsc(ids)) {
+            prices.computeIfAbsent(fare.getFlight().getId(), ignored -> new ArrayList<>())
+                .add(fareView(fare.getFareClass(), fare.getPrice()));
+        }
+        Map<Long, Long> reserved = new HashMap<>();
+        for (BookingSegmentRepository.ReservedFlight count : segments.reservedCounts(ids, now)) {
+            reserved.put(count.getFlightId(), count.getReservedSeats());
+        }
+        return futureFlights.stream()
+            .map(f
+                -> view(f, Math.max(0, f.getCapacity() - reserved.getOrDefault(f.getId(), 0L).intValue()),
+                    prices.getOrDefault(f.getId(), List.of())))
+            .toList();
     }
     @Transactional(readOnly = true)
     public List<FareView> fareViews(Long id) {

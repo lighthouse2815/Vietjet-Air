@@ -14,10 +14,12 @@ import com.flightbooking.enums.*;
 import com.flightbooking.exception.BusinessException;
 import com.flightbooking.repository.*;
 import com.flightbooking.service.*;
+import jakarta.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.*;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,6 +43,10 @@ class BookingIntegrationTest {
         p.add("spring.datasource.password", db::getPassword);
         p.add("app.jwt-secret", () -> "integration-test-only-secret-with-at-least-32-bytes");
         p.add("app.seed-days", () -> 3);
+        p.add("spring.jpa.properties.hibernate.generate_statistics", () -> true);
+        p.add("logging.level.org.hibernate.stat", () -> "OFF");
+        p.add("logging.level.org.hibernate.engine.internal.StatisticalLoggingSessionEventListener",
+            () -> "OFF");
     }
     @Autowired BookingService bookings;
     @Autowired FlightService flights;
@@ -57,6 +63,7 @@ class BookingIntegrationTest {
     @Autowired MockMvc http;
     @Autowired AuthService auth;
     @Autowired ObjectMapper json;
+    @Autowired EntityManagerFactory entityManagerFactory;
     private Long flightId;
     @BeforeEach
     void chooseFlight() {
@@ -85,6 +92,23 @@ class BookingIntegrationTest {
     }
     private BookingView create(String seat) {
         return bookings.create(input(flightId, seat, ""), null);
+    }
+
+    @Test
+    void calendarLoadsFaresAndAvailabilityInBatches() {
+        LocalDate tomorrow = LocalDate.now(FlightService.ZONE).plusDays(1);
+        var statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+        statistics.clear();
+        List<CalendarPrice> calendar = flights.calendar("SGN", "HAN", tomorrow);
+        long queries = statistics.getPrepareStatementCount();
+
+        assertThat(queries).as("Monthly calendar must not query once per flight").isLessThanOrEqualTo(7);
+        BigDecimal minimum = flights.search("SGN", "HAN", tomorrow, 1)
+                                 .stream()
+                                 .map(f -> f.fares().getFirst().price())
+                                 .min(BigDecimal::compareTo)
+                                 .orElseThrow();
+        assertThat(calendar).contains(new CalendarPrice(tomorrow, minimum));
     }
 
     @Test
@@ -335,7 +359,7 @@ class BookingIntegrationTest {
         http.perform(post("/api/check-in/complete")
                          .contentType("application/json")
                          .content("{\"bookingId\":1,\"flightId\":1,\"passengerIndex\":0,\"seatNumber\":"
-                                  + "\"3A\",\"acceptedConditions\":false}"))
+                             + "\"3A\",\"acceptedConditions\":false}"))
             .andExpect(status().isBadRequest());
     }
     @Test
