@@ -39,6 +39,7 @@ Viewport: desktop 1920×1080; laptop 1440×900; tablet 768×1024; mobile 390×84
 ## Responsive và tương tác
 
 - Mobile có header nhỏ, hamburger, ngôn ngữ rút gọn; thanh sản phẩm desktop ẩn. Banner nằm trên form, form chiếm toàn chiều ngang. Hàng sân bay/ngày vẫn chia đôi. Ở snapshot mobile, các ô hành khách/mã khuyến mại không hiển thị như desktop. Có navigation cố định dưới màn hình gồm đặt vé, chuyến bay của tôi, mua dịch vụ, check-in.
+- Đối chiếu bổ sung `tablet-top.png`: tại 768px, thanh thông báo khoảng 35px, header khoảng 40px; form bắt đầu ở y≈696 dưới banner, không nằm bên phải. Bản demo dùng cùng cấu trúc xếp dọc cho tablet/mobile, giữ ô hành khách/mã khuyến mại để thao tác đủ nghiệp vụ.
 - Popup cookie phủ tối và khóa scroll; nút từ chối hoạt động. Popup ưu đãi nằm trong iframe; đóng qua nút Để sau của iframe. Không đăng ký nhận thông báo.
 - Dropdown sân bay, lịch ngày đi, bộ đếm người lớn/trẻ em/em bé đã quan sát qua browser. Lịch có giá; bản demo chỉ hiển thị giá khi API có dữ liệu.
 - Có robot/chat nổi. Demo thay bằng nút hỗ trợ dẫn tới nội dung nội bộ, không tích hợp chatbot hãng.

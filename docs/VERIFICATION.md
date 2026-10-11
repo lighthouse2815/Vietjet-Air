@@ -34,7 +34,7 @@ Booking và hai test trang chủ chạy ở 1920×1080, 1440×900, 768×1024, 39
 
 ## Sai lệch và giới hạn
 
-Đối chiếu header/hero/widget/container/section/footer với snapshot reference đã thu thập, đã sửa kích thước tab, menu và breakpoint. Ảnh tạo mới, logo chữ, font tiêu đề thay thế, ba slide dùng chung ảnh nền, section khuyến mại/achievement minh họa và nội dung demo vẫn khác reference. Chưa có metric chứng minh pixel-perfect; không công bố độ giống 100%.
+Đối chiếu header/hero/widget/container/section/footer với snapshot reference đã thu thập, đã sửa kích thước tab, menu và breakpoint. Hero đã có ba ảnh riêng, chiến dịch 12h dùng bố cục người/món ăn bên trái và tiêu đề ở giữa; tablet xếp form dưới banner theo screenshot tham chiếu. Ảnh tạo mới, logo chữ, font tiêu đề thay thế, số slide, section khuyến mại/achievement minh họa và nội dung demo vẫn khác reference. Chưa có metric chứng minh pixel-perfect; không công bố độ giống 100%.
 
 Một số trang/interaction reference chưa xác minh do lazy loading và popup; không vượt hạn chế truy cập. Các dịch vụ đối tác, nhiều chặng, đổi/mua thêm sau booking, email và vé/boarding pass thật nằm ngoài bản demo, được ghi rõ trong README và trang nội dung. Chỉ kiểm thử môi trường local; chưa triển khai hay kiểm chứng production hosting, load test, refund thật hoặc accessibility audit đầy đủ.
 

@@ -628,7 +628,7 @@ small {
     width: calc(100% - 32px);
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .announcement {
     height: 35px;
   }
@@ -693,7 +693,7 @@ small {
     left: 0;
     right: 0;
     border-radius: 16px 16px 0 0;
-    background: linear-gradient(160deg, #242424ed, #49451eee);
+    background: linear-gradient(160deg, #7d0000ed, #940000ee);
     backdrop-filter: blur(10px);
     color: #fff;
     z-index: 70;
@@ -726,6 +726,14 @@ small {
     font-size: 11px;
     padding: 5px 8px;
   }
+  .site-footer {
+    padding-bottom: 100px;
+  }
+  .page {
+    padding-bottom: 90px;
+  }
+}
+@media (max-width: 600px) {
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 22px;

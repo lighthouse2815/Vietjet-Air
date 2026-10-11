@@ -12,4 +12,6 @@
 
 CSS variables: màu đỏ/vàng/trời, max-width 1200px, border radius, shadow, khoảng cách. CSS theo nhóm component; không thêm thư viện animation. Router và API layer dùng chung, không hardcode nghiệp vụ chuyến bay trong React.
 
-BookingContext chỉ giữ draft của luồng; trạng thái nhỏ nằm tại component. API layer Axios dùng `/api`; useApi cleanup AbortController, useQuote debounce/cancel, usePopup xử lý click outside/Escape. Các page checkout tải bằng React.lazy/Suspense, giúp trang chủ không tải RHF/Zod ngay từ đầu. Không thêm Motion hoặc CMS.
+BookingContext chỉ giữ draft của luồng; trạng thái nhỏ nằm tại component. API layer Axios dùng `/api`; useApi cleanup AbortController, useQuote debounce/cancel, usePopup xử lý click outside/Escape. Các page checkout tải bằng React.lazy/Suspense; RHF chỉ tải ở trang hành khách, Zod dùng chung cho validation tìm chuyến và các form. Không thêm Motion hoặc CMS.
+
+Hero dùng ba ảnh nguyên bản riêng, nội dung từ `content_items` và migration V3. Ở viewport ≤900px, banner nằm trên form toàn chiều ngang; header rút gọn và navigation cố định bên dưới. Tiêu đề chiến dịch 12h ở vùng giữa trên desktop và bên phải trên tablet/mobile. Các ô hành khách/mã khuyến mại được giữ để thao tác đầy đủ trong demo, khác trạng thái ẩn của reference đã chụp.

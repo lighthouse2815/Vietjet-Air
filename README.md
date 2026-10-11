@@ -90,7 +90,7 @@ Khứ hồi mẫu: SGN → Đà Nẵng (DAD), đi ngày mai, về ngày kế ti�
 
 ## Giới hạn và khác biệt với reference
 
-- Banner/card được tạo mới; KoHo có giấy phép OFL, font tiêu đề và logo chữ thay thế. Không có quyền sử dụng asset độc quyền của hãng nên không sao chép chúng. Ba slide demo dùng chung ảnh nền với nội dung và màu khác nhau; reference tại mốc khảo sát có chín slide. Không tuyên bố giống 100%.
+- Banner/card được tạo mới; KoHo có giấy phép OFL, font tiêu đề và logo chữ thay thế. Không có quyền sử dụng asset độc quyền của hãng nên không sao chép chúng. Demo có ba ảnh banner riêng cho chiến dịch 12h, kết nối bầu trời và du lịch gia đình; reference tại mốc khảo sát có chín slide. Không tuyên bố giống 100%.
 - Nội dung khuyến mại, giá, quyền lợi, sơ đồ 72 ghế (71 ghế bán), số liệu/giải thưởng minh họa và thời gian check-in là dữ liệu demo; không phải quy định hãng thật.
 - Chỉ một chiều/khứ hồi, VND và tiếng Việt. Nhiều chặng, dịch vụ đối tác (khách sạn, eSIM, eVisa, ngoại tệ, SkyJoy, Skyshop...) có trang giải thích phạm vi; chưa tích hợp đối tác.
 - Dịch vụ bổ sung được mua trong luồng tạo booking. Chưa có chỉnh sửa/mua thêm sau xác nhận, đổi vé, hoàn tiền thật, gửi email, xuất vé thật, quản trị CMS hay triển khai production.

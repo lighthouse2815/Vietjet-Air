@@ -19,11 +19,15 @@ export default function HeroCarousel({ banners }) {
   }, [banners.length, paused]);
   return (
     <section
-      className="hero"
+      className={`hero ${slide === 0 ? "campaign" : ""}`}
       aria-label="Ưu đãi chuyến bay"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={(e) => {
+        if (e.target.closest(".booking-widget")) {
+          touch.current = null;
+          return;
+        }
         touch.current = e.touches[0].clientX;
       }}
       onTouchEnd={(e) => {
@@ -48,7 +52,7 @@ export default function HeroCarousel({ banners }) {
         ))}
       </div>
       <div className="container hero-container">
-        <div className="hero-copy">
+        <div className={`hero-copy ${slide === 0 ? "campaign-copy" : ""}`}>
           <span className="hero-brand">
             vietjet<span>Air</span>
             <small>.com</small>

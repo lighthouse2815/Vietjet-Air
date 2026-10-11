@@ -22,12 +22,6 @@
 .hero-slide.visible {
   opacity: 1;
 }
-.hero-slide.slide-1 {
-  filter: saturate(0.8) hue-rotate(-12deg);
-}
-.hero-slide.slide-2 {
-  filter: saturate(1.15);
-}
 .hero-container {
   height: 100%;
   position: relative;
@@ -70,6 +64,38 @@
 .hero-copy p {
   font-size: 14px;
   letter-spacing: 0.3px;
+}
+.hero-copy.campaign-copy {
+  top: calc(25vw - 165px);
+  left: calc(600px - 13.5vw);
+  width: 430px;
+  max-width: 430px;
+  text-align: center;
+  text-shadow: 0 2px 0 #ffffff90;
+}
+.campaign-copy .hero-brand {
+  display: none;
+}
+.campaign-copy h1 {
+  color: #e52e20;
+  font-size: 54px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -1px;
+  line-height: 1.08;
+  white-space: pre-line;
+}
+.campaign-copy p {
+  color: #007b46;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: pre-line;
+  margin: 24px auto 0;
+  max-width: 320px;
+}
+body:has(.hero.campaign) .site-header.over-hero {
+  background: linear-gradient(180deg, #344a5699, #6a889442);
 }
 .hero-booking {
   position: absolute;
@@ -645,6 +671,18 @@
     font-size: 21px;
     letter-spacing: 3px;
   }
+  .hero-copy.campaign-copy {
+    left: 27%;
+    top: 230px;
+    width: 290px;
+  }
+  .campaign-copy h1 {
+    font-size: 35px;
+    letter-spacing: -1px;
+  }
+  .campaign-copy p {
+    font-size: 16px;
+  }
   .quick-icon {
     width: 100px;
     height: 100px;
@@ -668,8 +706,18 @@
 }
 @media (max-width: 900px) {
   .hero {
-    min-height: 780px;
-    height: 780px;
+    height: auto;
+    min-height: 0;
+    padding-top: 86vw;
+    background: #de1124;
+  }
+  .hero-images {
+    height: 86vw;
+    bottom: auto;
+  }
+  .hero-container {
+    width: 100%;
+    position: static;
   }
   .hero-copy {
     left: 15px;
@@ -693,16 +741,55 @@
     font-size: 20px;
     max-width: 270px;
   }
+  .hero-copy.campaign-copy {
+    left: 43%;
+    top: 32vw;
+    width: 55%;
+    max-width: none;
+  }
+  .campaign-copy h1 {
+    font-size: clamp(35px, 7.2vw, 54px);
+    max-width: none;
+  }
+  .campaign-copy p {
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff9;
+    margin-top: 20px;
+  }
   .hero-booking {
-    top: 245px;
-    right: 0;
+    position: relative;
+    top: auto;
+    right: auto;
+    padding-bottom: 28px;
+  }
+  .hero-booking .booking-widget {
+    width: 100%;
+    border-radius: 0;
+    background: #de1124;
+    box-shadow: none;
+  }
+  .hero-booking .booking-tabs {
+    font-size: 15px;
+    grid-template-columns: 1.95fr 1fr 0.73fr;
+  }
+  .hero-booking .booking-widget form {
+    padding: 20px 19px 28px;
+  }
+  .hero-booking .route-date-row {
+    grid-template-columns: 64% 36%;
   }
   .hero-slide {
-    background-position: 35% center;
+    background-size: auto 86vw;
+    background-position: 30% center;
+  }
+  .hero-slide.slide-0 {
+    background-position: 15% center;
   }
   .carousel-dots {
-    left: 25%;
-    bottom: 110px;
+    left: 50%;
+    top: calc(86vw - 30px);
+    bottom: auto;
   }
   .promotion-strip {
     gap: 15px;
@@ -764,10 +851,7 @@
 }
 @media (max-width: 600px) {
   .hero {
-    height: auto;
-    min-height: 0;
     padding-top: 333px;
-    background: #de1124;
   }
   .hero-images {
     height: 333px;
@@ -776,10 +860,6 @@
   .hero-slide {
     background-size: auto 333px;
     background-position: 30% center;
-  }
-  .hero-container {
-    width: 100%;
-    position: static;
   }
   .hero-copy {
     top: 95px;
@@ -809,11 +889,23 @@
     font-size: 10px;
     max-width: 225px;
   }
-  .hero-booking {
-    position: relative;
-    top: auto;
-    right: auto;
-    padding-bottom: 28px;
+  .hero-copy.campaign-copy {
+    top: 124px;
+    left: 43%;
+    width: 55%;
+    max-width: none;
+  }
+  .campaign-copy h1 {
+    font-size: clamp(23px, 7.2vw, 38px);
+    letter-spacing: -1px;
+    margin-top: 0;
+    max-width: none;
+  }
+  .campaign-copy p {
+    font-size: 12px;
+    margin-top: 12px;
+    padding: 6px;
+    max-width: 200px;
   }
   .carousel-dots {
     top: 302px;
