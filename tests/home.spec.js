@@ -38,8 +38,12 @@ test("homepage carousel, airport keyboard navigation and passenger limits work",
   if (page.viewportSize().width <= 900) {
     const background = await page.locator(".hero-images").boundingBox();
     const booking = await page.locator(".hero-booking").boundingBox();
+    const hero = await page.locator(".hero").boundingBox();
     expect(booking.y).toBeGreaterThanOrEqual(
       background.y + background.height - 1,
+    );
+    expect(hero.y + hero.height).toBeGreaterThanOrEqual(
+      booking.y + booking.height - 1,
     );
   }
   const origin = page
