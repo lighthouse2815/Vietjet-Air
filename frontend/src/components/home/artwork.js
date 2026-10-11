@@ -5,6 +5,14 @@ const heroArtwork = {
   ],
   "/assets/hero-bay.webp": ["hero-bay.jpg", "hero-bay-mobile.jpg"],
   "/assets/hero-island.webp": ["hero-family.jpg", "hero-family-mobile.jpg"],
+  ...Object.fromEntries(
+    ["japan", "anniversary", "korea", "groups", "transfer", "loyalty"].map(
+      (name) => [
+        `/assets/reference/hero-${name}.jpg`,
+        [`hero-${name}.jpg`, `hero-${name}-mobile.jpg`],
+      ],
+    ),
+  ),
 };
 // Only replace the seeded artwork while its editable captions remain unchanged.
 const heroCaptions = {
@@ -20,6 +28,19 @@ const heroCaptions = {
     "BAY VUI, KHÁM PHÁ MỚI",
     "Khởi hành cùng những hành trình đáng nhớ",
   ],
+  ...Object.fromEntries(
+    [
+      ["japan", "Bay đến Nhật Bản"],
+      ["anniversary", "Sẵn sàng hóa rồng, tung cánh toàn cầu"],
+      ["korea", "Bay khắp Hàn Quốc"],
+      ["groups", "Bay theo đoàn, vui ngập tràn"],
+      ["transfer", "Khám phá Trung Quốc"],
+      ["loyalty", "Đặc quyền hội viên SkyJoy"],
+    ].map(([name, title]) => [
+      `/assets/reference/hero-${name}.jpg`,
+      [title, "Banner tham chiếu · Giá và giao dịch của hệ thống là demo"],
+    ]),
+  ),
 };
 
 export function getHeroArtwork(banner) {

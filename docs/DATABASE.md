@@ -1,6 +1,6 @@
 # Database và tính toàn vẹn
 
-PostgreSQL 17. Flyway V1 tạo schema, V2 tạo catalog, V3 cập nhật banner, V4–V7 bổ sung nghiệp vụ nội bộ; Hibernate chỉ `validate`, Open Session in View tắt. Tiền dùng `NUMERIC(14,2)`/BigDecimal; thời điểm lưu `TIMESTAMPTZ`/Instant UTC, ngày sinh dùng DATE/LocalDate. Hiển thị và ngày tìm chuyến theo Asia/Ho_Chi_Minh.
+PostgreSQL 17. Flyway V1 tạo schema, V2 tạo catalog, V3 cập nhật banner, V4–V7 bổ sung nghiệp vụ nội bộ, V8 bổ sung sáu banner để trang chủ đủ chín chiến dịch; Hibernate chỉ `validate`, Open Session in View tắt. Tiền dùng `NUMERIC(14,2)`/BigDecimal; thời điểm lưu `TIMESTAMPTZ`/Instant UTC, ngày sinh dùng DATE/LocalDate. Hiển thị và ngày tìm chuyến theo Asia/Ho_Chi_Minh.
 
 ```mermaid
 erDiagram
@@ -72,6 +72,7 @@ stateDiagram-v2
 | V5 | bookings.revision/adjustment_amount; booking_changes, change_payments; refund_requests |
 | V6 | users.points/qualifying_spend; gift_vouchers/voucher_usages; point_entries; shop_products/shop_orders/shop_order_items; commerce_payments |
 | V7 | bookings.journey_type; chuyển booking hai chặng cũ sang ROUND_TRIP |
+| V8 | thêm sáu bản ghi HERO vào content_items; không đổi schema hoặc dữ liệu giao dịch |
 
 Migrations bổ sung schema, giữ booking/tài khoản cũ; Hibernate validate schema sau Flyway. Reset token lưu SHA-256 thay vì token gốc; outbox demo chứa đường dẫn dùng một lần và chỉ ADMIN đọc. token_version khiến JWT cũ mất hiệu lực sau đổi/khôi phục mật khẩu.
 

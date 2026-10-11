@@ -254,5 +254,53 @@
   {
     "file": "award-5.png",
     "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/files/giai4-1592297571379.png"
+  },
+  {
+    "file": "hero-japan.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1-topbannerpc-1790215747755.jpg"
+  },
+  {
+    "file": "hero-japan-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2-topbannermb-1790215742466.jpg"
+  },
+  {
+    "file": "hero-anniversary.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1topbannerpcvn-1791347150470.jpg"
+  },
+  {
+    "file": "hero-anniversary-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2topbannermbvn-1791347143265.jpg"
+  },
+  {
+    "file": "hero-korea.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1-top-banner-pc-1786359793653.jpg"
+  },
+  {
+    "file": "hero-korea-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2-top-banner-mb-1786359790593.jpg"
+  },
+  {
+    "file": "hero-groups.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/1-top-banner-pc-1785556239595.jpg"
+  },
+  {
+    "file": "hero-groups-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/2-top-banner-mb-1785556231844.jpg"
+  },
+  {
+    "file": "hero-transfer.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vie8-topbannerpc-1789375819258.jpg"
+  },
+  {
+    "file": "hero-transfer-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vie9-topbannermb-1789375813726.jpg"
+  },
+  {
+    "file": "hero-loyalty.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/vietnamese-version-1785469001471.jpg"
+  },
+  {
+    "file": "hero-loyalty-mobile.jpg",
+    "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/top-bannervietnamese-version-1785468982962.jpg"
   }
 ]

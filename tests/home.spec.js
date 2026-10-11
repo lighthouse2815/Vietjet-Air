@@ -36,6 +36,7 @@ test("homepage carousel, airport keyboard navigation and passenger limits work",
   await page.goto("/");
   const heading = page.locator(".hero-copy h1");
   await expect(heading).toBeVisible();
+  await expect(page.locator(".carousel-dots button")).toHaveCount(9);
   const firstTitle = await heading.innerText();
   const images = await page
     .locator(".hero-slide")
@@ -50,6 +51,8 @@ test("homepage carousel, airport keyboard navigation and passenger limits work",
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Banner 3", exact: true }).click();
   await expect(page.locator(".hero-slide.visible")).toHaveClass(/slide-2/);
+  await page.getByRole("button", { name: "Banner 9", exact: true }).click();
+  await expect(page.locator(".hero-slide.visible")).toHaveClass(/slide-8/);
   await page.locator(".hero-images").evaluate((target) => {
     const start = new Touch({ identifier: 1, target, clientX: 300 });
     const end = new Touch({ identifier: 1, target, clientX: 40 });
