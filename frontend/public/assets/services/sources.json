@@ -1,0 +1,35 @@
+{
+  "captured": "2026-10-11T19:59:24.948Z",
+  "assets": [
+    {
+      "file": "esim-banner.jpg",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/iframefixjpg1724139436576-1724339470847.jpeg",
+      "bytes": 310280
+    },
+    {
+      "file": "currency-banner.jpg",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/5bannerthele-1765183045211.jpg",
+      "bytes": 626111
+    },
+    {
+      "file": "insurance-banner.jpg",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/coverhdi-1619506503974.jpg",
+      "bytes": 523898
+    },
+    {
+      "file": "skyjoy-banner.jpg",
+      "url": "https://corp-website-pb-assets.skyjoy.vn/wp-content/uploads/wpfiles/2026/10/Top-Banner-Web-vie.jpg",
+      "bytes": 533104
+    },
+    {
+      "file": "skyjoy-banner-2.jpg",
+      "url": "https://corp-website-pb-assets.skyjoy.vn/wp-content/uploads/wpfiles/2026/09/Top-Banner-Web.jpg",
+      "bytes": 686752
+    },
+    {
+      "file": "skyjoy-logo.png",
+      "url": "https://corp-website-pb-assets.skyjoy.vn/wp-content/uploads/wpfiles/2021/10/19095855/Logo-white-131x41-1.png",
+      "bytes": 1498
+    }
+  ]
+}
