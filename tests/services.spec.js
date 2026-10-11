@@ -72,3 +72,20 @@ test("eSIM sends destination and device preferences without a provider order", a
   await expect(page.getByRole("link", { name: "Mở trang nhà cung cấp", exact: true })).toHaveAttribute("href", /agent\.skyfi\.vn/);
   await expect(page.getByRole("button", { name: /Thanh toán|Mua ngay/ })).toHaveCount(0);
 });
+
+test("eVisa saves a journey inquiry with transit details", async ({ page, request }) => {
+  const user = await register(request); await login(page, user);
+  await page.goto("/services/visa");
+  await expect(page.getByRole("heading", { name: "Quy định xuất nhập cảnh", exact: true })).toBeVisible();
+  const form = page.locator(".service-request");
+  await form.getByLabel("Quốc tịch", { exact: true }).fill("Việt Nam");
+  await form.getByLabel("Điểm đến", { exact: true }).fill("Australia");
+  await form.getByLabel("Điểm quá cảnh", { exact: true }).fill("Singapore");
+  await form.getByLabel("Ngày khởi hành", { exact: true }).fill(new Date(Date.now() + 20 * 86400000).toISOString().slice(0, 10));
+  await form.getByRole("button", { name: "Gửi yêu cầu tư vấn", exact: true }).click();
+  await expect(form.getByRole("status")).toContainText("Đã gửi yêu cầu");
+  const [ticket] = await tickets(request, user);
+  expect(ticket.subject).toContain("eVisa"); expect(ticket.messages[0].body).toContain("Singapore");
+  await expect(page.getByRole("link", { name: "Mở trang nhà cung cấp", exact: true })).toHaveAttribute("href", /joinsherpa\.io/);
+  await expect(page.locator("aside").getByText("Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.", { exact: true })).toBeVisible();
+});

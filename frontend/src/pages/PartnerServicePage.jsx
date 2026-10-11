@@ -8,6 +8,17 @@ import BookingForm from "../components/booking/BookingForm";
 import "../styles/services.css";
 
 const services = {
+  visa: {
+    title: "eVisa", heading: "Quy định xuất nhập cảnh", image: "/assets/services/visa-banner.png",
+    description: "Chuẩn bị thông tin quốc tịch, điểm đến và các chặng quá cảnh để nhận hướng dẫn trước chuyến đi.",
+    provider: "Sherpa", source: "https://apps.joinsherpa.io/trip?appId=spkzNTUxNz&language=vi-VN",
+    fields: [{ name: "nationality", label: "Quốc tịch" }, { name: "destination", label: "Điểm đến" },
+      { name: "transit", label: "Điểm quá cảnh", required: false }, { name: "departure", label: "Ngày khởi hành", type: "date" }],
+    steps: ["Chuẩn bị thông tin hành trình", "Kiểm tra yêu cầu với Sherpa", "Xác minh với cơ quan có thẩm quyền"],
+    faq: [["Tôi cần cung cấp hộ chiếu không?", "Form tư vấn chỉ cần quốc tịch và hành trình. Hồ sơ, lệ phí và tiến độ cấp visa do nhà cung cấp hoặc cơ quan có thẩm quyền xử lý."],
+      ["Có cần kiểm tra yêu cầu tại điểm quá cảnh?", "Hãy kiểm tra điều kiện của từng điểm quá cảnh và điểm đến. Quy định có thể thay đổi; sử dụng nguồn chính thức trước khi khởi hành."],
+      ["Gửi yêu cầu có đảm bảo được cấp visa không?", "Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh."]],
+  },
   esim: {
     title: "eSIM", heading: "Bay khắp thế giới với eSIM", image: "/assets/services/esim-banner.jpg",
     description: "Chọn quốc gia, thời gian sử dụng và kiểm tra thiết bị trước chuyến đi. Gửi nhu cầu để nhận tư vấn trong tài khoản của bạn.",
@@ -44,6 +55,7 @@ export default function PartnerServicePage({ slug }) {
       <nav className="service-breadcrumb" aria-label={t("Đường dẫn trang")}><Link to="/">{t("Trang chủ")}</Link><span>›</span><span>{t(service.title)}</span></nav>
       {slug !== "hotels" && <h1>{t(service.heading)}</h1>}
       <p className="service-intro">{t(service.description)}</p>
+      {slug === "visa" && <aside className="notice-panel"><h2>{t("Chú ý quan trọng")}</h2><p>{t("Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.")}</p></aside>}
       <div className="service-steps">{service.steps.map((step, index) => { const Icon = [MapPin, CalendarDays, MessageCircle][index]; return <article key={step}><Icon size={30} /><span>{index + 1}</span><h2>{t(step)}</h2></article>; })}</div>
       <ServiceRequestForm key={slug} slug={slug} title={service.title} fields={service.fields} />
       <section className="panel service-faq"><h2>{t("Câu hỏi thường gặp")}</h2>{service.faq.map(([question, answer]) => <details key={question}><summary>{t(question)}</summary><p>{t(answer)}</p></details>)}</section>

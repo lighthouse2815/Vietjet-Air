@@ -30,6 +30,11 @@
       "file": "skyjoy-logo.png",
       "url": "https://corp-website-pb-assets.skyjoy.vn/wp-content/uploads/wpfiles/2021/10/19095855/Logo-white-131x41-1.png",
       "bytes": 1498
+    },
+    {
+      "file": "visa-banner.png",
+      "url": "https://vj-prod-website-cms.s3.ap-southeast-1.amazonaws.com/evisa-1716979179146.png",
+      "bytes": 861812
     }
   ]
 }

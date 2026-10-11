@@ -815,5 +815,18 @@
   "Tôi nhận mã QR ở đâu?": "Where do I get the QR code?",
   "Nhà cung cấp cấp mã QR sau khi hoàn tất mua gói. Hệ thống nội bộ hiện nhận yêu cầu tư vấn; chưa bán gói hoặc cấp mã kích hoạt.": "The provider issues a QR code after a plan purchase. This system currently accepts consultation requests; plan sales and activation codes await integration.",
   "Bản nháp eSIM có bị lẫn với khách sạn không?": "Are eSIM and hotel drafts separate?",
-  "Mỗi dịch vụ lưu bản nháp riêng trong phiên trình duyệt. Yêu cầu đã gửi được lưu trong tài khoản và có thể theo dõi tại Trung tâm hỗ trợ.": "Each service keeps a separate draft in your browser session. Submitted requests are saved in your account and tracked in the Support center."
+  "Mỗi dịch vụ lưu bản nháp riêng trong phiên trình duyệt. Yêu cầu đã gửi được lưu trong tài khoản và có thể theo dõi tại Trung tâm hỗ trợ.": "Each service keeps a separate draft in your browser session. Submitted requests are saved in your account and tracked in the Support center.",
+  "Quy định xuất nhập cảnh": "Immigration requirements",
+  "Chuẩn bị thông tin quốc tịch, điểm đến và các chặng quá cảnh để nhận hướng dẫn trước chuyến đi.": "Prepare your nationality, destination and transit details for guidance before your trip.",
+  "Điểm quá cảnh": "Transit destination",
+  "Chuẩn bị thông tin hành trình": "Prepare your journey details",
+  "Kiểm tra yêu cầu với Sherpa": "Check requirements with Sherpa",
+  "Xác minh với cơ quan có thẩm quyền": "Verify with the relevant authorities",
+  "Tôi cần cung cấp hộ chiếu không?": "Do I need to provide a passport?",
+  "Form tư vấn chỉ cần quốc tịch và hành trình. Hồ sơ, lệ phí và tiến độ cấp visa do nhà cung cấp hoặc cơ quan có thẩm quyền xử lý.": "The consultation form only needs nationality and itinerary details. Applications, fees and visa progress are handled by the provider or relevant authorities.",
+  "Có cần kiểm tra yêu cầu tại điểm quá cảnh?": "Should I check transit requirements?",
+  "Hãy kiểm tra điều kiện của từng điểm quá cảnh và điểm đến. Quy định có thể thay đổi; sử dụng nguồn chính thức trước khi khởi hành.": "Check requirements at each transit point and destination. Rules may change; consult official sources before departure.",
+  "Gửi yêu cầu có đảm bảo được cấp visa không?": "Does submitting a request guarantee a visa?",
+  "Quy định cần được kiểm tra với cơ quan có thẩm quyền; hệ thống nội bộ không xác nhận quyền nhập cảnh.": "Verify requirements with the relevant authorities; this internal system does not confirm entry eligibility.",
+  "Chú ý quan trọng": "Important information"
 }
